@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>netty源码浅析--accept | </title>
+  <title>netty源码浅析--accept | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。">
 <meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netty源码浅析--accept">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-accept/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">

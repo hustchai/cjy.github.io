@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Tomcat源码分析--一次HTTP请求过程 | </title>
+  <title>Tomcat源码分析--一次HTTP请求过程 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始">
 <meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tomcat源码分析--一次HTTP请求过程">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160508194059544">
@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160508194059544">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">

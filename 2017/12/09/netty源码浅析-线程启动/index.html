@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>netty源码浅析--线程启动 | </title>
+  <title>netty源码浅析--线程启动 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
 <meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netty源码浅析--线程启动">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-线程启动/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160820144943271">
@@ -30,7 +30,7 @@
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160820144943271">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">

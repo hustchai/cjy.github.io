@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Java并发之AbstractQueuedSynchronizer分析 | </title>
+  <title>Java并发之AbstractQueuedSynchronizer分析 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发之AbstractQueuedSynchronizer分析">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160203210350302">
@@ -33,7 +33,7 @@
 <meta name="twitter:description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160203210350302">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">

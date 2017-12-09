@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Tomcat源码分析--启动过程 | </title>
+  <title>Tomcat源码分析--启动过程 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
 <meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tomcat源码分析--启动过程">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160417204227221">
@@ -33,7 +33,7 @@
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160417204227221">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">

@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Java并发之volatile | </title>
+  <title>Java并发之volatile | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发之volatile">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java并发之volatile/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="Tmac的小窝">
 <meta property="og:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160108114707459">
@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160108114707459">
   
-    <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
