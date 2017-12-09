@@ -6,31 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Tomcat源码分析--启动过程 | </title>
+  <title>Tomcat源码分析--Connector(连接器) | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tomcat源码分析--启动过程">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/index.html">
+<meta property="og:title" content="Tomcat源码分析--Connector(连接器)">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.blog.csdn.net/20160417204227221">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132259811">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132449928">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132555850">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132723661">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132817195">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427132915258">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427133058493">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427133517500">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427133728237">
-<meta property="og:image" content="http://img.blog.csdn.net/20160427133903254">
-<meta property="og:updated_time" content="2017-12-09T10:49:55.000Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20160427111439328">
+<meta property="og:image" content="http://img.blog.csdn.net/20160427112337608">
+<meta property="og:image" content="http://img.blog.csdn.net/20160427125713824">
+<meta property="og:image" content="http://img.blog.csdn.net/20160427130415967">
+<meta property="og:image" content="http://img.blog.csdn.net/20160427131330642">
+<meta property="og:updated_time" content="2017-12-09T10:50:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tomcat源码分析--启动过程">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20160417204227221">
+<meta name="twitter:title" content="Tomcat源码分析--Connector(连接器)">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160427111439328">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -166,43 +160,35 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Tomcat源码分析-启动过程" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Tomcat源码分析-Connector-连接器" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Tomcat源码分析--启动过程
+      Tomcat源码分析--Connector(连接器)
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般启动Tomcat会是运行startup.bat或者startup.sh文件，这两个文件最后都会调用，org.apache.catalina.startup包下面Bootstrap类的main方法。main方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132259811" alt="这里写图片描述"></p>
-<p>main方法先实例化了一个Bootstrap实例，接着调用了init方法。init方法是生命周期方法，以后不再累述。接着看init的具体实现。<br><img src="http://img.blog.csdn.net/20160427132449928" alt="这里写图片描述"><br>init方法，先初始化了类加载器。initClassLoaders方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132555850" alt="这里写图片描述"><br>createClassLoader具体实现细节不再显示，有感兴趣的读者可以具体查看。该方法的具体签名为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private ClassLoader createClassLoader(String name, ClassLoader parent)  throws Exception</span><br></pre></td></tr></table></figure>
-<p>从方法签名中可以看出createClassLoader需要传入一个父加载器。从具体的代码中可以看出，commonLoader类加载器是catalinaLoader类加载器和sharedLoader类加载器的父加载器。初始化完类加载器后，使用反射机制调用org.apache.catalina.startup.Catalina类下的setParentClassLoader方法。具体代码是:</p>
-<p><img src="http://img.blog.csdn.net/20160427132723661" alt="这里写图片描述"></p>
-<p>因为Tomcat执行的是start操作，调用完init方法后，会执行load方法。</p>
-<p><img src="http://img.blog.csdn.net/20160427132817195" alt="这里写图片描述"><br>load方法通过反射调用Catalina类的load方法。</p>
-<p><img src="http://img.blog.csdn.net/20160427132915258" alt="这里写图片描述"><br>Catalina类的load方法：</p>
-<p><img src="http://img.blog.csdn.net/20160427133058493" alt="这里写图片描述"></p>
-<p>load方法中比较重要的方法是createStartDigester()，createStartDigester方法主要的作用就是帮我们实例化了所有的服务组件包括server,service和connect。具体的实例化方法，<br>  <img src="http://img.blog.csdn.net/20160427133517500" alt="这里写图片描述"></p>
-<p>初始化操作完成后，接下来会执行catalina实例的start方法。</p>
-<p>从上面加载的组件中，Tomcat会默认加载org.apache.catalina.core.StandardServer作为Server的实例类。</p>
-<p><img src="http://img.blog.csdn.net/20160427133728237" alt="这里写图片描述"></p>
-<p>在Server的start的方法里面会执行service的start方法。在createStartDigester()方法里面，会默认加载org.apache.catalina.core.StandardService类。会接着调用Service的start方法。<br><img src="http://img.blog.csdn.net/20160427133903254" alt="这里写图片描述"><br>service中会调用connector的start方法。至此Tomcat启动完毕</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。</p>
+<p>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
+<p>2.Connector的初始化方法。<br>在Connector调用initInternal的初始化方法。主要完成了2个操作：</p>
+<ol>
+<li>初始化适配器。     </li>
+<li>初始化protocolHandler的init()方法。<br><img src="http://img.blog.csdn.net/20160427112337608" alt="这里写图片描述"><br>protocolHandler的init方法会调用父类AbstractProtocol的init方法。<br><img src="http://img.blog.csdn.net/20160427125713824" alt="这里写图片描述"><br>其父类的init()方法会调用endpoint的init方法。endpoint提供了底层的网络i/o 连接。</li>
+</ol>
+<p>3.Connector的Start方法。<br>介绍完Connector的Init方法，我们来看看Connector的start方法。<br><img src="http://img.blog.csdn.net/20160427130415967" alt="这里写图片描述"><br>Connector方法中调用了protoHandler的start方法。protoHandler是个接口，我们以其具体的实现类Http11NioProtocol来介绍。从类名上可以看出，该类使用的是Java nio的方式进行连接的。Http11NioProtocol会最终调用其底层的Nio实现类NioEndPoint来接收请求。<br><img src="http://img.blog.csdn.net/20160427131330642" alt="这里写图片描述"><br>至此Connector启动完成。</p>
 
       
 
@@ -282,7 +268,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -296,18 +282,9 @@
   
 <nav id="article-nav">
   
-    <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Tomcat源码分析--Connector(连接器)
-        
-      </div>
-    </a>
   
-  
-    <a href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Java并发之AbstractQueuedSynchronizer分析</div>
+    <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Tomcat源码分析--启动过程</div>
       <i class="icon-circle-right"></i>
     </a>
   
