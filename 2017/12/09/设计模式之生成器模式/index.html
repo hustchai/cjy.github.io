@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Archives: 2017/12 | </title>
+  <title>设计模式之生成器模式 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/archives/2017/12/index.html">
+  <meta name="description" content="将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。 应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。  类图 cup类 123456789101112131415161718192021public class Cup &amp;#123;	private String string;    //绳子	private">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式之生成器模式">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之生成器模式/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。 应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。  类图 cup类 123456789101112131415161718192021public class Cup &amp;#123;	private String string;    //绳子	private">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20160119102247921">
+<meta property="og:image" content="http://img.blog.csdn.net/20160119102407329">
+<meta property="og:image" content="http://img.blog.csdn.net/20160119102716506">
+<meta property="og:updated_time" content="2017-12-09T10:43:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="设计模式之生成器模式">
+<meta name="twitter:description" content="将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。 应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。  类图 cup类 123456789101112131415161718192021public class Cup &amp;#123;	private String string;    //绳子	private">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160119102247921">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,295 +158,167 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-设计模式之生成器模式" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      设计模式之生成器模式
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/cjy.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
+
+        
+        <a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
   	<time datetime="2017-12-09T10:43:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">设计模式之生成器模式</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。</strong></p>
+<p>应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。</p>
+<p><img src="http://img.blog.csdn.net/20160119102247921" alt="这里写图片描述"></p>
+<p><strong>类图</strong><br><img src="http://img.blog.csdn.net/20160119102407329" alt="这里写图片描述"></p>
+<p><strong>cup类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Cup &#123;</span><br><span class="line"></span><br><span class="line">	private String string;    //绳子</span><br><span class="line">	private String cap;       //帽子</span><br><span class="line">	private String cupBody;   //杯体</span><br><span class="line">	</span><br><span class="line">	public void setString(String string) &#123;</span><br><span class="line">		this.string = string;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCap(String cap) &#123;</span><br><span class="line">		this.cap = cap;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCupBody(String cupBody) &#123;</span><br><span class="line">		this.cupBody = cupBody;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;杯子生产完毕&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Builder类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public abstract class  Builder &#123;</span><br><span class="line"></span><br><span class="line">protected Cup cup = new Cup();</span><br><span class="line"></span><br><span class="line">public abstract void buildString();</span><br><span class="line"></span><br><span class="line">public abstract void buildCap();</span><br><span class="line"></span><br><span class="line">public abstract void buildCupBody();</span><br><span class="line"></span><br><span class="line">public  Cup getResult() &#123;</span><br><span class="line">return cup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>ClassCup类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ClassCup extends Builder &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildString() &#123;</span><br><span class="line">		cup.setString(&quot;生产绳子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产绳子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCap() &#123;</span><br><span class="line">		cup.setCap(&quot;生产帽子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产帽子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCupBody() &#123;</span><br><span class="line">		cup.setCupBody(&quot;生产杯体...&quot;);</span><br><span class="line">		System.out.println(&quot;生产杯体...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Director类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Director &#123;</span><br><span class="line">	</span><br><span class="line">	private Builder builder;</span><br><span class="line">	</span><br><span class="line">	public Director(Builder builder) &#123;</span><br><span class="line">		this.builder = builder;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void create() &#123;</span><br><span class="line">		builder.buildString();</span><br><span class="line">		builder.buildCap();</span><br><span class="line">		builder.buildCupBody();</span><br><span class="line">		builder.getResult().show();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Director d = new Director(new ClassCup());</span><br><span class="line">		d.create();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong><br><img src="http://img.blog.csdn.net/20160119102716506" alt="这里写图片描述"></p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之生成器模式/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">设计模式之抽象工厂</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">设计模式之抽象工厂</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:41:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/"> Android与服务器端通信时 部分中文出现乱码</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">使用cookie绕过验证码进行模拟登录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/cjy.github.io/archives/2017/12/page/2/">2</a><a class="extend next" rel="next" href="/cjy.github.io/archives/2017/12/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -462,8 +342,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
