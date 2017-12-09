@@ -152,6 +152,85 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Java动态代理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java动态代理/">Java动态代理</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Java动态代理/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:53:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Spring中的AOP是基于Java动态代理实现的，那么什么是动态代理呢？既然“动态代理”有代理两个字，那么肯定和代理模式有关系喽。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代理模式是经典的23种设计模式之一。简单的说，代理模式就是为其他对象提供一种代理，以控制对这个对象的访问。对于什么是代理模式不过多进行解释。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;那么什么又是动态代理呢?动态代理是相对于静态代理来说的，静态代理的代理类是手工书写的或者通过工具生成，而动态代理是程序运行前不存在，在程序运行的动态生成代理类。</p>
+<p>Java实现动态代理的一般步骤：</p>
+<ol>
+<li>实现要代理的接口。</li>
+<li>实现InvocationHandler接口，对目标方法进行增加。</li>
+<li><p>使用Proxy.newProxyInstance获取目标对象的代理对象。</p>
+<p>直接上例子。</p>
+</li>
+</ol>
+<p>创建业务接口，包含着业务可以对外提供的功能<br><img src="http://img.blog.csdn.net/20160529164629412" alt="这里写图片描述"></p>
+<p>创建目标接口的实现类<br><img src="http://img.blog.csdn.net/20160529164800428" alt="这里写图片描述"></p>
+<p>自定义InvocationHandler。在自定义的InvocationHandler中需要重写3个函数。<br>构造函数，将代理对象传入。<br>invoke方法，此方法中实现了AOP增强的所有逻辑。<br>getProxy方法即使用Proxy.newProxyInstance，该方法需要指定该实例的类加载器，需要实现的接口，以及处理代理实例接口调用的处理器。</p>
+<p><img src="http://img.blog.csdn.net/20160529165538748" alt="这里写图片描述"></p>
+<p>测试类<br><img src="http://img.blog.csdn.net/20160529165836088" alt="这里写图片描述"></p>
+<p>测试结果<br><img src="http://img.blog.csdn.net/20160529165941487" alt="这里写图片描述"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java动态代理/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式之回调模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -825,94 +904,9 @@
 
 
   
-    <article id="post-设计模式之抽象工厂" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">设计模式之抽象工厂</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。</strong></p>
-<p>应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫把）。手里拿的是魔法棒。<br><img src="http://img.blog.csdn.net/20160115115925968" alt="这里写图片描述"></p>
-<p><strong>IabstractFactory接口</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface IabstractFactory &#123;</span><br><span class="line">	</span><br><span class="line">	public IVehicle createVehicle(int i);</span><br><span class="line">	</span><br><span class="line">	public IWeapon createWeapon(int i);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>IVehicle接口</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface IVehicle &#123;</span><br><span class="line">	</span><br><span class="line">	public void run();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>IWeapon接口</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface IWeapon &#123;</span><br><span class="line">	</span><br><span class="line">	public void attack();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>普通模式</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultFactory implements IabstractFactory&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IVehicle createVehicle(int i) &#123;</span><br><span class="line">		return new Moto();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IWeapon createWeapon(int i) &#123;</span><br><span class="line">		return new AK47();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>魔法模式</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class MagicFactory implements IabstractFactory&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IVehicle createVehicle(int i) &#123;</span><br><span class="line">		</span><br><span class="line">		return 	new Broom();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IWeapon createWeapon(int i) &#123;</span><br><span class="line">		return new MagicStick();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>AK47类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class AK47 implements IWeapon&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void attack() &#123;</span><br><span class="line">		System.out.println(&quot;AK47....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>魔法棒</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class MagicStick implements IWeapon&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void attack() &#123;</span><br><span class="line">		System.out.println(&quot;MagicStick .....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>摩托车类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Moto implements IVehicle&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		System.out.println(&quot;Moto.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>扫把类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Broom implements IVehicle&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		System.out.println(&quot;Broom....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		IabstractFactory f = new MagicFactory();</span><br><span class="line">		f.createVehicle(1).run();</span><br><span class="line">		f.createWeapon(1).attack();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试结果</strong><br><img src="http://img.blog.csdn.net/20160115120709418" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/cjy.github.io/page/2/">2</a><a class="extend next" rel="next" href="/cjy.github.io/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/cjy.github.io/page/2/">2</a><a class="page-number" href="/cjy.github.io/page/3/">3</a><a class="extend next" rel="next" href="/cjy.github.io/page/2/">Next &raquo;</a>
     </nav>
   
 
