@@ -152,6 +152,79 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-设计模式之原型模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">设计模式之原型模式</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/设计模式之原型模式/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:46:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。</strong></p>
+<p>在说什么是原型模式前首先要解释一下两个概念，<strong>深复制和浅复制</strong>。<br><strong>浅复制：</strong>复制一个对象时，基本类型字段复制其值，引用类型复制其引用。<br><strong>深复制：</strong>复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。</p>
+<p>java中使用super.clone可以得到当前调用类的对象的副本。在java中需要被克隆的对象必须实现Cloneable接口，否则视为不合法，会抛出不支持克隆的异常。</p>
+<p><strong>HomeWork类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWork implements Cloneable &#123;</span><br><span class="line">	</span><br><span class="line">	private String studentNum;    //学号</span><br><span class="line">	private String name;         //姓名</span><br><span class="line">	private HomeWorkContent homeWorkContent;  //作业内容</span><br><span class="line">	</span><br><span class="line">	public HomeWork() &#123;</span><br><span class="line">		homeWorkContent = new HomeWorkContent(&quot;我是内容&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setInfo(String studentNum,String name) &#123;</span><br><span class="line">		this.studentNum = studentNum;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setHomeWorkContent(String content) &#123;</span><br><span class="line">		homeWorkContent.setContent(content);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public HomeWork clone() &#123;</span><br><span class="line">		HomeWork hw= null;</span><br><span class="line">			try &#123;</span><br><span class="line">				hw = (HomeWork)super.clone();</span><br><span class="line">			&#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			return hw;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;学号是: &quot; + studentNum + &quot; \n姓名是: &quot;+name + &quot;\n作业是:&quot;+homeWorkContent.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>HomeWorkContent类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWorkContent &#123;</span><br><span class="line">	</span><br><span class="line">	private String content;  </span><br><span class="line">	</span><br><span class="line">	public HomeWorkContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		return content;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Main测试类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		HomeWork hw = new HomeWork();</span><br><span class="line">		HomeWork h1 = hw.clone();</span><br><span class="line">		h1.setInfo(&quot;111&quot;, &quot;小白&quot;);</span><br><span class="line">		h1.setHomeWorkContent(&quot;我不是内容&quot;);</span><br><span class="line">		h1.show();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		HomeWork h2 = hw.clone();</span><br><span class="line">		h2.setInfo(&quot;222&quot;, &quot;小黑&quot;);</span><br><span class="line">		h2.show();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20160125131140420" alt="这里写图片描述"></p>
+<p>从运行结果看clone是浅复制</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java并发之读者写者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -804,75 +877,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA利用泛型返回类型不同的对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。</p>
-<p>首先先解释个概念,<br>元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。</p>
-<p>利用泛型创建元组</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ReturnTwo&lt;A,B&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	public final A first;</span><br><span class="line">	public final B second;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo(A a,B b) &#123;</span><br><span class="line">		first = a;</span><br><span class="line">		second = b;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	private String a = &quot;abc&quot;;</span><br><span class="line">	private int b = 123;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo&lt;String, Integer&gt; get() &#123;</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = new ReturnTwo&lt;String, Integer&gt;(this.a, this.b);</span><br><span class="line">		return rt;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Test test = new Test();</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = test.get();</span><br><span class="line">		System.out.println(rt.first);</span><br><span class="line">		System.out.println(rt.second);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：<br>abc<br>123</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">展开全文 >></a>
         </p>
       
 

@@ -152,6 +152,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-netty源码浅析-服务器bind" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/">netty源码浅析--服务器bind</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:55:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。</p>
+<p><img src="http://img.blog.csdn.net/20160903135520436" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doBind中。根据小编阅读源码的经历总结出一点。许多方法里面只做了一些校验，而真正的逻辑全部都在do开头的方法中。</p>
+<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从调用的第一个方法可以看出首先是初始化和注册，那这里到底是初始化和注册什么呢?我们接着看initAndRegister()方法。</p>
+<p><img src="http://img.blog.csdn.net/20160903141218194" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从名字中也能看出，会先创建channel。createChannel是一个抽象方法，具体的逻辑在类ServerBootstrap中实现。</p>
+<p><img src="http://img.blog.csdn.net/20160903141639384" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next方法选中一个EventLoop初始化channel。</p>
+<p><img src="http://img.blog.csdn.net/20160903143500579" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newChannel使用反射来创建channel。使用的是NioServerSocketChannel类。在使用反射创建channel时，会触发NioServerSocketChannel实例化。在调用父类构造函数时传入了SelectionKey.OP_ACCEPT。熟悉Java nio的朋友都知道，在使用Java nio的时候会对selector注册SelectionKey.OP_ACCEPT。难道是在父类中实现的吗？接着来看看NioServerSocketChannel父类方法。</p>
+<p><img src="http://img.blog.csdn.net/20160903150205030" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在AbstractNioChannel类中只是对readInterestOp赋值。并没有对channel注册。刚开始看源码的时候，小编也百事不得其解。再查阅了大量的资料后，得知，Channel注册到Selector有两种方式，一种是调用Channel的register方法，第二种是设置SelectionKey的interestOps的值。netty是用了第二种方式，通过设置SelectionKey的interestOps来注册Channel关心的事情，把实际的注册延迟了。然后设置channel为非阻塞模式。channel创建完了，接着看看init又干了些什么。</p>
+<p><img src="http://img.blog.csdn.net/20160903151141277" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面主要是设置一些属性，不再累述。主要在p.addLast()方法的匿名内部类中。</p>
+<p><img src="http://img.blog.csdn.net/20160903155924794" alt="这里写图片描述"></p>
+<p>在channelInitializer类中会调用channelRegistered方法。initChannel会初始化ServerBootstrapAcceptor类。再实例化的过程中会初始化类DefaultChannelHandlerContext。在Netty的编程模型中，Handler是程序猿主要关心的地方，猿可以在自定义的Handler中实现业务逻辑。在类中有这样两段代码。</p>
+<p><img src="http://img.blog.csdn.net/20160903152757852" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是不是有点像双链表。对。Handler其实是带head和tail节点的双链表。由此可以知道，netty的ChannelPipeline包含两条线路，up、down。而这两条链路使用的是同一套handler。在javadoc中有一张图形象的说明了这个过程。</p>
+<p><img src="http://img.blog.csdn.net/20160903154524356" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upstream对应上行，接收到的消息、被动的状态改变，都属于Upstream。Downstream则对应下行，发送的消息、主动的状态改变，都属于Downstream。在没加入任何handler时，是这样的。</p>
+<p><img src="http://img.blog.csdn.net/20160903155305834" alt="这里写图片描述"></p>
+<p>将ServerBootstrapAcceptor添加到handler链后是这样的。</p>
+<p><img src="http://img.blog.csdn.net/20160903160429948" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后会调用handler的生命周期方法fireChannelRegistered()。这就是事件驱动的具体体现。具体fireChannelRegistered()逻辑不再分析。接着是regist方法。在实现注册之前，netty先创建了channelPromise对象。这里简单说一下，netty所有的方法都是异步，而实现异步的最好方法就是使用基于回调的事件机制。而netty使用的是基于事件监听的方式，这种基于事件监听的方式要比基于回调的事件机制效率更高一点。以后的文章中会分析这种机制。</p>
+<p><img src="http://img.blog.csdn.net/20160903162753070" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20160903163451477" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netty会把regist封装成多线程任务，然后将其加入的队列中，由eventloop执行。具体的regist的业务逻辑在AbstractChannel类中。</p>
+<p><img src="http://img.blog.csdn.net/20160903164103730" alt="这里写图片描述"><br>具体的注册逻辑不在分析，不理解的请看java nio的相关知识。</p>
+<p><img src="http://img.blog.csdn.net/20160903164605939" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bind前面和regist差不多。也是把具体的逻辑封装成多线程任务。然后将其丢进任务队列中。tail会代理unsafe工具类进行绑定。</p>
+<p><img src="http://img.blog.csdn.net/20160903165309385" alt="这里写图片描述"></p>
+<p>由bind的调用栈可知，最终会Java socket进行绑定。至此服务器bind过程分析完毕。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-netty源码浅析-线程启动" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -821,79 +915,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之CAS操作/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-设计模式之原型模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">设计模式之原型模式</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/设计模式之原型模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:46:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。</strong></p>
-<p>在说什么是原型模式前首先要解释一下两个概念，<strong>深复制和浅复制</strong>。<br><strong>浅复制：</strong>复制一个对象时，基本类型字段复制其值，引用类型复制其引用。<br><strong>深复制：</strong>复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。</p>
-<p>java中使用super.clone可以得到当前调用类的对象的副本。在java中需要被克隆的对象必须实现Cloneable接口，否则视为不合法，会抛出不支持克隆的异常。</p>
-<p><strong>HomeWork类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWork implements Cloneable &#123;</span><br><span class="line">	</span><br><span class="line">	private String studentNum;    //学号</span><br><span class="line">	private String name;         //姓名</span><br><span class="line">	private HomeWorkContent homeWorkContent;  //作业内容</span><br><span class="line">	</span><br><span class="line">	public HomeWork() &#123;</span><br><span class="line">		homeWorkContent = new HomeWorkContent(&quot;我是内容&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setInfo(String studentNum,String name) &#123;</span><br><span class="line">		this.studentNum = studentNum;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setHomeWorkContent(String content) &#123;</span><br><span class="line">		homeWorkContent.setContent(content);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public HomeWork clone() &#123;</span><br><span class="line">		HomeWork hw= null;</span><br><span class="line">			try &#123;</span><br><span class="line">				hw = (HomeWork)super.clone();</span><br><span class="line">			&#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			return hw;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;学号是: &quot; + studentNum + &quot; \n姓名是: &quot;+name + &quot;\n作业是:&quot;+homeWorkContent.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>HomeWorkContent类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWorkContent &#123;</span><br><span class="line">	</span><br><span class="line">	private String content;  </span><br><span class="line">	</span><br><span class="line">	public HomeWorkContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		return content;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Main测试类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		HomeWork hw = new HomeWork();</span><br><span class="line">		HomeWork h1 = hw.clone();</span><br><span class="line">		h1.setInfo(&quot;111&quot;, &quot;小白&quot;);</span><br><span class="line">		h1.setHomeWorkContent(&quot;我不是内容&quot;);</span><br><span class="line">		h1.show();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		HomeWork h2 = hw.clone();</span><br><span class="line">		h2.setInfo(&quot;222&quot;, &quot;小黑&quot;);</span><br><span class="line">		h2.show();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20160125131140420" alt="这里写图片描述"></p>
-<p>从运行结果看clone是浅复制</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">展开全文 >></a>
         </p>
       
 

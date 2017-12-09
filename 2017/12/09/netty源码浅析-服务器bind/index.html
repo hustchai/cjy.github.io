@@ -6,15 +6,37 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Archives: 2017/12 | </title>
+  <title>netty源码浅析--服务器bind | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/archives/2017/12/page/3/index.html">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="netty源码浅析--服务器bind">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903135520436">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903140510127">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903141218194">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903141639384">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903143500579">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903150205030">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903151141277">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903155924794">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903152757852">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903154524356">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903155305834">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903160429948">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903162753070">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903163451477">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903164103730">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903164605939">
+<meta property="og:image" content="http://img.blog.csdn.net/20160903165309385">
+<meta property="og:updated_time" content="2017-12-09T10:56:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="netty源码浅析--服务器bind">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160903135520436">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,133 +172,186 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-netty源码浅析-服务器bind" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      netty源码浅析--服务器bind
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:55:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。</p>
+<p><img src="http://img.blog.csdn.net/20160903135520436" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doBind中。根据小编阅读源码的经历总结出一点。许多方法里面只做了一些校验，而真正的逻辑全部都在do开头的方法中。</p>
+<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从调用的第一个方法可以看出首先是初始化和注册，那这里到底是初始化和注册什么呢?我们接着看initAndRegister()方法。</p>
+<p><img src="http://img.blog.csdn.net/20160903141218194" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从名字中也能看出，会先创建channel。createChannel是一个抽象方法，具体的逻辑在类ServerBootstrap中实现。</p>
+<p><img src="http://img.blog.csdn.net/20160903141639384" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next方法选中一个EventLoop初始化channel。</p>
+<p><img src="http://img.blog.csdn.net/20160903143500579" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newChannel使用反射来创建channel。使用的是NioServerSocketChannel类。在使用反射创建channel时，会触发NioServerSocketChannel实例化。在调用父类构造函数时传入了SelectionKey.OP_ACCEPT。熟悉Java nio的朋友都知道，在使用Java nio的时候会对selector注册SelectionKey.OP_ACCEPT。难道是在父类中实现的吗？接着来看看NioServerSocketChannel父类方法。</p>
+<p><img src="http://img.blog.csdn.net/20160903150205030" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在AbstractNioChannel类中只是对readInterestOp赋值。并没有对channel注册。刚开始看源码的时候，小编也百事不得其解。再查阅了大量的资料后，得知，Channel注册到Selector有两种方式，一种是调用Channel的register方法，第二种是设置SelectionKey的interestOps的值。netty是用了第二种方式，通过设置SelectionKey的interestOps来注册Channel关心的事情，把实际的注册延迟了。然后设置channel为非阻塞模式。channel创建完了，接着看看init又干了些什么。</p>
+<p><img src="http://img.blog.csdn.net/20160903151141277" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面主要是设置一些属性，不再累述。主要在p.addLast()方法的匿名内部类中。</p>
+<p><img src="http://img.blog.csdn.net/20160903155924794" alt="这里写图片描述"></p>
+<p>在channelInitializer类中会调用channelRegistered方法。initChannel会初始化ServerBootstrapAcceptor类。再实例化的过程中会初始化类DefaultChannelHandlerContext。在Netty的编程模型中，Handler是程序猿主要关心的地方，猿可以在自定义的Handler中实现业务逻辑。在类中有这样两段代码。</p>
+<p><img src="http://img.blog.csdn.net/20160903152757852" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是不是有点像双链表。对。Handler其实是带head和tail节点的双链表。由此可以知道，netty的ChannelPipeline包含两条线路，up、down。而这两条链路使用的是同一套handler。在javadoc中有一张图形象的说明了这个过程。</p>
+<p><img src="http://img.blog.csdn.net/20160903154524356" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upstream对应上行，接收到的消息、被动的状态改变，都属于Upstream。Downstream则对应下行，发送的消息、主动的状态改变，都属于Downstream。在没加入任何handler时，是这样的。</p>
+<p><img src="http://img.blog.csdn.net/20160903155305834" alt="这里写图片描述"></p>
+<p>将ServerBootstrapAcceptor添加到handler链后是这样的。</p>
+<p><img src="http://img.blog.csdn.net/20160903160429948" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后会调用handler的生命周期方法fireChannelRegistered()。这就是事件驱动的具体体现。具体fireChannelRegistered()逻辑不再分析。接着是regist方法。在实现注册之前，netty先创建了channelPromise对象。这里简单说一下，netty所有的方法都是异步，而实现异步的最好方法就是使用基于回调的事件机制。而netty使用的是基于事件监听的方式，这种基于事件监听的方式要比基于回调的事件机制效率更高一点。以后的文章中会分析这种机制。</p>
+<p><img src="http://img.blog.csdn.net/20160903162753070" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20160903163451477" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netty会把regist封装成多线程任务，然后将其加入的队列中，由eventloop执行。具体的regist的业务逻辑在AbstractChannel类中。</p>
+<p><img src="http://img.blog.csdn.net/20160903164103730" alt="这里写图片描述"><br>具体的注册逻辑不在分析，不理解的请看java nio的相关知识。</p>
+<p><img src="http://img.blog.csdn.net/20160903164605939" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bind前面和regist差不多。也是把具体的逻辑封装成多线程任务。然后将其丢进任务队列中。tail会代理unsafe工具类进行绑定。</p>
+<p><img src="http://img.blog.csdn.net/20160903165309385" alt="这里写图片描述"></p>
+<p>由bind的调用栈可知，最终会Java socket进行绑定。至此服务器bind过程分析完毕。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/cjy.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/cjy.github.io/2017/12/09/netty源码浅析-线程启动/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">netty源码浅析--线程启动</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之工厂模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:14:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之工厂模式/">设计模式之工厂模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:04:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/">Hadoop WordCount源码解读 </a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/cjy.github.io/archives/2017/12/page/2/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/archives/2017/12/">1</a><a class="page-number" href="/cjy.github.io/archives/2017/12/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
   
 
 
@@ -300,8 +375,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
