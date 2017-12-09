@@ -152,6 +152,93 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-netty源码浅析-线程启动" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/netty源码浅析-线程启动/">netty源码浅析--线程启动</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/netty源码浅析-线程启动/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:55:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在《Scalable IO in Java》中讲到了一种多线程下的Reactor模式。<br><img src="http://img.blog.csdn.net/20160820144943271" alt="这里写图片描述"><br>在这种设计模式中，有一个前端mainReactor主要负责响应client的连接请求并建立连接，和一个后端subReactor。mainReactor接收client的请求之后会转接给subReactor。由subReactor负责具体的客户端请求的读写工作。这样有一个好处，subReactor可以做一些比较耗时的操作，可以减少CPU因等待IO而阻塞的时间。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知道了什么是Reactor设计模式之后，我们来看看Reactor设计模式在netty中的应用.Netty里对应mainReactor的角色叫做“Boss”，而对应subReactor的角色叫做”Worker”。Boss负责分配请求，Worker负责执行。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在看源码之前，要首先理解几个概念：<br><strong>EventLoopGroup:</strong>一个EventLoopGroup就是一组EventLoop。主要负责管理EventLoop的申请和释放。<br><strong>EventLoop：</strong>处理所有的IO操作。EventLoop继承了EventLoopGroup接口，可以被当做一个single的线程池看待。</p>
+<p>源码分析从Netty版的Hello World的开始<br><img src="http://img.blog.csdn.net/20160820151519179" alt="这里写图片描述"></p>
+<p>代码片段的前两行就是创建bossGroup和workerGroup对象。是不是感觉有点似曾相识，还记得上文我们提到的mainReactor和subReactor嘛。bossGroup起到了mainReactor的作用，workerGroup起到了subReactor的作用。</p>
+<p>NioEventLoopGroup类继承体系如下：<br><img src="http://img.blog.csdn.net/20160820152644288" alt="这里写图片描述"><br>从图中发现，NioEventLoopGroup既然继承了Executor，是不是猜想NioEventLoopGroup是怎么优雅的使用多线程的。</p>
+<p>NioEventLoopGroup构造函数：</p>
+<p><img src="http://img.blog.csdn.net/20160820152927222" alt="这里写图片描述"></p>
+<p>这里无非是对构造函数的封装，而最终调用父类MultithreadEventLoopGroup的构造函数</p>
+<p><img src="http://img.blog.csdn.net/20160820153355814" alt="这里写图片描述"></p>
+<p>这里会判断传进来的线程数是否是0。如果是0就使用默认的线程数。<br>默认取-Dio.netty.eventLoopThreads，如果该系统参数也没有指定，则为可用的CPU内核数 × 2。在不需要监听多端口的情况下，bossGroup只需要1个线程即可。MultithreadEventLoopGroup构造函数会显示调用MultithreadEventExecutorGroup的构造函数</p>
+<p><img src="http://img.blog.csdn.net/20160820154947997" alt="这里写图片描述"></p>
+<p>为了便于理解，去掉了一些验证逻辑和出错处理逻辑。<br>1.如果没有指定excutor，会先指定executor。</p>
+<p>2.接着创建children数组，现在可以知道EventLoopGroup和EventLoop[]之间的关系。</p>
+<p>3.通过for循环实例children数组。</p>
+<p><img src="http://img.blog.csdn.net/20160820162430508" alt="这里写图片描述"></p>
+<p>在SingleThreadEventExecutor构造函数中会初始化一个任务队列，netty线程一直是在死循环中去直接IO事件和非IO事件，除了IO事件，所有非IO事件都是先丢到这个任务队列中，然后在由work线程去执行。</p>
+<p><img src="http://img.blog.csdn.net/20160820163657300" alt="这里写图片描述"></p>
+<p>openSeletor会先创建selector选择器，这里完全是JDK NIO的Selector的使用方法，不在累述。</p>
+<p>接着DISABLE_KEYSET_OPTIMIZATION是判断是否需要对sun.nio.ch.SelectorImpl中的selectedKeys进行优化, 不做配置的话默认需要优化。</p>
+<p>SelectorImpl中的selectedKeys和publicSelectedKeys是个HashSet, 新的数据结构是双数组A和B, 初始大小1024, 避免了HashSet的频繁自动扩容, processSelectedKeys时先使用数组A,再一次processSelectedKeys时调用flip的切换到数组B, 如此反复 。为什么要做这些优化我也不是很清楚。</p>
+<p><strong>参考资料：</strong><br>Reactor设计模式介绍：<br><a href="http://www.blogjava.net/DLevin/archive/2015/09/02/427045.html" title="Reactor设计模式介绍" target="_blank" rel="noopener">http://www.blogjava.net/DLevin/archive/2015/09/02/427045.html</a></p>
+<p>多线程Reactor:<br><a href="http://my.oschina.net/flashsword/blog/197963" target="_blank" rel="noopener">http://my.oschina.net/flashsword/blog/197963</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/netty源码浅析-线程启动/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java中断初窥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -807,71 +894,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java并发之读者写者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">Java并发之读者写者模型</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:44:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>问题描述:<strong>设想一个飞机订票系统，其中有许多竞争的进程试图读写其中的数据。多个进程同时读取是可以接受的，但如果一个进程正在更新数据库，则所有的其他进程都不能访问数据库。即便是读操作也不行。</strong></p>
-<p><strong>Semaphore（信号量）</strong>是用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.Executor;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line">import java.util.concurrent.Semaphore;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	private final ReentrantLock lock ;   //定义锁</span><br><span class="line">	private static int readCount = 0;    //读者的数量</span><br><span class="line">	private Semaphore writeSemaphore ;   //写信号量</span><br><span class="line"></span><br><span class="line">	public Main() &#123;</span><br><span class="line">		lock = new ReentrantLock();</span><br><span class="line">		writeSemaphore = new Semaphore(1);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Main main = new Main();</span><br><span class="line">		Executor executors = Executors.newFixedThreadPool(4);</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Writer());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	class Reader implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			before();             //读操作之前的操作</span><br><span class="line">			read();               //读操作</span><br><span class="line">			after();             //读操作之后的操作</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void before() &#123;    //读操作之前的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				if(readCount == 0) &#123;   //当有读者时，写者不能进入</span><br><span class="line">					writeSemaphore.acquire(1);</span><br><span class="line">				&#125;</span><br><span class="line">				readCount += 1;</span><br><span class="line">				System.out.println(&quot;有1位读者进入&quot;);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void read() &#123;         //读操作</span><br><span class="line">			System.out.println(&quot;当前有 &quot; + readCount + &quot; 位读者&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void after() &#123;        //读操作之后的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				readCount -= 1;</span><br><span class="line">				System.out.println(&quot;有1位读者离开&quot; );</span><br><span class="line">				if(readCount == 0)     //当读者为0时，写者才可以进入  </span><br><span class="line">					writeSemaphore.release(1);</span><br><span class="line">				</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	class Writer implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					writeSemaphore.acquire(1);     //同时只有一个写者可以进入</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println(&quot;写者正在写&quot;);</span><br><span class="line">				writeSemaphore.release(1);</span><br><span class="line">			&#125;  finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">展开全文 >></a>
         </p>
       
 

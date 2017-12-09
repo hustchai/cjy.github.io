@@ -152,6 +152,71 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Java并发之读者写者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">Java并发之读者写者模型</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:44:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>问题描述:<strong>设想一个飞机订票系统，其中有许多竞争的进程试图读写其中的数据。多个进程同时读取是可以接受的，但如果一个进程正在更新数据库，则所有的其他进程都不能访问数据库。即便是读操作也不行。</strong></p>
+<p><strong>Semaphore（信号量）</strong>是用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.Executor;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line">import java.util.concurrent.Semaphore;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	private final ReentrantLock lock ;   //定义锁</span><br><span class="line">	private static int readCount = 0;    //读者的数量</span><br><span class="line">	private Semaphore writeSemaphore ;   //写信号量</span><br><span class="line"></span><br><span class="line">	public Main() &#123;</span><br><span class="line">		lock = new ReentrantLock();</span><br><span class="line">		writeSemaphore = new Semaphore(1);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Main main = new Main();</span><br><span class="line">		Executor executors = Executors.newFixedThreadPool(4);</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Writer());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	class Reader implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			before();             //读操作之前的操作</span><br><span class="line">			read();               //读操作</span><br><span class="line">			after();             //读操作之后的操作</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void before() &#123;    //读操作之前的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				if(readCount == 0) &#123;   //当有读者时，写者不能进入</span><br><span class="line">					writeSemaphore.acquire(1);</span><br><span class="line">				&#125;</span><br><span class="line">				readCount += 1;</span><br><span class="line">				System.out.println(&quot;有1位读者进入&quot;);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void read() &#123;         //读操作</span><br><span class="line">			System.out.println(&quot;当前有 &quot; + readCount + &quot; 位读者&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void after() &#123;        //读操作之后的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				readCount -= 1;</span><br><span class="line">				System.out.println(&quot;有1位读者离开&quot; );</span><br><span class="line">				if(readCount == 0)     //当读者为0时，写者才可以进入  </span><br><span class="line">					writeSemaphore.release(1);</span><br><span class="line">				</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	class Writer implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					writeSemaphore.acquire(1);     //同时只有一个写者可以进入</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println(&quot;写者正在写&quot;);</span><br><span class="line">				writeSemaphore.release(1);</span><br><span class="line">			&#125;  finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式之生成器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -808,72 +873,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA中复杂对象调用构造器顺序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class A &#123;</span><br><span class="line">	</span><br><span class="line">	public A() &#123;</span><br><span class="line">		System.out.println(&quot;A被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class B &#123;</span><br><span class="line">	</span><br><span class="line">	public B() &#123;</span><br><span class="line">		System.out.println(&quot;B被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C &#123;</span><br><span class="line">	</span><br><span class="line">	public C() &#123;</span><br><span class="line">		System.out.println(&quot;C被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class D extends A &#123;</span><br><span class="line">	</span><br><span class="line">	private B b = new B();</span><br><span class="line">	private C c = new C();</span><br><span class="line">	</span><br><span class="line">	public D() &#123;</span><br><span class="line">		System.out.println(&quot;D被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		D d = new D();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出是：<br>A被初始化了<br>B被初始化了<br>C被初始化了<br>D被初始化了</p>
-<p>根据输出结果 可以看出有以下几个规律<br>1、首先调用基类的构造方法，如果有多层继承现象，则会首先构造这个结构的根，然后向下构造直到最底层导出类。<br>2、按照方法内域的声明顺序调用成员的初始化方法。<br>3、调用导出类构造方法</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">展开全文 >></a>
         </p>
       
 

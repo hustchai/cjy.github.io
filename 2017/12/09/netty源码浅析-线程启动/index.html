@@ -6,15 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Archives | </title>
+  <title>netty源码浅析--线程启动 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/archives/page/2/index.html">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="netty源码浅析--线程启动">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-线程启动/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820144943271">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820151519179">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820152644288">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820152927222">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820153355814">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820154947997">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820162430508">
+<meta property="og:image" content="http://img.blog.csdn.net/20160820163657300">
+<meta property="og:updated_time" content="2017-12-09T10:55:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="netty源码浅析--线程启动">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160820144943271">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,295 +163,179 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-netty源码浅析-线程启动" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      netty源码浅析--线程启动
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/netty源码浅析-线程启动/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:55:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在《Scalable IO in Java》中讲到了一种多线程下的Reactor模式。<br><img src="http://img.blog.csdn.net/20160820144943271" alt="这里写图片描述"><br>在这种设计模式中，有一个前端mainReactor主要负责响应client的连接请求并建立连接，和一个后端subReactor。mainReactor接收client的请求之后会转接给subReactor。由subReactor负责具体的客户端请求的读写工作。这样有一个好处，subReactor可以做一些比较耗时的操作，可以减少CPU因等待IO而阻塞的时间。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知道了什么是Reactor设计模式之后，我们来看看Reactor设计模式在netty中的应用.Netty里对应mainReactor的角色叫做“Boss”，而对应subReactor的角色叫做”Worker”。Boss负责分配请求，Worker负责执行。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在看源码之前，要首先理解几个概念：<br><strong>EventLoopGroup:</strong>一个EventLoopGroup就是一组EventLoop。主要负责管理EventLoop的申请和释放。<br><strong>EventLoop：</strong>处理所有的IO操作。EventLoop继承了EventLoopGroup接口，可以被当做一个single的线程池看待。</p>
+<p>源码分析从Netty版的Hello World的开始<br><img src="http://img.blog.csdn.net/20160820151519179" alt="这里写图片描述"></p>
+<p>代码片段的前两行就是创建bossGroup和workerGroup对象。是不是感觉有点似曾相识，还记得上文我们提到的mainReactor和subReactor嘛。bossGroup起到了mainReactor的作用，workerGroup起到了subReactor的作用。</p>
+<p>NioEventLoopGroup类继承体系如下：<br><img src="http://img.blog.csdn.net/20160820152644288" alt="这里写图片描述"><br>从图中发现，NioEventLoopGroup既然继承了Executor，是不是猜想NioEventLoopGroup是怎么优雅的使用多线程的。</p>
+<p>NioEventLoopGroup构造函数：</p>
+<p><img src="http://img.blog.csdn.net/20160820152927222" alt="这里写图片描述"></p>
+<p>这里无非是对构造函数的封装，而最终调用父类MultithreadEventLoopGroup的构造函数</p>
+<p><img src="http://img.blog.csdn.net/20160820153355814" alt="这里写图片描述"></p>
+<p>这里会判断传进来的线程数是否是0。如果是0就使用默认的线程数。<br>默认取-Dio.netty.eventLoopThreads，如果该系统参数也没有指定，则为可用的CPU内核数 × 2。在不需要监听多端口的情况下，bossGroup只需要1个线程即可。MultithreadEventLoopGroup构造函数会显示调用MultithreadEventExecutorGroup的构造函数</p>
+<p><img src="http://img.blog.csdn.net/20160820154947997" alt="这里写图片描述"></p>
+<p>为了便于理解，去掉了一些验证逻辑和出错处理逻辑。<br>1.如果没有指定excutor，会先指定executor。</p>
+<p>2.接着创建children数组，现在可以知道EventLoopGroup和EventLoop[]之间的关系。</p>
+<p>3.通过for循环实例children数组。</p>
+<p><img src="http://img.blog.csdn.net/20160820162430508" alt="这里写图片描述"></p>
+<p>在SingleThreadEventExecutor构造函数中会初始化一个任务队列，netty线程一直是在死循环中去直接IO事件和非IO事件，除了IO事件，所有非IO事件都是先丢到这个任务队列中，然后在由work线程去执行。</p>
+<p><img src="http://img.blog.csdn.net/20160820163657300" alt="这里写图片描述"></p>
+<p>openSeletor会先创建selector选择器，这里完全是JDK NIO的Selector的使用方法，不在累述。</p>
+<p>接着DISABLE_KEYSET_OPTIMIZATION是判断是否需要对sun.nio.ch.SelectorImpl中的selectedKeys进行优化, 不做配置的话默认需要优化。</p>
+<p>SelectorImpl中的selectedKeys和publicSelectedKeys是个HashSet, 新的数据结构是双数组A和B, 初始大小1024, 避免了HashSet的频繁自动扩容, processSelectedKeys时先使用数组A,再一次processSelectedKeys时调用flip的切换到数组B, 如此反复 。为什么要做这些优化我也不是很清楚。</p>
+<p><strong>参考资料：</strong><br>Reactor设计模式介绍：<br><a href="http://www.blogjava.net/DLevin/archive/2015/09/02/427045.html" title="Reactor设计模式介绍" target="_blank" rel="noopener">http://www.blogjava.net/DLevin/archive/2015/09/02/427045.html</a></p>
+<p>多线程Reactor:<br><a href="http://my.oschina.net/flashsword/blog/197963" target="_blank" rel="noopener">http://my.oschina.net/flashsword/blog/197963</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/cjy.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:44:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">Java并发之读者写者模型</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-线程启动/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:43:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/cjy.github.io/2017/12/09/Java中断初窥/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java中断初窥</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">设计模式之生成器模式</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">设计模式之抽象工厂</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:41:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/"> Android与服务器端通信时 部分中文出现乱码</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">使用cookie绕过验证码进行模拟登录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/cjy.github.io/archives/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/cjy.github.io/archives/page/3/">3</a><a class="extend next" rel="next" href="/cjy.github.io/archives/page/3/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -462,8 +359,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
