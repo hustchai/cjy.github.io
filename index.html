@@ -152,6 +152,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-设计模式之回调模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之回调模式/">设计模式之回调模式</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/设计模式之回调模式/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:52:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调在Spring中被大量使用，那什么是回调呢?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为<strong>回调方法</strong>。回调是实现异步的基础。经典的回调方式如下：</p>
+<ul>
+<li>Class A实现回调接口CallBack——<strong>背景1</strong></li>
+<li>class A中包含一个class B的引用b ——<strong>背景2</strong></li>
+<li>class B有一个参数为callback的方法f(CallBack callback) ——<strong>背景3</strong></li>
+<li>A的对象a调用B的方法 f(CallBack callback) ——A类调用B类的某个方法 C</li>
+<li><p>然后b就可以在f(CallBack callback)方法中调用A的方法 ——B类调用A类的某个方法D</p>
+<p>介绍完了概念，那举个例子吧。客户端向服务器端发起请求并发送信息。在接收到客户端的信息后，服务器睡5秒（模拟耗时操作），5秒之后回调客户端并输出请求状态。</p>
+</li>
+</ul>
+<p><strong>回调接口</strong><br><img src="http://img.blog.csdn.net/20160526173308258" alt="这里写图片描述"></p>
+<p><strong>服务器端</strong><br><img src="http://img.blog.csdn.net/20160526173329914" alt="这里写图片描述"></p>
+<p><strong>客户端</strong><br><img src="http://img.blog.csdn.net/20160526173351908" alt="这里写图片描述"></p>
+<p><strong>测试程序</strong><br><img src="http://img.blog.csdn.net/20160526173620690" alt="这里写图片描述"></p>
+<p><strong>测试结果</strong><br><img src="http://img.blog.csdn.net/20160526173650018" alt="这里写图片描述"></p>
+<p>先输出前一二三行，五秒之后输出四五行。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之回调模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Tomcat源码分析-一次HTTP请求过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -803,88 +881,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-java并发之生产者消费者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:41:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。</p>
-<p><strong>经典的生产者和消费者模型的描述是：</strong>有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消费者进程都是以异步方式运行的，但它们之间必须保持同步，即不允许消费者进程到一个空缓冲区去取产品，也不允许生产者进程向一个已装满产品且尚未被取走的缓冲区投放产品。</p>
-<p><img src="http://img.blog.csdn.net/20160110134343236" alt="这里写图片描述"></p>
-<p>首先我们复习一下操作系统中同步机制中应遵循的准则：</p>
-<ol>
-<li><strong>空闲让进</strong>：当无进程处于临界区时，应允许一个请求进入临界区的进程进入临界区；</li>
-<li><strong>忙则等待</strong>：当已有进程进入临界区时，其他试图进入临界区的进程必须等待；</li>
-<li><strong>有限等待</strong>：对要求访问临界资源的进程，应保证在有限时间内能进入自己的临界区，以免陷入“死等”状态；</li>
-<li><p><strong>让权等待</strong>：当进程不能进入自己的临界区时，应立即释放处理机，以免进程陷入“忙等”;</p>
-<p>在生产者和消费者模型中要保证一下几点：<br><strong>1.生产者在往缓存队列中放产品时，消费者不能取产品。</strong><br><strong>2.消费者从缓存队列中取产品时，生产者不能放产品。</strong><br><strong>3.同一时刻只有一个生产者可以往缓存队列中放产品。</strong><br><strong>4.同一时刻只有一个消费者可以从缓存队列中取产品。</strong><br><strong>5.缓存队列满时生产者不能往缓存队列中放产品。</strong><br><strong>6.缓存队列为空时消费者不能从缓存队列中取产品。</strong></p>
-</li>
-</ol>
-<p>本例子中的缓存队列模仿java jdk中的ArrayBlockingQueue,这是一个阻塞队列，缓存池满时会自动将生产者线程挂起，缓存池空时会自动将消费者线程挂起。</p>
-<p>缓存池</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">public class Pool&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	/**队列最长长度*/</span><br><span class="line">	private  int MaxSize = 1000;</span><br><span class="line">	</span><br><span class="line">	/**队列默认长度*/</span><br><span class="line">	private static final int defaultSize = 100;</span><br><span class="line">	</span><br><span class="line">	/**资源池*/</span><br><span class="line">	private Object[] objs ;</span><br><span class="line">	</span><br><span class="line">	/**队头*/</span><br><span class="line">	private int front;</span><br><span class="line">	</span><br><span class="line">	/**队尾*/</span><br><span class="line">	private int rear;</span><br><span class="line">	</span><br><span class="line">	/**元素的个数*/</span><br><span class="line">	private int nItems;</span><br><span class="line">	</span><br><span class="line">	 /** Main lock guarding all access */</span><br><span class="line">    final ReentrantLock lock;</span><br><span class="line"></span><br><span class="line">    /** Condition for waiting takes */</span><br><span class="line">    private final Condition notEmpty;</span><br><span class="line"></span><br><span class="line">    /** Condition for waiting puts */</span><br><span class="line">    private final Condition notFull;</span><br><span class="line">    </span><br><span class="line">    private int useSize = 0;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public Pool() &#123;</span><br><span class="line">		this(defaultSize);</span><br><span class="line">		useSize = defaultSize;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public Pool(int size) &#123;</span><br><span class="line">		if(size &lt; 0)</span><br><span class="line">			throw new IndexOutOfBoundsException();</span><br><span class="line">		size = size &gt; MaxSize ? MaxSize : size;</span><br><span class="line">		useSize = size;</span><br><span class="line">		objs = new Object[size];</span><br><span class="line">		front = 0;</span><br><span class="line">		rear = -1;</span><br><span class="line">		nItems = 0;</span><br><span class="line">		</span><br><span class="line">		lock = new ReentrantLock(true);</span><br><span class="line">	    notEmpty = lock.newCondition();</span><br><span class="line">	    notFull =  lock.newCondition();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	/**进队*/</span><br><span class="line">	private void queue(E e) &#123;</span><br><span class="line">		if(rear == useSize - 1)</span><br><span class="line">			rear = -1;</span><br><span class="line">		objs[++rear] = e;</span><br><span class="line">		nItems++;</span><br><span class="line">		notEmpty.signal();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**出队*/</span><br><span class="line">	private E dequeue() &#123;</span><br><span class="line">		E e = (E)objs[front++];</span><br><span class="line">		if(front == useSize)</span><br><span class="line">			front = 0;</span><br><span class="line">		nItems--;</span><br><span class="line">		notFull.signal();</span><br><span class="line">		return e;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**进队 资源池满会将入队线程挂起*/ </span><br><span class="line">	public void offer(E e) throws InterruptedException &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			while(nItems == objs.length) </span><br><span class="line">				notFull.await();</span><br><span class="line">			queue(e);</span><br><span class="line">			System.out.println(&quot;学生进队，当前池中有 &quot; + nItems + &quot; 名同学&quot; );</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**出队 资源池空会将出队线程挂起*/</span><br><span class="line">	public E poll() throws InterruptedException &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			while(nItems == 0) </span><br><span class="line">				notEmpty.await();</span><br><span class="line">			E e = dequeue();</span><br><span class="line">			System.out.println(&quot;学生出队，当前池中有 &quot; + nItems + &quot; 名同学&quot; );</span><br><span class="line">			return e;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**是否满*/</span><br><span class="line">	public boolean isFull() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return nItems == MaxSize ? true : false;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**判断是否为空*/</span><br><span class="line">	public boolean isEmpty() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return nItems == 0 ? true : false;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**返回队列中元素个数*/</span><br><span class="line">	public int size() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return this.nItems;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试模型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line"></span><br><span class="line">	private String name;</span><br><span class="line">	private int age;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	public int getAge() &#123;</span><br><span class="line">		return age;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setAge(int age) &#123;</span><br><span class="line">		this.age = age;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>主类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">public class PM &#123;</span><br><span class="line">	</span><br><span class="line">	private Pool&lt;Student&gt; pools = new Pool&lt;Student&gt;(1000);</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		PM pm = new PM();</span><br><span class="line">		ExecutorService executor = Executors.newFixedThreadPool(6); </span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 class produce implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			while(true) &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					pools.offer(new Student());</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	class consume implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			while(true) &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					pools.poll();</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：<br><img src="http://img.blog.csdn.net/20160110142045609" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">展开全文 >></a>
         </p>
       
 
