@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>JAVA中复杂对象调用构造器顺序 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+  <meta name="description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA中复杂对象调用构造器顺序">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+<meta property="og:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T11:04:20.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:32:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA中复杂对象调用构造器顺序">
-<meta name="twitter:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+<meta name="twitter:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
   
@@ -175,7 +175,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码</p>
+        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码<br><a id="more"></a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class A &#123;</span><br><span class="line">	</span><br><span class="line">	public A() &#123;</span><br><span class="line">		System.out.println(&quot;A被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class B &#123;</span><br><span class="line">	</span><br><span class="line">	public B() &#123;</span><br><span class="line">		System.out.println(&quot;B被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C &#123;</span><br><span class="line">	</span><br><span class="line">	public C() &#123;</span><br><span class="line">		System.out.println(&quot;C被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class D extends A &#123;</span><br><span class="line">	</span><br><span class="line">	private B b = new B();</span><br><span class="line">	private C c = new C();</span><br><span class="line">	</span><br><span class="line">	public D() &#123;</span><br><span class="line">		System.out.println(&quot;D被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		D d = new D();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出是：<br>A被初始化了<br>B被初始化了<br>C被初始化了<br>D被初始化了</p>
 <p>根据输出结果 可以看出有以下几个规律<br>1、首先调用基类的构造方法，如果有多层继承现象，则会首先构造这个结构的根，然后向下构造直到最底层导出类。<br>2、按照方法内域的声明顺序调用成员的初始化方法。<br>3、调用导出类构造方法</p>
@@ -424,11 +424,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

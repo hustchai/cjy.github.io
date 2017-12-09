@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160603195542090">
 <meta property="og:image" content="http://img.blog.csdn.net/20160603195607762">
 <meta property="og:image" content="http://img.blog.csdn.net/20160603195627502">
-<meta property="og:updated_time" content="2017-12-09T11:04:23.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:32:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中断初窥">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在百度百科查到的解释是：指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程">
@@ -182,8 +182,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在百度百科查到的解释是：<strong>指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程序和执行过程。即在程序运行过程中，系统出现了一个必须由CPU立即处理的情况，此时，CPU暂时中止程序的执行转而处理这个新的情况的过程就叫做中断。</strong> 简单点说，就是让当前任务停止啦。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中断是一种协作机制，不会要求被中断线程强制中断。而被中断线程只要在合适时机处理就可以了，但是也可以对中断请求不予理会。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在百度百科查到的解释是：<strong>指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程序和执行过程。即在程序运行过程中，系统出现了一个必须由CPU立即处理的情况，此时，CPU暂时中止程序的执行转而处理这个新的情况的过程就叫做中断。</strong> 简单点说，就是让当前任务停止啦。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中断是一种协作机制，不会要求被中断线程强制中断。而被中断线程只要在合适时机处理就可以了，但是也可以对中断请求不予理会。</p>
 <p>在Thread类中提供了几种有关中断的方法：<br><img src="http://img.blog.csdn.net/20160603194315507" alt="这里写图片描述"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们知道Thread类中有个stop方法也可以使线程停止，那么这两个方法的区别在哪呢？中断会使程序自己去处理何时响应中断，而stop方法会在代码执行的过程中直接抛出ThreadDeath错误。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍这么多了，来看看例子吧。有run1，run2两个线程。run1线程先sleep 1秒，然后在对run2线程发出中断请求。run2线程会一直输出“111111111”直到run1线程对run2发出中断请求。</p>
@@ -436,11 +435,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -8,23 +8,23 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>Android与服务器端通信时 部分中文出现乱码 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码 服务器端返回数据编码由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码 而在本机中使用httpClient进行http模拟时数据也正常返回。所以将问题锁定在android端代码">
+  <meta name="description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android与服务器端通信时 部分中文出现乱码">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码 服务器端返回数据编码由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码 而在本机中使用httpClient进行http模拟时数据也正常返回。所以将问题锁定在android端代码">
+<meta property="og:description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20151216134447573">
 <meta property="og:image" content="http://img.blog.csdn.net/20151216134846959">
 <meta property="og:image" content="http://img.blog.csdn.net/20151216135041048">
 <meta property="og:image" content="http://img.blog.csdn.net/20151216141934310">
 <meta property="og:image" content="http://img.blog.csdn.net/20151216135927992">
-<meta property="og:updated_time" content="2017-12-09T11:02:07.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android与服务器端通信时 部分中文出现乱码">
-<meta name="twitter:description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码 服务器端返回数据编码由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码 而在本机中使用httpClient进行http模拟时数据也正常返回。所以将问题锁定在android端代码">
+<meta name="twitter:description" content="在android与服务器端通信期间出现部分中文有乱码，如图所示： 众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8mysql编码">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20151216134447573">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -182,7 +182,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>在android与服务器端通信期间出现部分中文有乱码，如图所示：<br><img src="http://img.blog.csdn.net/20151216134447573" alt="这里写图片描述"></p>
-<p>众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8<br>mysql编码<br><img src="http://img.blog.csdn.net/20151216134846959" alt="这里写图片描述"></p>
+<p>众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8<br>mysql编码<br><img src="http://img.blog.csdn.net/20151216134846959" alt="这里写图片描述"><br><a id="more"></a></p>
 <p>服务器端返回数据编码<br>由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码<br><img src="http://img.blog.csdn.net/20151216135041048" alt="这里写图片描述"></p>
 <p>而在本机中使用httpClient进行http模拟时<br>数据也正常返回。所以将问题锁定在android端代码</p>
 <p>在android端的输入流中使用的是以字节形式进行读取（InputStream）<br><img src="http://img.blog.csdn.net/20151216141934310" alt="这里写图片描述"></p>
@@ -432,11 +432,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

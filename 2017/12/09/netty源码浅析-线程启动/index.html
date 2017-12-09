@@ -24,7 +24,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160820154947997">
 <meta property="og:image" content="http://img.blog.csdn.net/20160820162430508">
 <meta property="og:image" content="http://img.blog.csdn.net/20160820163657300">
-<meta property="og:updated_time" content="2017-12-09T11:04:13.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:32:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty源码浅析--线程启动">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。 &amp;nbsp;&amp;n">
@@ -186,8 +186,7 @@
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直对Java高并发比较感兴趣，最近在学习netty特来记录。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;提到netty首先要了解一下什么是Reactor设计模式，在网上找了一下关于Reactor设计模式的介绍，链接在文档的最下方。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在《Scalable IO in Java》中讲到了一种多线程下的Reactor模式。<br><img src="http://img.blog.csdn.net/20160820144943271" alt="这里写图片描述"><br>在这种设计模式中，有一个前端mainReactor主要负责响应client的连接请求并建立连接，和一个后端subReactor。mainReactor接收client的请求之后会转接给subReactor。由subReactor负责具体的客户端请求的读写工作。这样有一个好处，subReactor可以做一些比较耗时的操作，可以减少CPU因等待IO而阻塞的时间。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知道了什么是Reactor设计模式之后，我们来看看Reactor设计模式在netty中的应用.Netty里对应mainReactor的角色叫做“Boss”，而对应subReactor的角色叫做”Worker”。Boss负责分配请求，Worker负责执行。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在《Scalable IO in Java》中讲到了一种多线程下的Reactor模式。<br><img src="http://img.blog.csdn.net/20160820144943271" alt="这里写图片描述"><br>在这种设计模式中，有一个前端mainReactor主要负责响应client的连接请求并建立连接，和一个后端subReactor。mainReactor接收client的请求之后会转接给subReactor。由subReactor负责具体的客户端请求的读写工作。这样有一个好处，subReactor可以做一些比较耗时的操作，可以减少CPU因等待IO而阻塞的时间。<br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;知道了什么是Reactor设计模式之后，我们来看看Reactor设计模式在netty中的应用.Netty里对应mainReactor的角色叫做“Boss”，而对应subReactor的角色叫做”Worker”。Boss负责分配请求，Worker负责执行。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在看源码之前，要首先理解几个概念：<br><strong>EventLoopGroup:</strong>一个EventLoopGroup就是一组EventLoop。主要负责管理EventLoop的申请和释放。<br><strong>EventLoop：</strong>处理所有的IO操作。EventLoop继承了EventLoopGroup接口，可以被当做一个single的线程池看待。</p>
 <p>源码分析从Netty版的Hello World的开始<br><img src="http://img.blog.csdn.net/20160820151519179" alt="这里写图片描述"></p>
 <p>代码片段的前两行就是创建bossGroup和workerGroup对象。是不是感觉有点似曾相识，还记得上文我们提到的mainReactor和subReactor嘛。bossGroup起到了mainReactor的作用，workerGroup起到了subReactor的作用。</p>
@@ -454,11 +453,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

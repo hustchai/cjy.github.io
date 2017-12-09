@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20170707193726434?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170707194449199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170707195510071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-12-09T11:04:09.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:32:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty源码浅析--accept">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。">
@@ -184,8 +184,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。<br><img src="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="java nio accept"><br>selector获取活跃key之后，然后会判断key是否是可accept的，如果是则执行accept操作。我们都知道netty是对java nio的封装，所以对netty的accept的分析也会从获取的活跃的key开始。</p>
-<p>netty使用NioEventLoop来处理相应的网络事件。当有客户端connect请求，selector可以返回其对应的SelectionKey，然后对这些key进行相应的处理。（为了说明处理流程，省去与流程无关代码）<br><img src="http://img.blog.csdn.net/20170707191939763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>采用SelectedSelectionKeySet保存有事件发生的selectedKey。<br>1、SelectedSelectionKeySet内部使用两个大小为1024的SelectionKey数组keysA和keysB保存selectedKey。<br>2、把SelectedSelectionKeySet实例映射到selector的原生selectedKeys和publicSelectedKeys。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。<br><img src="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="java nio accept"><br>selector获取活跃key之后，然后会判断key是否是可accept的，如果是则执行accept操作。我们都知道netty是对java nio的封装，所以对netty的accept的分析也会从获取的活跃的key开始。<br><a id="more"></a><br>netty使用NioEventLoop来处理相应的网络事件。当有客户端connect请求，selector可以返回其对应的SelectionKey，然后对这些key进行相应的处理。（为了说明处理流程，省去与流程无关代码）<br><img src="http://img.blog.csdn.net/20170707191939763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>采用SelectedSelectionKeySet保存有事件发生的selectedKey。<br>1、SelectedSelectionKeySet内部使用两个大小为1024的SelectionKey数组keysA和keysB保存selectedKey。<br>2、把SelectedSelectionKeySet实例映射到selector的原生selectedKeys和publicSelectedKeys。</p>
 <p><img src="http://img.blog.csdn.net/20170707192250385?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="process"><br>selector会一次性的取到所有活跃的（有事件触发的）key，通过for循环来遍历所有的key。<br>通过attachment()来获取注册在ServerSocketChannel的附件，其实附件就是ServerSocketChannel本身。如果是AbstractNioChannel的实例，则调用processSelectedKey()方法。</p>
 <p><img src="http://img.blog.csdn.net/20170707192818587?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="processSelectedkey"><br>unsafe是实际操作网络I/O的类。类名字是unsafe,并不是说这个类是不安全的，而是从框架的角度上来说尽量不要使用unsafe进行网络操作。<br>方法内部会对感兴趣的操作进行判断，这里由于我们分析的accept操作，所以会调用unsafe的read方法。</p>
 <p>该read方法是在NioMessageUnsafe类实现的。同样的为了说明主要逻辑，省略一些属性判断和设置的相关代码。<br><img src="http://img.blog.csdn.net/20170707193726434?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>大家有没有想过，为什么accept方法会在一个叫read方法内部。不要忽略了 这段代码。</p>
@@ -429,11 +428,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

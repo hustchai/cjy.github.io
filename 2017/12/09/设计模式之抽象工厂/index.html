@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>设计模式之抽象工厂 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。 应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫">
+  <meta name="description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之抽象工厂">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之抽象工厂/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。 应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫">
+<meta property="og:description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160115115925968">
 <meta property="og:image" content="http://img.blog.csdn.net/20160115120709418">
-<meta property="og:updated_time" content="2017-12-09T11:00:49.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:34:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之抽象工厂">
-<meta name="twitter:description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。 应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫">
+<meta name="twitter:description" content="抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160115115925968">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -178,8 +178,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。</strong></p>
-<p>应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫把）。手里拿的是魔法棒。<br><img src="http://img.blog.csdn.net/20160115115925968" alt="这里写图片描述"></p>
+        <p><strong>抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。</strong><br><a id="more"></a><br>应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫把）。手里拿的是魔法棒。<br><img src="http://img.blog.csdn.net/20160115115925968" alt="这里写图片描述"></p>
 <p><strong>IabstractFactory接口</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface IabstractFactory &#123;</span><br><span class="line">	</span><br><span class="line">	public IVehicle createVehicle(int i);</span><br><span class="line">	</span><br><span class="line">	public IWeapon createWeapon(int i);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>IVehicle接口</strong></p>
@@ -446,11 +445,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

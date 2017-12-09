@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>设计模式之工厂模式 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。 1234public interface Ihelper &amp;#123;	void open();		void close();	&amp;#125; 12345678910public class ORACLEHelper implements Ihelper&amp;#123;	@Override	public void open() &amp;#1">
+  <meta name="description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之工厂模式">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之工厂模式/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。 1234public interface Ihelper &amp;#123;	void open();		void close();	&amp;#125; 12345678910public class ORACLEHelper implements Ihelper&amp;#123;	@Override	public void open() &amp;#1">
+<meta property="og:description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20150809144659407">
-<meta property="og:updated_time" content="2017-12-09T11:01:21.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:34:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之工厂模式">
-<meta name="twitter:description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。 1234public interface Ihelper &amp;#123;	void open();		void close();	&amp;#125; 12345678910public class ORACLEHelper implements Ihelper&amp;#123;	@Override	public void open() &amp;#1">
+<meta name="twitter:description" content="根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20150809144659407">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -177,8 +177,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。<br><img src="http://img.blog.csdn.net/20150809144659407" alt="这里写图片描述"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Ihelper &#123;</span><br><span class="line">	void open();	</span><br><span class="line">	void close();	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。<br><img src="http://img.blog.csdn.net/20150809144659407" alt="这里写图片描述"><br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Ihelper &#123;</span><br><span class="line">	void open();	</span><br><span class="line">	void close();	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class ORACLEHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper close.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class SQLHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;SQL open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;SQL close....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface IFactory &#123;</span><br><span class="line">	public Ihelper create(int i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -429,11 +428,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

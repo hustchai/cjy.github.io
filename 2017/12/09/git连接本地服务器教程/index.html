@@ -8,13 +8,13 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>git连接本地服务器教程 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户   1.2下载客户端 在浏览器地址栏输入：https://git-for-windows.github.io/回车后点击Download进行下载 2、具体操作2.1在合适">
+  <meta name="description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git连接本地服务器教程">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/git连接本地服务器教程/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户   1.2下载客户端 在浏览器地址栏输入：https://git-for-windows.github.io/回车后点击Download进行下载 2、具体操作2.1在合适">
+<meta property="og:description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20151113201454510">
 <meta property="og:image" content="http://img.blog.csdn.net/20151113201758698">
@@ -26,10 +26,10 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151113202555199">
 <meta property="og:image" content="http://img.blog.csdn.net/20151113202629559">
 <meta property="og:image" content="http://img.blog.csdn.net/20151113202733430">
-<meta property="og:updated_time" content="2017-12-09T11:02:30.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git连接本地服务器教程">
-<meta name="twitter:description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户   1.2下载客户端 在浏览器地址栏输入：https://git-for-windows.github.io/回车后点击Download进行下载 2、具体操作2.1在合适">
+<meta name="twitter:description" content="1、前期准备 服务器上配置好的git git客户端  1.1在服务器上安装git （本机所使用的linux是ubuntu）在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20151113201454510">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -190,9 +190,10 @@
 <li>服务器上配置好的git</li>
 <li><p>git客户端 </p>
 <p>1.1<br>在服务器上安装git （本机所使用的linux是ubuntu）<br>在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户</p>
+<a id="more"></a>
+<p>1.2<br>下载客户端 在浏览器地址栏输入：<a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a><br>回车后<br><img src="http://img.blog.csdn.net/20151113201454510" alt="这里写图片描述"><br>点击Download进行下载</p>
 </li>
 </ol>
-<p>1.2<br>下载客户端 在浏览器地址栏输入：<a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a><br>回车后<br><img src="http://img.blog.csdn.net/20151113201454510" alt="这里写图片描述"><br>点击Download进行下载</p>
 <h2 id="2、具体操作"><a href="#2、具体操作" class="headerlink" title="2、具体操作"></a>2、具体操作</h2><p>2.1<br>在合适的位置创建一个目录充当git远程仓库（本机位置为/usr/testgit），然后使用init命令初始化仓库<br>在命令终端输入:<br>sudo git init –bare<br><img src="http://img.blog.csdn.net/20151113201758698" alt="这里写图片描述"></p>
 <p>2.2<br>将git init生成的目录所属者改为git<br>输入命令：sudo chown -R git:git  *<br><img src="http://img.blog.csdn.net/20151113201841611" alt="这里写图片描述"></p>
 <p>至此服务器端的操作完成。<br>在客户端合适位置使用git 客户端从服务器资源<br>2.3<br>首先打开git客户端<br><img src="http://img.blog.csdn.net/20151113202038628" alt="这里写图片描述"></p>
@@ -448,11 +449,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -176,16 +176,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。<br><img src="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="java nio accept"><br>selector获取活跃key之后，然后会判断key是否是可accept的，如果是则执行accept操作。我们都知道netty是对java nio的封装，所以对netty的accept的分析也会从获取的活跃的key开始。</p>
-<p>netty使用NioEventLoop来处理相应的网络事件。当有客户端connect请求，selector可以返回其对应的SelectionKey，然后对这些key进行相应的处理。（为了说明处理流程，省去与流程无关代码）<br><img src="http://img.blog.csdn.net/20170707191939763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>采用SelectedSelectionKeySet保存有事件发生的selectedKey。<br>1、SelectedSelectionKeySet内部使用两个大小为1024的SelectionKey数组keysA和keysB保存selectedKey。<br>2、把SelectedSelectionKeySet实例映射到selector的原生selectedKeys和publicSelectedKeys。</p>
-<p><img src="http://img.blog.csdn.net/20170707192250385?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="process"><br>selector会一次性的取到所有活跃的（有事件触发的）key，通过for循环来遍历所有的key。<br>通过attachment()来获取注册在ServerSocketChannel的附件，其实附件就是ServerSocketChannel本身。如果是AbstractNioChannel的实例，则调用processSelectedKey()方法。</p>
-<p><img src="http://img.blog.csdn.net/20170707192818587?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="processSelectedkey"><br>unsafe是实际操作网络I/O的类。类名字是unsafe,并不是说这个类是不安全的，而是从框架的角度上来说尽量不要使用unsafe进行网络操作。<br>方法内部会对感兴趣的操作进行判断，这里由于我们分析的accept操作，所以会调用unsafe的read方法。</p>
-<p>该read方法是在NioMessageUnsafe类实现的。同样的为了说明主要逻辑，省略一些属性判断和设置的相关代码。<br><img src="http://img.blog.csdn.net/20170707193726434?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>大家有没有想过，为什么accept方法会在一个叫read方法内部。不要忽略了 这段代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> if ((readyOps &amp; (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) &#123;</span><br><span class="line">	  unsafe.read();          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也就是说，如果是accept和read操作都会调用read方法。然后在read方法内部进行判断。doReadMessages(readBuf) 可以认为是在判断accept操作还是read操作。</p>
-<p><img src="http://img.blog.csdn.net/20170707194449199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="doreadmessage"><br>1、javaChannel()方法返回ServerSocketChannel实例。<br>2、ServerSocketChannel.accept方法返回socketChannel 。<br>3、把 NioServerSocketChannel 和 socketChannel 封装成 NioSocketChannel，并缓存到readBuf。<br>在调用NioSocketChannel的构造方法时会自动将read操作设置成为该channel当前感兴趣的事件。<br><img src="http://img.blog.csdn.net/20170707195510071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>至此accept操作完成。</p>
-
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。<br><img src="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="java nio accept"><br>selector获取活跃key之后，然后会判断key是否是可accept的，如果是则执行accept操作。我们都知道netty是对java nio的封装，所以对netty的accept的分析也会从获取的活跃的key开始。<br>
+        
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/netty源码浅析-accept/#more">阅读全文 >></a>
+        
       
 
       
@@ -259,29 +253,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在实习的时候使用了dubbo。第一次使用了Spring的自定义annotation，当时就觉得这玩意真好用，一定要学会它。经过几天的探索，终于搞清楚了。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展xml自定义标签需要如下几个步骤（自定义xml标签是自定义annotation标签的基础）</p>
-<ul>
-<li>编写xml schema描述自定义元素</li>
-<li>实现namespaceHandler接口</li>
-<li>实现BeanDefinitionParser接口</li>
-<li><p>编写spring.handlers和spring.schemas（这俩文件必须放到META-INF文件夹下）</p>
-<p>Spring官方文档有具体的例子，不在累述。链接：<a href="http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#xml-custom" target="_blank" rel="noopener">Spring 官方文档</a></p>
-</li>
-</ul>
-<p>废话不多说，直接上例子</p>
-<p><strong>整个项目的目录结构</strong><br><img src="http://img.blog.csdn.net/20170630161714064?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="项目目录结构"></p>
-<p><strong>1.编写xml schema</strong></p>
-<p><img src="http://img.blog.csdn.net/20170630161302442?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="xml schema"><br>该schema只定义了一个元素 即annotion 这个元素有两个属性id,package。package属性标识了需要扫描的annotion在哪个路径下。</p>
-<p>applicationContext.xml<br><img src="http://img.blog.csdn.net/20170630163455465?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="applicationContext.xml"></p>
-<p><strong>2.实现namespaceHandler接口</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spring对于非默认空间下标签的解析处理都是有对应的XXXNamespaceHandler的，比如解析<aop:xxx>标签，其有一个对应的叫做AopNamespaceHandler的Handler存在，所有在aop命名空间之下的几点的解析交给该Handler处理；但我们在使用时不需要实现namespaceHandler，而可以实现spring为我们提供的NamespaceHandlerSupport，这里面封装了大量的逻辑使我们开发变得简单。<br><img src="http://img.blog.csdn.net/20170630162709438?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="namespaceHandler"></aop:xxx></p>
-<p><strong>3实现BeanDefinitionParser接口</strong><br>Spring在解析到annotation标签时会调用AnnotationBeanDefinitionParser的parse方法解析。<br><img src="http://img.blog.csdn.net/20170630163013164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="BeanDefinitionParser"><br>parse方法比较简单，只把applicationContext文件内配置的annotation配置的package属性读取出来，并将该属性封装到BeanDefinition内。然后将该BeanDefinition注册到容器。这在里面我们是将AnnotaionBean注册到容器中。Spring容器会实例化AnnotationBean</p>
-<p>AnnotationBean的实现<br><img src="http://img.blog.csdn.net/20170630163921212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="AnnotationBean"><br>AnnotationBean实现了BeanFactoryPostProcessor，BeanPostProcessor和ApplicationContextAware接口。这三个接口的作用我想大家应该都清楚吧，就不过多叙述。<br>在postProcessBeanFactory方法中，根据annotation的package属性来扫描Service注解。具体代码如上图。</p>
-<p>然后在postProcessAfterInitialization方法中获取Service注解，并获取Service注解标记的类。具体代码如图。<br><img src="http://img.blog.csdn.net/20170630164726536?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="postProcessAfterInitialization"></p>
-<p>ServiceBean的实现<br><img src="http://img.blog.csdn.net/20170630164954550?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="ServiceBean"></p>
-<p>ServiceBean的实现比较简单，只是将获取到Service注解的content属性输出和Service标记类show方法的调用。<br><img src="http://img.blog.csdn.net/20170630165148834?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="test"></p>
-<p><strong>4.spring.handlers和spring.schemas</strong><br>如何写这两个文件，Spring官方文档写的很清楚。这里就不再展示。具体看<a href="https://github.com/hustchai/Annotation" target="_blank" rel="noopener">github</a>。</p>
-<p>测试结果<br><img src="http://img.blog.csdn.net/20170630165256858?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="result"></p>
-
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展xml自定义标签需要如下几个步骤（自定义xml标签是自定义annotation标签的基础）<br>
+        
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Spring自定义annotation实现/#more">阅读全文 >></a>
+        
       
 
       
@@ -355,12 +330,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>基于netty和mybaties的网络聊天室</p>
-<p>登录界面<br><img src="http://img.blog.csdn.net/20160916104145587" alt="这里写图片描述"></p>
-<p>一对多聊天界面<br><img src="http://img.blog.csdn.net/20160916104211529" alt="这里写图片描述"></p>
-<p>注册界面<br><img src="http://img.blog.csdn.net/20160916104247681" alt="这里写图片描述"></p>
-<p>注册失败界面<br><img src="http://img.blog.csdn.net/20160916104313853" alt="这里写图片描述"></p>
-<p>github:<br><a href="https://github.com/hustchai/Chat" target="_blank" rel="noopener">https://github.com/hustchai/Chat</a></p>
-
+<p>登录界面<br><img src="http://img.blog.csdn.net/20160916104145587" alt="这里写图片描述"><br>
+        
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/基于netty的网络聊天室/#more">阅读全文 >></a>
+        
       
 
       
@@ -434,12 +407,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>根据sql语句自动生成po,dao,xml。</p>
-<p><img src="http://img.blog.csdn.net/20160916102613485" alt="这里写图片描述"></p>
-<p><img src="http://img.blog.csdn.net/20160916102629298" alt="这里写图片描述"></p>
-<p><img src="http://img.blog.csdn.net/20160916102645400" alt="这里写图片描述"></p>
-<p><img src="http://img.blog.csdn.net/20160916102658119" alt="这里写图片描述"></p>
-<p>github:<br><a href="https://github.com/hustchai/dao-helper" target="_blank" rel="noopener">https://github.com/hustchai/dao-helper</a></p>
-
+<p><img src="http://img.blog.csdn.net/20160916102613485" alt="这里写图片描述"><br>
+        
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/daoHelper/#more">阅读全文 >></a>
+        
       
 
       
@@ -515,36 +486,10 @@
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。</p>
 <p><img src="http://img.blog.csdn.net/20160903135520436" alt="这里写图片描述"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doBind中。根据小编阅读源码的经历总结出一点。许多方法里面只做了一些校验，而真正的逻辑全部都在do开头的方法中。</p>
-<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从调用的第一个方法可以看出首先是初始化和注册，那这里到底是初始化和注册什么呢?我们接着看initAndRegister()方法。</p>
-<p><img src="http://img.blog.csdn.net/20160903141218194" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从名字中也能看出，会先创建channel。createChannel是一个抽象方法，具体的逻辑在类ServerBootstrap中实现。</p>
-<p><img src="http://img.blog.csdn.net/20160903141639384" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next方法选中一个EventLoop初始化channel。</p>
-<p><img src="http://img.blog.csdn.net/20160903143500579" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newChannel使用反射来创建channel。使用的是NioServerSocketChannel类。在使用反射创建channel时，会触发NioServerSocketChannel实例化。在调用父类构造函数时传入了SelectionKey.OP_ACCEPT。熟悉Java nio的朋友都知道，在使用Java nio的时候会对selector注册SelectionKey.OP_ACCEPT。难道是在父类中实现的吗？接着来看看NioServerSocketChannel父类方法。</p>
-<p><img src="http://img.blog.csdn.net/20160903150205030" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在AbstractNioChannel类中只是对readInterestOp赋值。并没有对channel注册。刚开始看源码的时候，小编也百事不得其解。再查阅了大量的资料后，得知，Channel注册到Selector有两种方式，一种是调用Channel的register方法，第二种是设置SelectionKey的interestOps的值。netty是用了第二种方式，通过设置SelectionKey的interestOps来注册Channel关心的事情，把实际的注册延迟了。然后设置channel为非阻塞模式。channel创建完了，接着看看init又干了些什么。</p>
-<p><img src="http://img.blog.csdn.net/20160903151141277" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面主要是设置一些属性，不再累述。主要在p.addLast()方法的匿名内部类中。</p>
-<p><img src="http://img.blog.csdn.net/20160903155924794" alt="这里写图片描述"></p>
-<p>在channelInitializer类中会调用channelRegistered方法。initChannel会初始化ServerBootstrapAcceptor类。再实例化的过程中会初始化类DefaultChannelHandlerContext。在Netty的编程模型中，Handler是程序猿主要关心的地方，猿可以在自定义的Handler中实现业务逻辑。在类中有这样两段代码。</p>
-<p><img src="http://img.blog.csdn.net/20160903152757852" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是不是有点像双链表。对。Handler其实是带head和tail节点的双链表。由此可以知道，netty的ChannelPipeline包含两条线路，up、down。而这两条链路使用的是同一套handler。在javadoc中有一张图形象的说明了这个过程。</p>
-<p><img src="http://img.blog.csdn.net/20160903154524356" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upstream对应上行，接收到的消息、被动的状态改变，都属于Upstream。Downstream则对应下行，发送的消息、主动的状态改变，都属于Downstream。在没加入任何handler时，是这样的。</p>
-<p><img src="http://img.blog.csdn.net/20160903155305834" alt="这里写图片描述"></p>
-<p>将ServerBootstrapAcceptor添加到handler链后是这样的。</p>
-<p><img src="http://img.blog.csdn.net/20160903160429948" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后会调用handler的生命周期方法fireChannelRegistered()。这就是事件驱动的具体体现。具体fireChannelRegistered()逻辑不再分析。接着是regist方法。在实现注册之前，netty先创建了channelPromise对象。这里简单说一下，netty所有的方法都是异步，而实现异步的最好方法就是使用基于回调的事件机制。而netty使用的是基于事件监听的方式，这种基于事件监听的方式要比基于回调的事件机制效率更高一点。以后的文章中会分析这种机制。</p>
-<p><img src="http://img.blog.csdn.net/20160903162753070" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20160903163451477" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;netty会把regist封装成多线程任务，然后将其加入的队列中，由eventloop执行。具体的regist的业务逻辑在AbstractChannel类中。</p>
-<p><img src="http://img.blog.csdn.net/20160903164103730" alt="这里写图片描述"><br>具体的注册逻辑不在分析，不理解的请看java nio的相关知识。</p>
-<p><img src="http://img.blog.csdn.net/20160903164605939" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bind前面和regist差不多。也是把具体的逻辑封装成多线程任务。然后将其丢进任务队列中。tail会代理unsafe工具类进行绑定。</p>
-<p><img src="http://img.blog.csdn.net/20160903165309385" alt="这里写图片描述"></p>
-<p>由bind的调用栈可知，最终会Java socket进行绑定。至此服务器bind过程分析完毕。</p>
-
+<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"><br>
+        
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/#more">阅读全文 >></a>
+        
       
 
       
@@ -698,11 +643,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

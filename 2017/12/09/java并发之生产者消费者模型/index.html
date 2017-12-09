@@ -18,7 +18,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160110134343236">
 <meta property="og:image" content="http://img.blog.csdn.net/20160110142045609">
-<meta property="og:updated_time" content="2017-12-09T11:03:14.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java并发之生产者消费者模型">
 <meta name="twitter:description" content="生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。 经典的生产者和消费者模型的描述是：有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消">
@@ -180,8 +180,7 @@
       
         <p>生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。</p>
 <p><strong>经典的生产者和消费者模型的描述是：</strong>有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消费者进程都是以异步方式运行的，但它们之间必须保持同步，即不允许消费者进程到一个空缓冲区去取产品，也不允许生产者进程向一个已装满产品且尚未被取走的缓冲区投放产品。</p>
-<p><img src="http://img.blog.csdn.net/20160110134343236" alt="这里写图片描述"></p>
-<p>首先我们复习一下操作系统中同步机制中应遵循的准则：</p>
+<p><img src="http://img.blog.csdn.net/20160110134343236" alt="这里写图片描述"><br><a id="more"></a><br>首先我们复习一下操作系统中同步机制中应遵循的准则：</p>
 <ol>
 <li><strong>空闲让进</strong>：当无进程处于临界区时，应允许一个请求进入临界区的进程进入临界区；</li>
 <li><strong>忙则等待</strong>：当已有进程进入临界区时，其他试图进入临界区的进程必须等待；</li>
@@ -443,11 +442,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

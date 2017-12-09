@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160203205251274">
 <meta property="og:image" content="http://img.blog.csdn.net/20160203205334337">
 <meta property="og:image" content="http://img.blog.csdn.net/20160203210031345">
-<meta property="og:updated_time" content="2017-12-09T11:04:48.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发之AbstractQueuedSynchronizer分析">
 <meta name="twitter:description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
@@ -188,8 +188,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 <strong>Doug Lea</strong> 开发了<strong>AbstractQueuedSynchronizer</strong>（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的<strong>ReentrantLock</strong>锁来介绍AQS。</p>
-<p>AQS有两种模式:<strong>公平模式和非公平模式（抢占式）</strong>。在实现自定义锁时只要按照需求实现公平模式API、非公平模式API或两种模式都实现。ReentrantLock分别实现了公平模式和非公平模式。</p>
-<p><strong>在使用公平模式时，AQS会自动生成一个FIFO队列。严格按照线程挂起的顺序获得锁使用权。</strong></p>
+<p>AQS有两种模式:<strong>公平模式和非公平模式（抢占式）</strong>。在实现自定义锁时只要按照需求实现公平模式API、非公平模式API或两种模式都实现。ReentrantLock分别实现了公平模式和非公平模式。<br><a id="more"></a><br><strong>在使用公平模式时，AQS会自动生成一个FIFO队列。严格按照线程挂起的顺序获得锁使用权。</strong></p>
 <p>猜想：既然锁有被占用和释放两种状态，那么就需要一个state字段来标识锁的状态。果不其然，<br><img src="http://img.blog.csdn.net/20160203210350302" alt="这里写图片描述"><br>以ReentrantLock公平锁为例。<br>ReentrantLock锁通常使用模式为:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public int show() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			doSomething();</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 <p>查看lock方法源码：<br><img src="http://img.blog.csdn.net/20160203194933004" alt="Lock方法"><br>可以发现它只是简单代理了sync的lock方法。</p>
@@ -455,11 +454,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

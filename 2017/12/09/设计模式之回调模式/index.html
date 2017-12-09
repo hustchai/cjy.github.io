@@ -8,23 +8,23 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>设计模式之回调模式 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：  Class A实现回调接口CallBack——背景1">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之回调模式">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之回调模式/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：  Class A实现回调接口CallBack——背景1">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160526173308258">
 <meta property="og:image" content="http://img.blog.csdn.net/20160526173329914">
 <meta property="og:image" content="http://img.blog.csdn.net/20160526173351908">
 <meta property="og:image" content="http://img.blog.csdn.net/20160526173620690">
 <meta property="og:image" content="http://img.blog.csdn.net/20160526173650018">
-<meta property="og:updated_time" content="2017-12-09T11:01:31.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之回调模式">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：  Class A实现回调接口CallBack——背景1">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;回调在Spring中被大量使用，那什么是回调呢?&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为回调方法。回调是实现异步的基础。经典的回调方式如下：">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160526173308258">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -181,7 +181,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调在Spring中被大量使用，那什么是回调呢?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为<strong>回调方法</strong>。回调是实现异步的基础。经典的回调方式如下：</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回调在Spring中被大量使用，那什么是回调呢?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;简单的说，在A类中调用B类的C方法，然后B类调用A类中的D方法。方法D被称为<strong>回调方法</strong>。回调是实现异步的基础。经典的回调方式如下：<br><a id="more"></a></p>
 <ul>
 <li>Class A实现回调接口CallBack——<strong>背景1</strong></li>
 <li>class A中包含一个class B的引用b ——<strong>背景2</strong></li>
@@ -442,11 +442,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

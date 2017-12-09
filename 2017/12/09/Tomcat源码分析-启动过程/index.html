@@ -8,13 +8,13 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>Tomcat源码分析--启动过程 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图：">
 <meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tomcat源码分析--启动过程">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160417204227221">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427132259811">
@@ -27,10 +27,10 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160427133517500">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427133728237">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427133903254">
-<meta property="og:updated_time" content="2017-12-09T11:03:54.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:34:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat源码分析--启动过程">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图： &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Tomcat主要有两个核心的组件，一个是Conn">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先先介绍一下Tomcat的架构图：">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160417204227221">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -188,8 +188,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"><br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般启动Tomcat会是运行startup.bat或者startup.sh文件，这两个文件最后都会调用，org.apache.catalina.startup包下面Bootstrap类的main方法。main方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132259811" alt="这里写图片描述"></p>
 <p>main方法先实例化了一个Bootstrap实例，接着调用了init方法。init方法是生命周期方法，以后不再累述。接着看init的具体实现。<br><img src="http://img.blog.csdn.net/20160427132449928" alt="这里写图片描述"><br>init方法，先初始化了类加载器。initClassLoaders方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132555850" alt="这里写图片描述"><br>createClassLoader具体实现细节不再显示，有感兴趣的读者可以具体查看。该方法的具体签名为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private ClassLoader createClassLoader(String name, ClassLoader parent)  throws Exception</span><br></pre></td></tr></table></figure>
@@ -449,11 +448,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

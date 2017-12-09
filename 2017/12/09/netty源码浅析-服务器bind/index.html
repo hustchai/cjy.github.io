@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160903164103730">
 <meta property="og:image" content="http://img.blog.csdn.net/20160903164605939">
 <meta property="og:image" content="http://img.blog.csdn.net/20160903165309385">
-<meta property="og:updated_time" content="2017-12-09T11:04:16.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:32:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty源码浅析--服务器bind">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
@@ -196,8 +196,7 @@
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。</p>
 <p><img src="http://img.blog.csdn.net/20160903135520436" alt="这里写图片描述"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doBind中。根据小编阅读源码的经历总结出一点。许多方法里面只做了一些校验，而真正的逻辑全部都在do开头的方法中。</p>
-<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从调用的第一个方法可以看出首先是初始化和注册，那这里到底是初始化和注册什么呢?我们接着看initAndRegister()方法。</p>
+<p><img src="http://img.blog.csdn.net/20160903140510127" alt="这里写图片描述"><br><a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从调用的第一个方法可以看出首先是初始化和注册，那这里到底是初始化和注册什么呢?我们接着看initAndRegister()方法。</p>
 <p><img src="http://img.blog.csdn.net/20160903141218194" alt="这里写图片描述"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从名字中也能看出，会先创建channel。createChannel是一个抽象方法，具体的逻辑在类ServerBootstrap中实现。</p>
 <p><img src="http://img.blog.csdn.net/20160903141639384" alt="这里写图片描述"></p>
@@ -470,11 +469,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

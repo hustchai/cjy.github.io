@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160427125713824">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427130415967">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427131330642">
-<meta property="og:updated_time" content="2017-12-09T11:03:41.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:34:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat源码分析--Connector(连接器)">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
@@ -182,8 +182,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。</p>
-<p>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。<br><a id="more"></a><br>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
 <p>2.Connector的初始化方法。<br>在Connector调用initInternal的初始化方法。主要完成了2个操作：</p>
 <ol>
 <li>初始化适配器。     </li>
@@ -435,11 +434,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

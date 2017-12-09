@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>设计模式之原型模式 | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
+  <meta name="description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之原型模式">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之原型模式/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
+<meta property="og:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160125131140420">
-<meta property="og:updated_time" content="2017-12-09T11:01:46.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之原型模式">
-<meta name="twitter:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
+<meta name="twitter:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160125131140420">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -178,8 +178,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。</strong></p>
-<p>在说什么是原型模式前首先要解释一下两个概念，<strong>深复制和浅复制</strong>。<br><strong>浅复制：</strong>复制一个对象时，基本类型字段复制其值，引用类型复制其引用。<br><strong>深复制：</strong>复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。</p>
-<p>java中使用super.clone可以得到当前调用类的对象的副本。在java中需要被克隆的对象必须实现Cloneable接口，否则视为不合法，会抛出不支持克隆的异常。</p>
+<p>在说什么是原型模式前首先要解释一下两个概念，<strong>深复制和浅复制</strong>。<br><strong>浅复制：</strong>复制一个对象时，基本类型字段复制其值，引用类型复制其引用。<br><strong>深复制：</strong>复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。<br><a id="more"></a><br>java中使用super.clone可以得到当前调用类的对象的副本。在java中需要被克隆的对象必须实现Cloneable接口，否则视为不合法，会抛出不支持克隆的异常。</p>
 <p><strong>HomeWork类</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWork implements Cloneable &#123;</span><br><span class="line">	</span><br><span class="line">	private String studentNum;    //学号</span><br><span class="line">	private String name;         //姓名</span><br><span class="line">	private HomeWorkContent homeWorkContent;  //作业内容</span><br><span class="line">	</span><br><span class="line">	public HomeWork() &#123;</span><br><span class="line">		homeWorkContent = new HomeWorkContent(&quot;我是内容&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setInfo(String studentNum,String name) &#123;</span><br><span class="line">		this.studentNum = studentNum;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setHomeWorkContent(String content) &#123;</span><br><span class="line">		homeWorkContent.setContent(content);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public HomeWork clone() &#123;</span><br><span class="line">		HomeWork hw= null;</span><br><span class="line">			try &#123;</span><br><span class="line">				hw = (HomeWork)super.clone();</span><br><span class="line">			&#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			return hw;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;学号是: &quot; + studentNum + &quot; \n姓名是: &quot;+name + &quot;\n作业是:&quot;+homeWorkContent.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>HomeWorkContent类</strong></p>
@@ -433,11 +432,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">

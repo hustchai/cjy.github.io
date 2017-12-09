@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
   <title>Java并发之volatile | Tmac的小窝</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
+  <meta name="description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发之volatile">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java并发之volatile/index.html">
 <meta property="og:site_name" content="Tmac的小窝">
-<meta property="og:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
+<meta property="og:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160108114707459">
 <meta property="og:image" content="http://img.blog.csdn.net/20160108123920392">
-<meta property="og:updated_time" content="2017-12-09T11:04:41.000Z">
+<meta property="og:updated_time" content="2017-12-09T13:33:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发之volatile">
-<meta name="twitter:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
+<meta name="twitter:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160108114707459">
   
     <link rel="alternative" href="/atom.xml" title="Tmac的小窝" type="application/atom+xml">
@@ -184,8 +184,7 @@
 <li>禁止指令重排</li>
 </ul>
 <p>##确保volatile修饰的变量对所有线程可见</p>
-<p>为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为<strong>工作内存和主内存</strong>（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）</p>
-<p>java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，<strong>工作内存中保存了该线程使用到变量的主内存的副本拷贝</strong>，线程对所有变量的修改都应该在工作内存中，而不能直接修改主内存中的变量。不同线程之间不互相操作对方工作内存中的变量，<strong>线程间变量之间的消息传递必须通过主内存。</strong></p>
+<p>为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为<strong>工作内存和主内存</strong>（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）<br><a id="more"></a><br>java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，<strong>工作内存中保存了该线程使用到变量的主内存的副本拷贝</strong>，线程对所有变量的修改都应该在工作内存中，而不能直接修改主内存中的变量。不同线程之间不互相操作对方工作内存中的变量，<strong>线程间变量之间的消息传递必须通过主内存。</strong></p>
 <p><img src="http://img.blog.csdn.net/20160108114707459" alt="java线程、工作内存、主内存之间的关系"><br>           图1：java线程、工作内存、主内存之间的关系</p>
 <p>现有一业务场景如下：<br>主内存中有一个共享变量i,线程A的主要任务是修改共享变量i的值，线程B的主要任务是读取共享变量i的值。如果不对程序做同步处理，某时刻线程A将共享变量i的值修改为2。上文我们说到线程修改的是工作内存中主内存的副本的值，线程A修改共享变量i的值后还未将最新值同步回主内存中。而此时线程B读取了共享变量i的值。因此在并发的时候就可能出现问题。</p>
 <p>如果将共享变量用volatitle修饰后，就可以避免这样的问题。现在我们来看看，volatile是怎么保证对所有线程的可见性的。</p>
@@ -449,11 +448,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">
