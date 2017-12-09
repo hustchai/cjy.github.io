@@ -9,6 +9,7 @@
   <title>Hadoop WordCount源码解读  | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="MapReduce编程模型  MapReduce采用“分而治之”的思想。将HDFS上海量数据切分成为若干块，将每块的数据分给集群上的节点进行计算。然后通过整合各节点的中间结果，得到最终的结果。 HDFS上默认块的大小要比磁盘默认的大小大的多。其目的是为了最小化寻址开销。如果块设置得足够大，从磁盘传输数据的时间明显大于定位这个块开始位置所需时间。这样，传输一个由多个块组成的文件时间取决于磁盘传输速率">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hadoop WordCount源码解读 ">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/index.html">
@@ -20,7 +21,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20150726173843863">
 <meta property="og:image" content="http://img.blog.csdn.net/20150726173802971">
 <meta property="og:image" content="http://img.blog.csdn.net/20150726173826605">
-<meta property="og:updated_time" content="2017-12-09T10:12:03.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:02:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop WordCount源码解读 ">
 <meta name="twitter:description" content="MapReduce编程模型  MapReduce采用“分而治之”的思想。将HDFS上海量数据切分成为若干块，将每块的数据分给集群上的节点进行计算。然后通过整合各节点的中间结果，得到最终的结果。 HDFS上默认块的大小要比磁盘默认的大小大的多。其目的是为了最小化寻址开销。如果块设置得足够大，从磁盘传输数据的时间明显大于定位这个块开始位置所需时间。这样，传输一个由多个块组成的文件时间取决于磁盘传输速率">
@@ -246,6 +247,17 @@ job.setReducerClass(IntSumReducer.class);
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -440,6 +452,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

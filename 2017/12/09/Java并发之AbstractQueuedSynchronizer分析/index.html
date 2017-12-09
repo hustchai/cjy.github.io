@@ -9,6 +9,7 @@
   <title>Java并发之AbstractQueuedSynchronizer分析 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发之AbstractQueuedSynchronizer分析">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/index.html">
@@ -26,7 +27,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160203205251274">
 <meta property="og:image" content="http://img.blog.csdn.net/20160203205334337">
 <meta property="og:image" content="http://img.blog.csdn.net/20160203210031345">
-<meta property="og:updated_time" content="2017-12-09T10:49:04.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:04:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发之AbstractQueuedSynchronizer分析">
 <meta name="twitter:description" content="在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 Doug Lea 开发了AbstractQueuedSynchronizer（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的ReentrantLock锁来介绍AQS。 AQ">
@@ -238,6 +239,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -437,6 +449,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

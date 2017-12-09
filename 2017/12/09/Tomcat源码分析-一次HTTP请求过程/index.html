@@ -9,6 +9,7 @@
   <title>Tomcat源码分析--一次HTTP请求过程 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始">
+<meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tomcat源码分析--一次HTTP请求过程">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/index.html">
@@ -24,7 +25,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160508201915941">
 <meta property="og:image" content="http://img.blog.csdn.net/20160508202857086">
 <meta property="og:image" content="http://img.blog.csdn.net/20160508203435853">
-<meta property="og:updated_time" content="2017-12-09T10:51:54.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:03:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat源码分析--一次HTTP请求过程">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始">
@@ -229,6 +230,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码解析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -428,6 +440,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

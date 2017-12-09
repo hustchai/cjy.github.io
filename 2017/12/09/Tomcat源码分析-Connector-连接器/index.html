@@ -9,6 +9,7 @@
   <title>Tomcat源码分析--Connector(连接器) | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
+<meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tomcat源码分析--Connector(连接器)">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/index.html">
@@ -20,7 +21,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160427125713824">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427130415967">
 <meta property="og:image" content="http://img.blog.csdn.net/20160427131330642">
-<meta property="og:updated_time" content="2017-12-09T10:50:45.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:03:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tomcat源码分析--Connector(连接器)">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是">
@@ -218,6 +219,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码解析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -417,6 +429,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

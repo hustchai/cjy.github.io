@@ -9,13 +9,14 @@
   <title>java并发之CAS操作 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="CAS即compare and set的缩写。常见于java.util.concurrent中，是构成concurrent包的基础。 CAS有三个操作数，内存值M，旧的预期(expect)值E和更新(update)值U。在CAS操作中，只有当M==E时，才会更新U。否则什么都不做。这些操作都是原子的。 12345678910111213141516public class VolatileTest">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java并发之CAS操作">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/java并发之CAS操作/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="CAS即compare and set的缩写。常见于java.util.concurrent中，是构成concurrent包的基础。 CAS有三个操作数，内存值M，旧的预期(expect)值E和更新(update)值U。在CAS操作中，只有当M==E时，才会更新U。否则什么都不做。这些操作都是原子的。 12345678910111213141516public class VolatileTest">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T10:47:53.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:04:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java并发之CAS操作">
 <meta name="twitter:description" content="CAS即compare and set的缩写。常见于java.util.concurrent中，是构成concurrent包的基础。 CAS有三个操作数，内存值M，旧的预期(expect)值E和更新(update)值U。在CAS操作中，只有当M==E时，才会更新U。否则什么都不做。这些操作都是原子的。 12345678910111213141516public class VolatileTest">
@@ -210,6 +211,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -409,6 +421,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

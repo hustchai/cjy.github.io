@@ -9,6 +9,7 @@
   <title>netty源码浅析--服务器bind | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
+<meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netty源码浅析--服务器bind">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/netty源码浅析-服务器bind/index.html">
@@ -32,7 +33,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160903164103730">
 <meta property="og:image" content="http://img.blog.csdn.net/20160903164605939">
 <meta property="og:image" content="http://img.blog.csdn.net/20160903165309385">
-<meta property="og:updated_time" content="2017-12-09T10:56:05.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:04:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty源码浅析--服务器bind">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;上一篇我们提到服务器启动的过程，这篇我们来分析一下服务器bind的过程。  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;validate()方法只做了一些必要的验证。如果有特殊的验证需求，用户可以重写validate()方法。bind的主要逻辑在doB">
@@ -253,6 +254,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码解析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -452,6 +464,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

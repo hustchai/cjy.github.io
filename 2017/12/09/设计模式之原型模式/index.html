@@ -9,6 +9,7 @@
   <title>设计模式之原型模式 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
+<meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之原型模式">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/设计模式之原型模式/index.html">
@@ -16,7 +17,7 @@
 <meta property="og:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160125131140420">
-<meta property="og:updated_time" content="2017-12-09T10:46:51.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:01:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之原型模式">
 <meta name="twitter:description" content="使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。 在说什么是原型模式前首先要解释一下两个概念，深复制和浅复制。浅复制：复制一个对象时，基本类型字段复制其值，引用类型复制其引用。深复制：复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。 java中使用">
@@ -216,6 +217,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -415,6 +427,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

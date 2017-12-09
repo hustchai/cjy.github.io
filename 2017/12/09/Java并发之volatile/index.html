@@ -9,6 +9,7 @@
   <title>Java并发之volatile | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发之volatile">
 <meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java并发之volatile/index.html">
@@ -17,7 +18,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160108114707459">
 <meta property="og:image" content="http://img.blog.csdn.net/20160108123920392">
-<meta property="og:updated_time" content="2017-12-09T10:40:25.000Z">
+<meta property="og:updated_time" content="2017-12-09T11:04:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发之volatile">
 <meta name="twitter:description" content="volatile有两个特性  确保volatile修饰的变量对所有线程可见。 禁止指令重排  ##确保volatile修饰的变量对所有线程可见 为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为工作内存和主内存（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突） java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，工作内存中保存了">
@@ -232,6 +233,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -307,7 +319,7 @@
   
   
     <a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title"> Android与服务器端通信时 部分中文出现乱码</div>
+      <div class="article-nav-title">Android与服务器端通信时 部分中文出现乱码</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -431,6 +443,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
