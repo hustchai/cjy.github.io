@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>JAVA中复杂对象调用构造器顺序 | </title>
+  <title>JAVA利用泛型返回类型不同的对象 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+  <meta name="description" content="有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。 首先先解释个概念,元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。 利用泛型创建元组 1234567891011public class ReturnTwo&amp;lt;A,B&amp;gt; &amp;#123;		public final A first">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA中复杂对象调用构造器顺序">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/index.html">
+<meta property="og:title" content="JAVA利用泛型返回类型不同的对象">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+<meta property="og:description" content="有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。 首先先解释个概念,元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。 利用泛型创建元组 1234567891011public class ReturnTwo&amp;lt;A,B&amp;gt; &amp;#123;		public final A first">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T10:28:39.000Z">
+<meta property="og:updated_time" content="2017-12-09T10:31:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JAVA中复杂对象调用构造器顺序">
-<meta name="twitter:description" content="最近读《JAVA编程思想》有点心得，给大家分享下。关于Java中复杂对象调用构造器顺序，话不多说直接上代码 12345678910111213141516171819202122232425262728293031323334353637public class A &amp;#123;		public A() &amp;#123;		System.out.println(&amp;quot;A被初始化了&amp;quot;);">
+<meta name="twitter:title" content="JAVA利用泛型返回类型不同的对象">
+<meta name="twitter:description" content="有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。 首先先解释个概念,元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。 利用泛型创建元组 1234567891011public class ReturnTwo&amp;lt;A,B&amp;gt; &amp;#123;		public final A first">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -154,30 +154,33 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JAVA中复杂对象调用构造器顺序" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-JAVA利用泛型返回类型不同的对象" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      JAVA中复杂对象调用构造器顺序
+      JAVA利用泛型返回类型不同的对象
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class A &#123;</span><br><span class="line">	</span><br><span class="line">	public A() &#123;</span><br><span class="line">		System.out.println(&quot;A被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class B &#123;</span><br><span class="line">	</span><br><span class="line">	public B() &#123;</span><br><span class="line">		System.out.println(&quot;B被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C &#123;</span><br><span class="line">	</span><br><span class="line">	public C() &#123;</span><br><span class="line">		System.out.println(&quot;C被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class D extends A &#123;</span><br><span class="line">	</span><br><span class="line">	private B b = new B();</span><br><span class="line">	private C c = new C();</span><br><span class="line">	</span><br><span class="line">	public D() &#123;</span><br><span class="line">		System.out.println(&quot;D被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		D d = new D();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出是：<br>A被初始化了<br>B被初始化了<br>C被初始化了<br>D被初始化了</p>
-<p>根据输出结果 可以看出有以下几个规律<br>1、首先调用基类的构造方法，如果有多层继承现象，则会首先构造这个结构的根，然后向下构造直到最底层导出类。<br>2、按照方法内域的声明顺序调用成员的初始化方法。<br>3、调用导出类构造方法</p>
+        <p>有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。</p>
+<p>首先先解释个概念,<br>元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。</p>
+<p>利用泛型创建元组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ReturnTwo&lt;A,B&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	public final A first;</span><br><span class="line">	public final B second;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo(A a,B b) &#123;</span><br><span class="line">		first = a;</span><br><span class="line">		second = b;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	private String a = &quot;abc&quot;;</span><br><span class="line">	private int b = 123;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo&lt;String, Integer&gt; get() &#123;</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = new ReturnTwo&lt;String, Integer&gt;(this.a, this.b);</span><br><span class="line">		return rt;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Test test = new Test();</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = test.get();</span><br><span class="line">		System.out.println(rt.first);</span><br><span class="line">		System.out.println(rt.second);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br>abc<br>123</p>
 
       
 
@@ -257,7 +260,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -271,18 +274,9 @@
   
 <nav id="article-nav">
   
-    <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          JAVA利用泛型返回类型不同的对象
-        
-      </div>
-    </a>
   
-  
-    <a href="/cjy.github.io/2017/12/09/设计模式之工厂模式/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">设计模式之工厂模式</div>
+    <a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JAVA中复杂对象调用构造器顺序</div>
       <i class="icon-circle-right"></i>
     </a>
   
