@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title></title>
+  <title>java并发之生产者消费者模型 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/index.html">
+  <meta name="description" content="生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。 经典的生产者和消费者模型的描述是：有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发之生产者消费者模型">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/java并发之生产者消费者模型/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。 经典的生产者和消费者模型的描述是：有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20160110134343236">
+<meta property="og:image" content="http://img.blog.csdn.net/20160110142045609">
+<meta property="og:updated_time" content="2017-12-09T10:41:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="java并发之生产者消费者模型">
+<meta name="twitter:description" content="生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。 经典的生产者和消费者模型的描述是：有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160110134343236">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,16 +157,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-java并发之生产者消费者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-java并发之生产者消费者模型" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
+    <h1 class="article-title" itemprop="name">
+      java并发之生产者消费者模型
     </h1>
   
 
@@ -196,6 +201,27 @@
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -203,16 +229,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/cjy.github.io/2017/12/09/Java并发之volatile/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java并发之volatile</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -232,685 +317,14 @@
 
 
 
-
   
-    <article id="post-Java并发之volatile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
-    </h1>
   
 
-        
-        <a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>volatile有两个特性</p>
-<ul>
-<li>确保volatile修饰的变量对所有线程可见。</li>
-<li>禁止指令重排</li>
-</ul>
-<p>##确保volatile修饰的变量对所有线程可见</p>
-<p>为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为<strong>工作内存和主内存</strong>（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）</p>
-<p>java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，<strong>工作内存中保存了该线程使用到变量的主内存的副本拷贝</strong>，线程对所有变量的修改都应该在工作内存中，而不能直接修改主内存中的变量。不同线程之间不互相操作对方工作内存中的变量，<strong>线程间变量之间的消息传递必须通过主内存。</strong></p>
-<p><img src="http://img.blog.csdn.net/20160108114707459" alt="java线程、工作内存、主内存之间的关系"><br>           图1：java线程、工作内存、主内存之间的关系</p>
-<p>现有一业务场景如下：<br>主内存中有一个共享变量i,线程A的主要任务是修改共享变量i的值，线程B的主要任务是读取共享变量i的值。如果不对程序做同步处理，某时刻线程A将共享变量i的值修改为2。上文我们说到线程修改的是工作内存中主内存的副本的值，线程A修改共享变量i的值后还未将最新值同步回主内存中。而此时线程B读取了共享变量i的值。因此在并发的时候就可能出现问题。</p>
-<p>如果将共享变量用volatitle修饰后，就可以避免这样的问题。现在我们来看看，volatile是怎么保证对所有线程的可见性的。</p>
-<p>依然还是上面的业务场景。在线程A修改了共享变量i的值后，由于此变量被volatile修饰，所有虚拟机会将线程A中共享变量i的值<strong>立即同步</strong>回主内存中。线程B在读取共享变量i的值时，不会选择线程B工作内存中的副本值，而会重新读取主内存中共享变量i的值。所以volatile保证了对所有线程的可见性。理解volatile可见性的一个好方法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写操作做了同步操作。</p>
-<p>##禁止指令重排。<br>指令重排是指编译器和处理器为了提高程序性能而对指令序列进行重新排序的一种手段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileTest &#123;</span><br><span class="line">	</span><br><span class="line">	int a = 0;</span><br><span class="line">	int i = 0;</span><br><span class="line">	boolean flag = false;</span><br><span class="line">	</span><br><span class="line">	public void write() &#123;</span><br><span class="line">		a = 1;</span><br><span class="line">		flag = true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void read() &#123;</span><br><span class="line">		if(flag) </span><br><span class="line">			i = a + 1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>flag是一个标记，用来标记变量a是否已经被修改。假设有线程A和线程B,A执行write操作，B执行read操作，那么B在执行i = a + 1操作时是否能看到线程A在write操作中对a的修改呢？<br><strong>不一定</strong><br>处理器和编译器可能对程序指令进行重排序，程序执行顺序可能为<br><img src="http://img.blog.csdn.net/20160108123920392" alt="这里写图片描述"><br>在这里多线程程序的语义被重排序破坏了，故在写多线程程序时不能认为写在前面的代码就一定会比写在后面的代码先执行。那程序执行的顺序应该按照什么规则进行判断呢？从JDK5开始，java使用新的JSR-133内存模型。JSR-133使用happens-before的概念来阐述操作之间的内存可见性。在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。</p>
-<ul>
-<li>程序次序规则：在一个线程内，按照程序代码顺序，书写在前面的操作先行发生于书写在后面的操作。</li>
-<li>管程锁定规则：一个unlock操作先行发生于后面对同一个锁的lock操作。这里必须强调的是同一个锁,而“后面”指时间上的先后顺序。</li>
-<li>Volatile变量规则：对一个volatile变量的写操作先行发生于后面对这个变量的读操作，这里的“后面”同样是指时间上的先后顺序。</li>
-<li>线程启动规则:Thread对象的start()方法先行发生于此线程的每一个动作。</li>
-<li>线程终止规则：线程中的所有操作都先行发生于对此线程的终止检测，可以通过Thread.join()方法结束、Thread.isAlive()的返回值等手段检测到线程已经终止执行。</li>
-<li>线程中断规则:对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()方法检测到是否有中断发生。</li>
-<li>对象终结规则：一个对象的初始化完成先行发生于它的finalize()方法的开始。</li>
-<li>传递性：如果A happens-before B,且Bhappens-before C那么A happens-before C。</li>
-</ul>
-<p>当变量被volatile修饰后，虚拟机通过在volatile加入内存壁障的手法从而达到禁止指令重排序的目的。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之volatile/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Android与服务器端通信时-部分中文出现乱码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/"> Android与服务器端通信时 部分中文出现乱码</a>
-    </h1>
   
 
-        
-        <a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在android与服务器端通信期间出现部分中文有乱码，如图所示：<br><img src="http://img.blog.csdn.net/20151216134447573" alt="这里写图片描述"></p>
-<p>众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8<br>mysql编码<br><img src="http://img.blog.csdn.net/20151216134846959" alt="这里写图片描述"></p>
-<p>服务器端返回数据编码<br>由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码<br><img src="http://img.blog.csdn.net/20151216135041048" alt="这里写图片描述"></p>
-<p>而在本机中使用httpClient进行http模拟时<br>数据也正常返回。所以将问题锁定在android端代码</p>
-<p>在android端的输入流中使用的是以字节形式进行读取（InputStream）<br><img src="http://img.blog.csdn.net/20151216141934310" alt="这里写图片描述"></p>
-<p>而UTF-8编码中的中文中一个汉字可能包含几个字节，猜想可能是在读取时将流截断时正好将一个完整的中文字符截断。将读取方式改为字符读取后(InputStreamReader)，问题得以解决<br><img src="http://img.blog.csdn.net/20151216135927992" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-git连接本地服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
   
 
-        
-        <a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1、前期准备"><a href="#1、前期准备" class="headerlink" title="1、前期准备"></a>1、前期准备</h2><ol>
-<li>服务器上配置好的git</li>
-<li><p>git客户端 </p>
-<p>1.1<br>在服务器上安装git （本机所使用的linux是ubuntu）<br>在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户</p>
-</li>
-</ol>
-<p>1.2<br>下载客户端 在浏览器地址栏输入：<a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a><br>回车后<br><img src="http://img.blog.csdn.net/20151113201454510" alt="这里写图片描述"><br>点击Download进行下载</p>
-<h2 id="2、具体操作"><a href="#2、具体操作" class="headerlink" title="2、具体操作"></a>2、具体操作</h2><p>2.1<br>在合适的位置创建一个目录充当git远程仓库（本机位置为/usr/testgit），然后使用init命令初始化仓库<br>在命令终端输入:<br>sudo git init –bare<br><img src="http://img.blog.csdn.net/20151113201758698" alt="这里写图片描述"></p>
-<p>2.2<br>将git init生成的目录所属者改为git<br>输入命令：sudo chown -R git:git  *<br><img src="http://img.blog.csdn.net/20151113201841611" alt="这里写图片描述"></p>
-<p>至此服务器端的操作完成。<br>在客户端合适位置使用git 客户端从服务器资源<br>2.3<br>首先打开git客户端<br><img src="http://img.blog.csdn.net/20151113202038628" alt="这里写图片描述"></p>
-<p>点击Git Bash Here 后出现<br><img src="http://img.blog.csdn.net/20151113202120515" alt="这里写图片描述"></p>
-<p>在git客户端命名终端输入:<br>git clone git@xxxxxx:/rrrrr    其中xxxxxx是远程服务器的地址 rrrrr为git仓库所在位置<br><img src="http://img.blog.csdn.net/20151113202427021" alt="这里写图片描述">          </p>
-<p>如果配置正确你选中的目录下会出现名字为testgit的文件夹 testgit文件夹下随意创建若干个文件<br><img src="http://img.blog.csdn.net/20151113202454293" alt="这里写图片描述"></p>
-<p>2.3<br>在git客户端上使用命令 git add 111.txt  222.txt  333.txt 或者使用git add .(将本文件夹下所有文件都add) 该命令的作用是告诉git把文件添加到git仓库</p>
-<p>2.4<br>然后使用git commit命令将文件提交到git仓库<br><img src="http://img.blog.csdn.net/20151113202555199" alt="这里写图片描述"><br>-m 后面的内容为本次提交文件的一些注释内容<br>此时文件还没有从本地仓库上传到远程服务器仓库</p>
-<p>2.5<br>使用push命令将本地仓库中的内容提交到远程仓库<br>在git客户端命令终端输入：git push origin master<br><img src="http://img.blog.csdn.net/20151113202629559" alt="这里写图片描述"></p>
-<p>至此本地仓库中的文件上传已经上传到远程服务器仓库。<br>在其他文件夹下再次使用 git clone 命令 从远程服务器同步仓库<br><img src="http://img.blog.csdn.net/20151113202733430" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-使用cookie绕过验证码进行模拟登录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">使用cookie绕过验证码进行模拟登录</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>1.工具<br>httpClient jar包<br>任意抓包工具 推荐 firefox的 firebug（非常好用）</p>
-<p>在使用httpClient进行模拟登录时，有时候会遇到需要输入验证码的情况。而对验证码进行识别的方法既费时效果还不好。这里提供一个取巧的方法，即使用浏览器登录时产生的cookie进行登录。</p>
-<p>2.上代码<br>首先是一个模拟http请求的工具类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">import org.apache.http.HttpEntity;</span><br><span class="line">import org.apache.http.NameValuePair;</span><br><span class="line">import org.apache.http.ParseException;</span><br><span class="line">import org.apache.http.client.ClientProtocolException;</span><br><span class="line">import org.apache.http.client.config.CookieSpecs;</span><br><span class="line">import org.apache.http.client.config.RequestConfig;</span><br><span class="line">import org.apache.http.client.entity.UrlEncodedFormEntity;</span><br><span class="line">import org.apache.http.client.methods.CloseableHttpResponse;</span><br><span class="line">import org.apache.http.client.methods.HttpGet;</span><br><span class="line">import org.apache.http.client.methods.HttpPost;</span><br><span class="line">import org.apache.http.impl.client.CloseableHttpClient;</span><br><span class="line">import org.apache.http.impl.client.HttpClients;</span><br><span class="line">import org.apache.http.util.EntityUtils;</span><br><span class="line"></span><br><span class="line">public class Http &#123;</span><br><span class="line">	</span><br><span class="line">	static CloseableHttpClient httpclient = null;</span><br><span class="line">	static RequestConfig requestConfig = null;</span><br><span class="line">	</span><br><span class="line">	static &#123;</span><br><span class="line">		 requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">         httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static String doGet(String url) &#123;</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line">		RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">		 CloseableHttpClient   httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">		try &#123;  </span><br><span class="line">           // 创建httpget.    </span><br><span class="line">           HttpGet httpget = new HttpGet(url);</span><br><span class="line">           httpget.addHeader(&quot;Cookie&quot;, &quot;xxxxxxx&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Accept-Encoding&quot;,&quot;gzip, deflate&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Accept-Language&quot;,&quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Cache-Control&quot;,&quot;no-cache&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Connection&quot;,&quot;keep-alive&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Referer&quot;,&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">           httpget.addHeader(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0&quot;);</span><br><span class="line">           System.out.println(&quot;executing request &quot; + httpget.getURI());  </span><br><span class="line">           // 执行get请求.    </span><br><span class="line">           CloseableHttpResponse response = httpclient.execute(httpget); </span><br><span class="line">           try &#123;  </span><br><span class="line">               // 获取响应实体    </span><br><span class="line">               HttpEntity entity = response.getEntity();  </span><br><span class="line">               System.out.println(&quot;--------------------------------------&quot;);  </span><br><span class="line">               // 打印响应状态    </span><br><span class="line">               System.out.println(response.getStatusLine());  </span><br><span class="line">               if (entity != null) &#123;  </span><br><span class="line">               	return EntityUtils.toString(entity);</span><br><span class="line">               &#125;  </span><br><span class="line">               System.out.println(&quot;------------------------------------&quot;);  </span><br><span class="line">           &#125; finally &#123;  </span><br><span class="line">               response.close();  </span><br><span class="line">           &#125;  </span><br><span class="line">       &#125; catch (ClientProtocolException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; catch (ParseException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; catch (IOException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; </span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line">  </span><br><span class="line">   </span><br><span class="line">    /**以utf-8形式读取*/</span><br><span class="line">    public static String doPost(String url,List&lt;NameValuePair&gt; formparams) &#123;</span><br><span class="line">    	return doPost(url, formparams,&quot;UTF-8&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static String doPost(String url,List&lt;NameValuePair&gt; formparams,String charset) &#123;</span><br><span class="line">    	 RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">         CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">    	// 创建默认的httpClient实例.    </span><br><span class="line">       // CloseableHttpClient httpclient = HttpClients.createDefault(); </span><br><span class="line">     // 创建httppost    </span><br><span class="line">        HttpPost httppost = new HttpPost(url); </span><br><span class="line">        httppost.addHeader(&quot;Cookie&quot;, &quot;xxxxxxx&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Accept-Encoding&quot;,&quot;gzip, deflate&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Accept-Language&quot;,&quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Cache-Control&quot;,&quot;no-cache&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Connection&quot;,&quot;keep-alive&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Referer&quot;,&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">        httppost.addHeader(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0&quot;);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        UrlEncodedFormEntity uefEntity;</span><br><span class="line">        try &#123;</span><br><span class="line">        	uefEntity = new UrlEncodedFormEntity(formparams, charset);</span><br><span class="line">        	httppost.setEntity(uefEntity);</span><br><span class="line">        	CloseableHttpResponse response = httpclient.execute(httppost);</span><br><span class="line">        	try &#123;</span><br><span class="line">        		// 打印响应状态    </span><br><span class="line">                System.out.println(response.getStatusLine());</span><br><span class="line">        		 HttpEntity entity = response.getEntity(); </span><br><span class="line">        		 if (entity != null) &#123;  </span><br><span class="line">        			return EntityUtils.toString(entity);</span><br><span class="line">                 &#125;  </span><br><span class="line">        	&#125; finally &#123;  </span><br><span class="line">                response.close();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; catch (ClientProtocolException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; catch (UnsupportedEncodingException e1) &#123;  </span><br><span class="line">            e1.printStackTrace();  </span><br><span class="line">        &#125; catch (IOException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; </span><br><span class="line">    	return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> httppost.addHeader(“Cookie”, “xxxxxxx”); 这里xxxxxx的即为登录时产生的cookie 由于每个浏览器产生的cookie不尽相同，故以xxxxx代替</p>
-<p>测试类  这里模拟登录的是知乎</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String content = Http.doGet(&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">		System.out.println(content);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试结果<br><img src="http://img.blog.csdn.net/20151019225725767" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA泛型擦除机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class TestF &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Class a1 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">		Class a2 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">		System.out.println(a1 == a2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果仅凭直觉来看，该程序可能会输出 false 这个结果，但在具体的环境下运行时会输出 true 。这很令人费解，这是为什么呢？</p>
-<p>Java泛型是使用类型擦除来实现的。这表示在运行过程中任何和类型有关的信息都会被擦除，所有在运行中 ArrayList<integer>和ArrayList<string>的具体信息都被擦除成它们的原生类型即ArrayList类型。</string></integer></p>
-<p>由于擦除机制，泛型不能用于显示地引用运行时类型的操作之中，例如转型、new表达式和instanceof操作。</p>
-<p>若在泛型内部必须使用类型操作时，可以在运行时采用反射的方法将正在运行的类信息添加到泛型内部，这种方法称为补偿。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class Dog &#123;</span><br><span class="line">	</span><br><span class="line">	public Dog() &#123;</span><br><span class="line">		System.out.println(&quot;Dog...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestF2&lt;T&gt; &#123;</span><br><span class="line">	Class&lt;T&gt; type;</span><br><span class="line">	public TestF2(Class&lt;T&gt; type) &#123;</span><br><span class="line">		this.type = type;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public boolean check(Object obj) &#123;</span><br><span class="line">		return type.isInstance(obj); //isInstance 和instanceof动态等价 </span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show(Class&lt;T&gt; type) &#123;   //使用反射动态实现new表达式</span><br><span class="line">		try &#123;</span><br><span class="line">			type.newInstance();</span><br><span class="line">		&#125; catch (InstantiationException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		TestF2&lt;Dog&gt; t = new TestF2&lt;Dog&gt;(Dog.class);</span><br><span class="line">		System.out.println(t.check(new Dog()));</span><br><span class="line">		t.show(Dog.class);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出为：<br>Dog…<br>true<br>Dog…</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA利用泛型返回类型不同的对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。</p>
-<p>首先先解释个概念,<br>元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。</p>
-<p>利用泛型创建元组</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ReturnTwo&lt;A,B&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	public final A first;</span><br><span class="line">	public final B second;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo(A a,B b) &#123;</span><br><span class="line">		first = a;</span><br><span class="line">		second = b;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	private String a = &quot;abc&quot;;</span><br><span class="line">	private int b = 123;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo&lt;String, Integer&gt; get() &#123;</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = new ReturnTwo&lt;String, Integer&gt;(this.a, this.b);</span><br><span class="line">		return rt;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Test test = new Test();</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = test.get();</span><br><span class="line">		System.out.println(rt.first);</span><br><span class="line">		System.out.println(rt.second);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：<br>abc<br>123</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA中复杂对象调用构造器顺序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class A &#123;</span><br><span class="line">	</span><br><span class="line">	public A() &#123;</span><br><span class="line">		System.out.println(&quot;A被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class B &#123;</span><br><span class="line">	</span><br><span class="line">	public B() &#123;</span><br><span class="line">		System.out.println(&quot;B被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C &#123;</span><br><span class="line">	</span><br><span class="line">	public C() &#123;</span><br><span class="line">		System.out.println(&quot;C被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class D extends A &#123;</span><br><span class="line">	</span><br><span class="line">	private B b = new B();</span><br><span class="line">	private C c = new C();</span><br><span class="line">	</span><br><span class="line">	public D() &#123;</span><br><span class="line">		System.out.println(&quot;D被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		D d = new D();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出是：<br>A被初始化了<br>B被初始化了<br>C被初始化了<br>D被初始化了</p>
-<p>根据输出结果 可以看出有以下几个规律<br>1、首先调用基类的构造方法，如果有多层继承现象，则会首先构造这个结构的根，然后向下构造直到最底层导出类。<br>2、按照方法内域的声明顺序调用成员的初始化方法。<br>3、调用导出类构造方法</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-设计模式之工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之工厂模式/">设计模式之工厂模式</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/设计模式之工厂模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:14:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。<br><img src="http://img.blog.csdn.net/20150809144659407" alt="这里写图片描述"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Ihelper &#123;</span><br><span class="line">	void open();	</span><br><span class="line">	void close();	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class ORACLEHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper close.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class SQLHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;SQL open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;SQL close....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface IFactory &#123;</span><br><span class="line">	public Ihelper create(int i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Factory implements IFactory&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public Ihelper create(int i) &#123;</span><br><span class="line">		if(i == 0)</span><br><span class="line">			return new SQLHelper();</span><br><span class="line">		else</span><br><span class="line">			return new ORACLEHelper();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">		Factory f = new Factory();</span><br><span class="line">		Ihelper i = f.create(0);</span><br><span class="line">		i.open();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">工厂类的优点是:</span><br><span class="line">利于管理</span><br><span class="line">低耦合</span><br><span class="line">缺点是:</span><br><span class="line">违反开闭原则</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之工厂模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hadoop-WordCount源码解读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/">Hadoop WordCount源码解读 </a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:04:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>MapReduce编程模型</strong></p>
-<p> MapReduce采用“分而治之”的思想。将HDFS上海量数据切分成为若干块，将每块的数据分给集群上的节点进行计算。然后通过整合各节点的中间结果，得到最终的结果。<br> HDFS上默认块的大小要比磁盘默认的大小大的多。其目的是为了最小化寻址开销。如果块设置得足够大，从磁盘传输数据的时间明显大于定位这个块开始位置所需时间。这样，传输一个由多个块组成的文件时间取决于磁盘传输速率。HDFS默认块的大小为64MB。随着磁盘驱动器的进一步发展块的默认大小可以设置的更大。</p>
-<p><strong>MapReduce的处理过程</strong><br>一个复杂的MapReduce任务可以分为若干个Job。每个Job又可以分为Mapper和Reducer两个阶段。这两个阶段对应到代码内就是继承Mapper的内部类和继承Reducer的内部类。继承Mapper的内部类需要实现map函数,继承Reducer的内部类需要实现Reduce函数。Map函数接收一个&lt;key,value&gt;的键值对同时也会输出一个 &lt;key,value&gt; 的键值对。Reduce函数接收一个&lt;key,list of values&gt;（值为所有键为key的value集合,例如: map的输出为<1,1>,<1,2>,<1,3>,<1,4>则reduce的输入为<1,[1,2,3,4]>）同时经过处理后同样会输出&lt;key,value&gt;键值对。MapReduce运行过程的数据流<br><img src="http://img.blog.csdn.net/20150726172208952" alt="这里写图片描述"></1,[1,2,3,4]></1,4></1,3></1,2></1,1></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.StringTokenizer;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.io.IntWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">import org.apache.hadoop.util.GenericOptionsParser;</span><br><span class="line"></span><br><span class="line">public class WordCount &#123;</span><br><span class="line"></span><br><span class="line">  public static class TokenizerMapper </span><br><span class="line">       extends Mapper&lt;Object, Text, Text, IntWritable&gt;&#123;</span><br><span class="line">    </span><br><span class="line">    private final static IntWritable one = new IntWritable(1);</span><br><span class="line">    private Text word = new Text();</span><br><span class="line">      </span><br><span class="line">    public void map(Object key, Text value, Context context</span><br><span class="line">                    ) throws IOException, InterruptedException &#123;</span><br><span class="line">      StringTokenizer itr = new StringTokenizer(value.toString());</span><br><span class="line">      while (itr.hasMoreTokens()) &#123;</span><br><span class="line">        word.set(itr.nextToken());</span><br><span class="line">        context.write(word, one);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  public static class IntSumReducer </span><br><span class="line">       extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; &#123;</span><br><span class="line">    private IntWritable result = new IntWritable();</span><br><span class="line"></span><br><span class="line">    public void reduce(Text key, Iterable&lt;IntWritable&gt; values, </span><br><span class="line">                       Context context</span><br><span class="line">                       ) throws IOException, InterruptedException &#123;</span><br><span class="line">      int sum = 0;</span><br><span class="line">      for (IntWritable val : values) &#123;</span><br><span class="line">        sum += val.get();</span><br><span class="line">      &#125;</span><br><span class="line">      result.set(sum);</span><br><span class="line">      context.write(key, result);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    Configuration conf = new Configuration();</span><br><span class="line">    String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</span><br><span class="line">    if (otherArgs.length != 2) &#123;</span><br><span class="line">      System.err.println(&quot;Usage: wordcount &lt;in&gt; &lt;out&gt;&quot;);</span><br><span class="line">      System.exit(2);</span><br><span class="line">    &#125;</span><br><span class="line">    Job job = new Job(conf, &quot;word count&quot;);</span><br><span class="line">    job.setJarByClass(WordCount.class);</span><br><span class="line">    job.setMapperClass(TokenizerMapper.class);</span><br><span class="line">    job.setCombinerClass(IntSumReducer.class);</span><br><span class="line">    job.setReducerClass(IntSumReducer.class);</span><br><span class="line">    job.setOutputKeyClass(Text.class);</span><br><span class="line">    job.setOutputValueClass(IntWritable.class);</span><br><span class="line">    FileInputFormat.addInputPath(job, new Path(otherArgs[0]));</span><br><span class="line">    FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));</span><br><span class="line">    System.exit(job.waitForCompletion(true) ? 0 : 1);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先分析主函数Main方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Configuration conf = new Configuration();</span><br></pre></td></tr></table></figure>
-<p>系统运行时会加载Hadoop默认的一些配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</span><br><span class="line">    if (otherArgs.length != 2) &#123;</span><br><span class="line">      System.err.println(&quot;Usage: wordcount &lt;in&gt; &lt;out&gt;&quot;);</span><br><span class="line">      System.exit(2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>程序运行时会接收从命令行传来的一些参数。默认第一个参数为程序要处理的数据文件夹路径，即in文件夹路径。默认第二个参数为程序结果要输出到的文件夹路径，即out文件夹路径。如果命令行的参数少于2个时程序会停止运行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Job job = new Job(conf, &quot;word count&quot;);</span><br></pre></td></tr></table></figure>
-<p>初始化一个Job任务，这个Job任务需要加载hadoop的一些配置，并给这个Job 命名为“word count”</p>
-<p>job.setJarByClass(WordCount.class);<br>这个方法使用了WordCount.class的类加载器来寻找包含该类的Jar包，然后设置该Jar包为作业所用的Jar包。</p>
-<pre><code>job.setMapperClass(TokenizerMapper.class);
-job.setCombinerClass(IntSumReducer.class);
-job.setReducerClass(IntSumReducer.class);
-</code></pre><p>setMapperClass 该方法设置了该Job任务所使用的Mapper类（拆分）。<br>setCombinerClass 该方法设置了该Job任务所使用的Combiner类（中间结果合并）。<br>setReducerClass该方法设置了该Job任务所使用的Reducer类（合并）。</p>
-<p>可以发现Combiner处理类和Reducer处理类使用的是同一个类即IntSumReducer类。为什么这两个风马牛不相及的处理类可以使用同一个类呢？这仅仅是巧合吗？答案是否定的。<br>Combiner本质上是一个本地的Reducer方法。在集群环境中，带宽是这个集群最稀有的资源。可以先将本地map所处理的数据进行本地Reduce，然后再将结果传给集群其他节点进行处理。这样设计的好处是，可以节省集群的带宽使用率。但是，并不是所有的Combine处理过程均能使用Reducer的处理类，这需要在逻辑上考虑是否可移植！要想进行本地reduce（combine），一个必要的条件是，reduce的输入输出格式必须一样！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">job.setOutputKeyClass(Text.class);</span><br><span class="line">job.setOutputValueClass(IntWritable.class);</span><br></pre></td></tr></table></figure>
-<p>设置Reducer的键输出的类型为Text类型，值输出的类型为IntWritable类型。例如本程序输出的单词和其出现的次数&lt;单词,次数&gt;。</p>
-<p>Text类似于Java的String类型。<br>IntWritable类型类似于Java的int类型。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, new Path(otherArgs[0]));</span><br><span class="line">FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));</span><br></pre></td></tr></table></figure>
-<p>设置程序输入和输出的路径。本示例是从命令行中接收参数。第一个参数为输入路径。第二个参数为输出路径。<br>与其他语言一样。Hadoop会有自己的一些默认配置。本示例中使用默认的输入方式即TextInputFormat。<br> Job. setInputFormat(TextInputFormat.class );<br> TextInputFormat是Hadoop的默认输入方式。在TextInputFormat方式中，系统会自动将输入文件的每行数据形成一条记录，每条记录表示成&lt;key,value&gt;的形式，这条记录会作为map的输入数据。key值是每个数据的记录在数据分片中字节偏移量,数据类型为LongWritable。LongWritable类似于Java的Long类型。Value值是每行的内容，数据类型为Text。<br>比如，输入文件为<br>Hello world<br>Hello hadoop<br>则会形成</p>
-<p><0,hello world=""></0,hello></p>
-<12,hello hadoop="">
-
-<p>Map类中map方法分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public static class TokenizerMapper </span><br><span class="line">       extends Mapper&lt;Object, Text, Text, IntWritable&gt;</span><br></pre></td></tr></table></figure>
-<p>用户自定义map类需要继承Mapper类，并实现map方法。此类是一种规范类型,它有四种形式的参数分别用来指定map的输入key值的类型、map的输入value值的类型、map的输出key值类型、map的输出value值类型。由于本示例中使用的是默认的TextInputFormat输入类型。所以map输入键的类型为LongWritable的父类型Object，map的输入值的类型为Text。因为map要输出的键值对类型为&lt;单词,次数&gt;，所以map的输出key值类型为Text，输出value值的类型为IntWritable。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void map(Object key, Text value, Context context</span><br><span class="line">                    ) throws IOException, InterruptedException &#123;</span><br><span class="line">      StringTokenizer itr = new StringTokenizer(value.toString());</span><br><span class="line">      while (itr.hasMoreTokens()) &#123;</span><br><span class="line">        word.set(itr.nextToken());</span><br><span class="line">        context.write(word, one);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>Map方法为用户想要实现的特定的功能。在本示例中，map方法对输入的记录以空格为单位进行切分，然后使用context对象进行输出。Context包含运行时的上下文信息。</p>
-<p>Reduce类中reduce方法分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static class IntSumReducer </span><br><span class="line">       extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt;</span><br><span class="line">    </span><br><span class="line">      public void reduce(Text key, Iterable&lt;IntWritable&gt; values, </span><br><span class="line">                       Context context</span><br><span class="line">                       ) throws IOException, InterruptedException &#123;</span><br><span class="line">      int sum = 0;</span><br><span class="line">      for (IntWritable val : values) &#123;</span><br><span class="line">        sum += val.get();</span><br><span class="line">      &#125;</span><br><span class="line">      result.set(sum);</span><br><span class="line">      context.write(key, result);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>当数据输入到Reduce端时，key为具体的单词，而values是对应单词的计数值所组成的列表，Map的输出就是Reduce的输入，所以reduce方法只要遍历values并求和，即可得到某个单词的总次数。</p>
-<p><strong>WordCount处理过程</strong><br>⒈MapReduce框架会自动将输入文件分片。由于测试文件较小，故将每个文件分为一个split，并将文件按行分割形成&lt;key,value&gt;对。<br><img src="http://img.blog.csdn.net/20150726173749996" alt="这里写图片描述"></p>
-<p>⒉将分割好的&lt;key,value&gt;对，交给用户定义好的map进行处理，并输出&lt;key,value&gt;对。<br><img src="http://img.blog.csdn.net/20150726173843863" alt="这里写图片描述"></p>
-<p>⒊map方法输出&lt;key，value&gt;对后，Mapper会自动将输出的&lt;key，value&gt;对排序，然后执行Combine过程即本地Reduce方法。<br><img src="http://img.blog.csdn.net/20150726173802971" alt="这里写图片描述"></p>
-<p>⒋Reducer会先将Combine结果排序，并将具有相同的key的value形成集合。最后通过用户自定义的reduce方法输出结果。<br><img src="http://img.blog.csdn.net/20150726173826605" alt="这里写图片描述"></p>
-</12,hello>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -933,8 +347,8 @@ job.setReducerClass(IntSumReducer.class);
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
