@@ -152,6 +152,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Tomcat源码分析-一次HTTP请求过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/">Tomcat源码分析--一次HTTP请求过程</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:51:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前两篇我们分析了Tomcat服务的启动过程和Connector(连接器)。现在让我们看看一次Tomcat服务器是怎么提供HTTP服务的。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上文我们说到endpoint是底层处理I/O具体实现类，那么一次HTTP首先也要从这个类中开始。还是以NIOEndPoint实现类为例子。在NIOEndPoint类中有一个名为Acceptor内部类。该内部类负责接收即将到来的TCP/IP连接，并将它们分配给合适的processor处理。<br><img src="http://img.blog.csdn.net/20160508194059544" alt="这里写图片描述"><br>HTTP底层是TCP协议，Java实现TCP协议的具体的方式就是Socket连接。我相信只要了解一点Java网络编程方面的知识都会了解的，不在累述。另一个比较重要的方法是setSocketOptions()，该方法是将socket连接添加到一个缓存队列里面。这里使用的是生产者和消费者模式，如果对该模式有不了解，请看我的另一个博文，Java并发之生产者和消费者模型<a href="http://blog.csdn.net/c275046758/article/details/50492107" target="_blank" rel="noopener">http://blog.csdn.net/c275046758/article/details/50492107</a>。</p>
+<p><img src="http://img.blog.csdn.net/20160508195039805" alt="这里写图片描述"><br>setSocketOptions方法内获得了channel。channel是java nio中的概念，有不了解的请查看Java nio的相关内容。然后在register()方法中将channel添加到缓存队列中。</p>
+<p><img src="http://img.blog.csdn.net/20160508195546667" alt="这里写图片描述"></p>
+<p>addEvent方法是内部类poller内的一个私有方法。为了能看的更清晰，故将这两个方法放在一起呈现。</p>
+<p><img src="http://img.blog.csdn.net/20160508200045762" alt="这里写图片描述"></p>
+<p>Poller类实现了Runnable接口，是一个线程类。在run方法的15-31行中具体实现了java nio的一些代码。28行继续调用了processKey方法。接着调用了processSocket()方法。<br><img src="http://img.blog.csdn.net/20160508200903815" alt="这里写图片描述"></p>
+<p><img src="http://img.blog.csdn.net/20160508201248148" alt="这里写图片描述"></p>
+<p>在processSocket方法中，将具体的nio连接转换成socketProcessor处理线程。这个类是一个工作线程。可以将其理解成生产者消费者模型中的消费者。然后通过executor执行这个线程。</p>
+<p><img src="http://img.blog.csdn.net/20160508201915941" alt="这里写图片描述"></p>
+<p>从上一篇中我们知道handler是处理协议的地方。process方法在AbstractProcessorLight中的实现。AbstractProcessorLight是一个轻量级的抽象processor实现。</p>
+<p><img src="http://img.blog.csdn.net/20160508202857086" alt="这里写图片描述"></p>
+<p>接着会调用service方法。看到这个方法是不是会有种莫名的激动，是不是servlet的生命周期方法service方法很像呢。别着急，让我们看看service的具体实现。</p>
+<p><img src="http://img.blog.csdn.net/20160508203435853" alt="这里写图片描述"></p>
+<p>在前面经过复杂的处理后，在代码的26行调用了service方法，而它的参数正好是request和response。正好是service()生命周期方法。</p>
+<p>自己研究源码的一点心得，如有错误请批评指正。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Tomcat源码分析-Connector-连接器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -807,94 +885,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java并发之volatile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>volatile有两个特性</p>
-<ul>
-<li>确保volatile修饰的变量对所有线程可见。</li>
-<li>禁止指令重排</li>
-</ul>
-<p>##确保volatile修饰的变量对所有线程可见</p>
-<p>为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为<strong>工作内存和主内存</strong>（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）</p>
-<p>java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，<strong>工作内存中保存了该线程使用到变量的主内存的副本拷贝</strong>，线程对所有变量的修改都应该在工作内存中，而不能直接修改主内存中的变量。不同线程之间不互相操作对方工作内存中的变量，<strong>线程间变量之间的消息传递必须通过主内存。</strong></p>
-<p><img src="http://img.blog.csdn.net/20160108114707459" alt="java线程、工作内存、主内存之间的关系"><br>           图1：java线程、工作内存、主内存之间的关系</p>
-<p>现有一业务场景如下：<br>主内存中有一个共享变量i,线程A的主要任务是修改共享变量i的值，线程B的主要任务是读取共享变量i的值。如果不对程序做同步处理，某时刻线程A将共享变量i的值修改为2。上文我们说到线程修改的是工作内存中主内存的副本的值，线程A修改共享变量i的值后还未将最新值同步回主内存中。而此时线程B读取了共享变量i的值。因此在并发的时候就可能出现问题。</p>
-<p>如果将共享变量用volatitle修饰后，就可以避免这样的问题。现在我们来看看，volatile是怎么保证对所有线程的可见性的。</p>
-<p>依然还是上面的业务场景。在线程A修改了共享变量i的值后，由于此变量被volatile修饰，所有虚拟机会将线程A中共享变量i的值<strong>立即同步</strong>回主内存中。线程B在读取共享变量i的值时，不会选择线程B工作内存中的副本值，而会重新读取主内存中共享变量i的值。所以volatile保证了对所有线程的可见性。理解volatile可见性的一个好方法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写操作做了同步操作。</p>
-<p>##禁止指令重排。<br>指令重排是指编译器和处理器为了提高程序性能而对指令序列进行重新排序的一种手段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileTest &#123;</span><br><span class="line">	</span><br><span class="line">	int a = 0;</span><br><span class="line">	int i = 0;</span><br><span class="line">	boolean flag = false;</span><br><span class="line">	</span><br><span class="line">	public void write() &#123;</span><br><span class="line">		a = 1;</span><br><span class="line">		flag = true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void read() &#123;</span><br><span class="line">		if(flag) </span><br><span class="line">			i = a + 1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>flag是一个标记，用来标记变量a是否已经被修改。假设有线程A和线程B,A执行write操作，B执行read操作，那么B在执行i = a + 1操作时是否能看到线程A在write操作中对a的修改呢？<br><strong>不一定</strong><br>处理器和编译器可能对程序指令进行重排序，程序执行顺序可能为<br><img src="http://img.blog.csdn.net/20160108123920392" alt="这里写图片描述"><br>在这里多线程程序的语义被重排序破坏了，故在写多线程程序时不能认为写在前面的代码就一定会比写在后面的代码先执行。那程序执行的顺序应该按照什么规则进行判断呢？从JDK5开始，java使用新的JSR-133内存模型。JSR-133使用happens-before的概念来阐述操作之间的内存可见性。在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。</p>
-<ul>
-<li>程序次序规则：在一个线程内，按照程序代码顺序，书写在前面的操作先行发生于书写在后面的操作。</li>
-<li>管程锁定规则：一个unlock操作先行发生于后面对同一个锁的lock操作。这里必须强调的是同一个锁,而“后面”指时间上的先后顺序。</li>
-<li>Volatile变量规则：对一个volatile变量的写操作先行发生于后面对这个变量的读操作，这里的“后面”同样是指时间上的先后顺序。</li>
-<li>线程启动规则:Thread对象的start()方法先行发生于此线程的每一个动作。</li>
-<li>线程终止规则：线程中的所有操作都先行发生于对此线程的终止检测，可以通过Thread.join()方法结束、Thread.isAlive()的返回值等手段检测到线程已经终止执行。</li>
-<li>线程中断规则:对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()方法检测到是否有中断发生。</li>
-<li>对象终结规则：一个对象的初始化完成先行发生于它的finalize()方法的开始。</li>
-<li>传递性：如果A happens-before B,且Bhappens-before C那么A happens-before C。</li>
-</ul>
-<p>当变量被volatile修饰后，虚拟机通过在volatile加入内存壁障的手法从而达到禁止指令重排序的目的。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之volatile/">展开全文 >></a>
         </p>
       
 
