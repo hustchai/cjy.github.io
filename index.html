@@ -152,6 +152,74 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-基于netty的网络聊天室" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/基于netty的网络聊天室/">基于netty的网络聊天室</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/基于netty的网络聊天室/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:57:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基于netty和mybaties的网络聊天室</p>
+<p>登录界面<br><img src="http://img.blog.csdn.net/20160916104145587" alt="这里写图片描述"></p>
+<p>一对多聊天界面<br><img src="http://img.blog.csdn.net/20160916104211529" alt="这里写图片描述"></p>
+<p>注册界面<br><img src="http://img.blog.csdn.net/20160916104247681" alt="这里写图片描述"></p>
+<p>注册失败界面<br><img src="http://img.blog.csdn.net/20160916104313853" alt="这里写图片描述"></p>
+<p>github:<br><a href="https://github.com/hustchai/Chat" target="_blank" rel="noopener">https://github.com/hustchai/Chat</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/基于netty的网络聊天室/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-daoHelper" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -829,91 +897,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java并发之AbstractQueuedSynchronizer分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/">Java并发之AbstractQueuedSynchronizer分析</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:48:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 <strong>Doug Lea</strong> 开发了<strong>AbstractQueuedSynchronizer</strong>（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的<strong>ReentrantLock</strong>锁来介绍AQS。</p>
-<p>AQS有两种模式:<strong>公平模式和非公平模式（抢占式）</strong>。在实现自定义锁时只要按照需求实现公平模式API、非公平模式API或两种模式都实现。ReentrantLock分别实现了公平模式和非公平模式。</p>
-<p><strong>在使用公平模式时，AQS会自动生成一个FIFO队列。严格按照线程挂起的顺序获得锁使用权。</strong></p>
-<p>猜想：既然锁有被占用和释放两种状态，那么就需要一个state字段来标识锁的状态。果不其然，<br><img src="http://img.blog.csdn.net/20160203210350302" alt="这里写图片描述"><br>以ReentrantLock公平锁为例。<br>ReentrantLock锁通常使用模式为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public int show() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			doSomething();</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>查看lock方法源码：<br><img src="http://img.blog.csdn.net/20160203194933004" alt="Lock方法"><br>可以发现它只是简单代理了sync的lock方法。</p>
-<p><img src="http://img.blog.csdn.net/20160203195146778" alt="这里写图片描述"><br>明显的可以看见有两种实现模式。让我们看看公平模式的lock方法实现。</p>
-<p><img src="http://img.blog.csdn.net/20160203195515045" alt="这里写图片描述"><br>acquire()方法在AQS中实现。</p>
-<p><img src="http://img.blog.csdn.net/20160203195702545" alt="这里写图片描述"><br>首先看tryAcquire方法。</p>
-<p><img src="http://img.blog.csdn.net/20160203195755530" alt="这里写图片描述"><br>在AQS中，Doug Lea并没有实现该方法。而需要使用者自己实现。那让我们看看ReentrantLock 公平模式是如何实现该方法的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">protected final boolean tryAcquire(int acquires) &#123;</span><br><span class="line">            final Thread current = Thread.currentThread();  //获得当前执行线程</span><br><span class="line">            int c = getState();    //获得当前线程状态</span><br><span class="line">            if (c == 0) &#123;</span><br><span class="line">                if (!hasQueuedPredecessors() &amp;&amp;</span><br><span class="line">                    compareAndSetState(0, acquires)) &#123;  //如果当前锁没有线程使用，则当前线程将独占该锁</span><br><span class="line">                    setExclusiveOwnerThread(current);   //设置当锁的拥有者改为当前线程</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (current == getExclusiveOwnerThread()) &#123;  //ReentrantLock是可重用锁，即锁的占用者可以多次重新进入锁</span><br><span class="line">                int nextc = c + acquires;</span><br><span class="line">                if (nextc &lt; 0)</span><br><span class="line">                    throw new Error(&quot;Maximum lock count exceeded&quot;);</span><br><span class="line">                setState(nextc);     //使用CAS修改锁的状态</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>当获得锁的使用权时会返回true，不能获得锁耳朵使用权时会返回false。当返回false时，<strong>addWaiter()</strong>方法将当前线程加入等待队列中。</p>
-<p>等待队列如图所示：<br><img src="http://img.blog.csdn.net/20160203202330002" alt="这里写图片描述"><br>只有head结点指向的结点才能获得锁的使用权。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private Node addWaiter(Node mode) &#123;</span><br><span class="line">        Node node = new Node(Thread.currentThread(), mode);</span><br><span class="line">        Node pred = tail;    //快速找到尾结点</span><br><span class="line">        if (pred != null) &#123;</span><br><span class="line">            node.prev = pred;</span><br><span class="line">            if (compareAndSetTail(pred, node)) &#123;    //使用CAS方式将当前结点链接到尾结点。</span><br><span class="line">                pred.next = node;</span><br><span class="line">                return node;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        enq(node);      //如果CAS操作没能将当前结点链接到尾结点说明有多个线程产生竞争。此时需要使用自旋方式将当前结点链接到尾结点。</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>将当前线程接入队列后，接着就需要将当前线程挂起。即acquireQueued方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">final boolean acquireQueued(final Node node, int arg) &#123;</span><br><span class="line">        boolean failed = true;</span><br><span class="line">        try &#123;</span><br><span class="line">            boolean interrupted = false;</span><br><span class="line">            for (;;) &#123;</span><br><span class="line">                final Node p = node.predecessor();    //获得当前结点的前驱结点</span><br><span class="line">                if (p == head &amp;&amp; tryAcquire(arg)) &#123;   //如果前驱是头结点，并成功获取锁状态</span><br><span class="line">                    setHead(node);   //则移除前驱结点，并将当前结点设置为头结点。</span><br><span class="line">                    p.next = null; // help GC</span><br><span class="line">                    failed = false;</span><br><span class="line">                    return interrupted;</span><br><span class="line">                &#125;</span><br><span class="line">                if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;//否则，检查前驱结点的状态，看当前获取锁失败的线程是否需要挂起。</span><br><span class="line">                    parkAndCheckInterrupt())  //如果需要挂起，借助LockSupport的静态方法Park挂起当前线程。直到将其唤醒。</span><br><span class="line">                    interrupted = true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (failed)       //如果抛出异常</span><br><span class="line">                cancelAcquire(node);   //就将当前结点移除等待队列，即请求停止</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>到此，线程对锁的竞争告一段落。如果获取锁，则继续运行。否则进入等待队列，线程被挂起。</p>
-<p>接下来我们看看锁的释放<br><img src="http://img.blog.csdn.net/20160203205024818" alt="这里写图片描述"></p>
-<p>同样代理了sync的unlock方法<br><img src="http://img.blog.csdn.net/20160203205251274" alt="这里写图片描述"></p>
-<p>首先看tryRelease()方法。<br><img src="http://img.blog.csdn.net/20160203205334337" alt="这里写图片描述"><br>同样Doug Lea未实现这个方法。查看ReentrantLock中的实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protected final boolean tryRelease(int releases) &#123;</span><br><span class="line">            int c = getState() - releases;    //当前state状态 - releases值</span><br><span class="line">            if (Thread.currentThread() != getExclusiveOwnerThread())  //如果当前线程不是锁的占有者则抛出异常。</span><br><span class="line">                throw new IllegalMonitorStateException();</span><br><span class="line">            boolean free = false;</span><br><span class="line">            if (c == 0) &#123;       //如果状态为0 </span><br><span class="line">                free = true;</span><br><span class="line">                setExclusiveOwnerThread(null);  //就将锁占有者设置为空</span><br><span class="line">            &#125;</span><br><span class="line">            setState(c);  //设置状态</span><br><span class="line">            return free;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<p>锁释放成功后，找到AQS的头结点并将其唤醒即可。<br><img src="http://img.blog.csdn.net/20160203210031345" alt="这里写图片描述"><br>至此锁的释放操作完成。</p>
-<p>只是自己最近研究AQS源码的一点心得，若有不正确的地方请批评指正。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/">展开全文 >></a>
         </p>
       
 
