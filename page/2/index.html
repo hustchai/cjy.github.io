@@ -152,6 +152,77 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Tomcat源码分析-Connector-连接器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">Tomcat源码分析--Connector(连接器)</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。</p>
+<p>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
+<p>2.Connector的初始化方法。<br>在Connector调用initInternal的初始化方法。主要完成了2个操作：</p>
+<ol>
+<li>初始化适配器。     </li>
+<li>初始化protocolHandler的init()方法。<br><img src="http://img.blog.csdn.net/20160427112337608" alt="这里写图片描述"><br>protocolHandler的init方法会调用父类AbstractProtocol的init方法。<br><img src="http://img.blog.csdn.net/20160427125713824" alt="这里写图片描述"><br>其父类的init()方法会调用endpoint的init方法。endpoint提供了底层的网络i/o 连接。</li>
+</ol>
+<p>3.Connector的Start方法。<br>介绍完Connector的Init方法，我们来看看Connector的start方法。<br><img src="http://img.blog.csdn.net/20160427130415967" alt="这里写图片描述"><br>Connector方法中调用了protoHandler的start方法。protoHandler是个接口，我们以其具体的实现类Http11NioProtocol来介绍。从类名上可以看出，该类使用的是Java nio的方式进行连接的。Http11NioProtocol会最终调用其底层的Nio实现类NioEndPoint来接收请求。<br><img src="http://img.blog.csdn.net/20160427131330642" alt="这里写图片描述"><br>至此Connector启动完成。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Tomcat源码分析-启动过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -824,74 +895,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之volatile/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Android与服务器端通信时-部分中文出现乱码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/"> Android与服务器端通信时 部分中文出现乱码</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在android与服务器端通信期间出现部分中文有乱码，如图所示：<br><img src="http://img.blog.csdn.net/20151216134447573" alt="这里写图片描述"></p>
-<p>众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8<br>mysql编码<br><img src="http://img.blog.csdn.net/20151216134846959" alt="这里写图片描述"></p>
-<p>服务器端返回数据编码<br>由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码<br><img src="http://img.blog.csdn.net/20151216135041048" alt="这里写图片描述"></p>
-<p>而在本机中使用httpClient进行http模拟时<br>数据也正常返回。所以将问题锁定在android端代码</p>
-<p>在android端的输入流中使用的是以字节形式进行读取（InputStream）<br><img src="http://img.blog.csdn.net/20151216141934310" alt="这里写图片描述"></p>
-<p>而UTF-8编码中的中文中一个汉字可能包含几个字节，猜想可能是在读取时将流截断时正好将一个完整的中文字符截断。将读取方式改为字符读取后(InputStreamReader)，问题得以解决<br><img src="http://img.blog.csdn.net/20151216135927992" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/">展开全文 >></a>
         </p>
       
 

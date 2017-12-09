@@ -152,6 +152,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-netty源码浅析-accept" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/netty源码浅析-accept/">netty源码浅析--accept</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/netty源码浅析-accept/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:58:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前面我们分析了netty线程启动和服务器bind的过程，接着我们要分析的是服务器accept的过程。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们先看一下java nio中是怎么处理accept这个操作的。我们截取java nio中的一个代码片段。<br><img src="http://img.blog.csdn.net/20170707190213416?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="java nio accept"><br>selector获取活跃key之后，然后会判断key是否是可accept的，如果是则执行accept操作。我们都知道netty是对java nio的封装，所以对netty的accept的分析也会从获取的活跃的key开始。</p>
+<p>netty使用NioEventLoop来处理相应的网络事件。当有客户端connect请求，selector可以返回其对应的SelectionKey，然后对这些key进行相应的处理。（为了说明处理流程，省去与流程无关代码）<br><img src="http://img.blog.csdn.net/20170707191939763?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>采用SelectedSelectionKeySet保存有事件发生的selectedKey。<br>1、SelectedSelectionKeySet内部使用两个大小为1024的SelectionKey数组keysA和keysB保存selectedKey。<br>2、把SelectedSelectionKeySet实例映射到selector的原生selectedKeys和publicSelectedKeys。</p>
+<p><img src="http://img.blog.csdn.net/20170707192250385?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="process"><br>selector会一次性的取到所有活跃的（有事件触发的）key，通过for循环来遍历所有的key。<br>通过attachment()来获取注册在ServerSocketChannel的附件，其实附件就是ServerSocketChannel本身。如果是AbstractNioChannel的实例，则调用processSelectedKey()方法。</p>
+<p><img src="http://img.blog.csdn.net/20170707192818587?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="processSelectedkey"><br>unsafe是实际操作网络I/O的类。类名字是unsafe,并不是说这个类是不安全的，而是从框架的角度上来说尽量不要使用unsafe进行网络操作。<br>方法内部会对感兴趣的操作进行判断，这里由于我们分析的accept操作，所以会调用unsafe的read方法。</p>
+<p>该read方法是在NioMessageUnsafe类实现的。同样的为了说明主要逻辑，省略一些属性判断和设置的相关代码。<br><img src="http://img.blog.csdn.net/20170707193726434?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br>大家有没有想过，为什么accept方法会在一个叫read方法内部。不要忽略了 这段代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> if ((readyOps &amp; (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) &#123;</span><br><span class="line">	  unsafe.read();          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，如果是accept和read操作都会调用read方法。然后在read方法内部进行判断。doReadMessages(readBuf) 可以认为是在判断accept操作还是read操作。</p>
+<p><img src="http://img.blog.csdn.net/20170707194449199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="doreadmessage"><br>1、javaChannel()方法返回ServerSocketChannel实例。<br>2、ServerSocketChannel.accept方法返回socketChannel 。<br>3、把 NioServerSocketChannel 和 socketChannel 封装成 NioSocketChannel，并缓存到readBuf。<br>在调用NioSocketChannel的构造方法时会自动将read操作设置成为该channel当前感兴趣的事件。<br><img src="http://img.blog.csdn.net/20170707195510071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>至此accept操作完成。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/netty源码浅析-accept/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Spring自定义annotation实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -832,77 +904,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-一次HTTP请求过程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Tomcat源码分析-Connector-连接器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">Tomcat源码分析--Connector(连接器)</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。</p>
-<p>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
-<p>2.Connector的初始化方法。<br>在Connector调用initInternal的初始化方法。主要完成了2个操作：</p>
-<ol>
-<li>初始化适配器。     </li>
-<li>初始化protocolHandler的init()方法。<br><img src="http://img.blog.csdn.net/20160427112337608" alt="这里写图片描述"><br>protocolHandler的init方法会调用父类AbstractProtocol的init方法。<br><img src="http://img.blog.csdn.net/20160427125713824" alt="这里写图片描述"><br>其父类的init()方法会调用endpoint的init方法。endpoint提供了底层的网络i/o 连接。</li>
-</ol>
-<p>3.Connector的Start方法。<br>介绍完Connector的Init方法，我们来看看Connector的start方法。<br><img src="http://img.blog.csdn.net/20160427130415967" alt="这里写图片描述"><br>Connector方法中调用了protoHandler的start方法。protoHandler是个接口，我们以其具体的实现类Http11NioProtocol来介绍。从类名上可以看出，该类使用的是Java nio的方式进行连接的。Http11NioProtocol会最终调用其底层的Nio实现类NioEndPoint来接收请求。<br><img src="http://img.blog.csdn.net/20160427131330642" alt="这里写图片描述"><br>至此Connector启动完成。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">展开全文 >></a>
         </p>
       
 
