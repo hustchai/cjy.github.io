@@ -152,6 +152,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Spring自定义annotation实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Spring自定义annotation实现/">Spring自定义annotation实现</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Spring自定义annotation实现/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:57:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在实习的时候使用了dubbo。第一次使用了Spring的自定义annotation，当时就觉得这玩意真好用，一定要学会它。经过几天的探索，终于搞清楚了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;扩展xml自定义标签需要如下几个步骤（自定义xml标签是自定义annotation标签的基础）</p>
+<ul>
+<li>编写xml schema描述自定义元素</li>
+<li>实现namespaceHandler接口</li>
+<li>实现BeanDefinitionParser接口</li>
+<li><p>编写spring.handlers和spring.schemas（这俩文件必须放到META-INF文件夹下）</p>
+<p>Spring官方文档有具体的例子，不在累述。链接：<a href="http://docs.spring.io/spring/docs/4.3.0.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#xml-custom" target="_blank" rel="noopener">Spring 官方文档</a></p>
+</li>
+</ul>
+<p>废话不多说，直接上例子</p>
+<p><strong>整个项目的目录结构</strong><br><img src="http://img.blog.csdn.net/20170630161714064?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="项目目录结构"></p>
+<p><strong>1.编写xml schema</strong></p>
+<p><img src="http://img.blog.csdn.net/20170630161302442?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="xml schema"><br>该schema只定义了一个元素 即annotion 这个元素有两个属性id,package。package属性标识了需要扫描的annotion在哪个路径下。</p>
+<p>applicationContext.xml<br><img src="http://img.blog.csdn.net/20170630163455465?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="applicationContext.xml"></p>
+<p><strong>2.实现namespaceHandler接口</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spring对于非默认空间下标签的解析处理都是有对应的XXXNamespaceHandler的，比如解析<aop:xxx>标签，其有一个对应的叫做AopNamespaceHandler的Handler存在，所有在aop命名空间之下的几点的解析交给该Handler处理；但我们在使用时不需要实现namespaceHandler，而可以实现spring为我们提供的NamespaceHandlerSupport，这里面封装了大量的逻辑使我们开发变得简单。<br><img src="http://img.blog.csdn.net/20170630162709438?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="namespaceHandler"></aop:xxx></p>
+<p><strong>3实现BeanDefinitionParser接口</strong><br>Spring在解析到annotation标签时会调用AnnotationBeanDefinitionParser的parse方法解析。<br><img src="http://img.blog.csdn.net/20170630163013164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="BeanDefinitionParser"><br>parse方法比较简单，只把applicationContext文件内配置的annotation配置的package属性读取出来，并将该属性封装到BeanDefinition内。然后将该BeanDefinition注册到容器。这在里面我们是将AnnotaionBean注册到容器中。Spring容器会实例化AnnotationBean</p>
+<p>AnnotationBean的实现<br><img src="http://img.blog.csdn.net/20170630163921212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="AnnotationBean"><br>AnnotationBean实现了BeanFactoryPostProcessor，BeanPostProcessor和ApplicationContextAware接口。这三个接口的作用我想大家应该都清楚吧，就不过多叙述。<br>在postProcessBeanFactory方法中，根据annotation的package属性来扫描Service注解。具体代码如上图。</p>
+<p>然后在postProcessAfterInitialization方法中获取Service注解，并获取Service注解标记的类。具体代码如图。<br><img src="http://img.blog.csdn.net/20170630164726536?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="postProcessAfterInitialization"></p>
+<p>ServiceBean的实现<br><img src="http://img.blog.csdn.net/20170630164954550?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="ServiceBean"></p>
+<p>ServiceBean的实现比较简单，只是将获取到Service注解的content属性输出和Service标记类show方法的调用。<br><img src="http://img.blog.csdn.net/20170630165148834?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="test"></p>
+<p><strong>4.spring.handlers和spring.schemas</strong><br>如何写这两个文件，Spring官方文档写的很清楚。这里就不再展示。具体看<a href="https://github.com/hustchai/Annotation" target="_blank" rel="noopener">github</a>。</p>
+<p>测试结果<br><img src="http://img.blog.csdn.net/20170630165256858?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvYzI3NTA0Njc1OA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="result"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Spring自定义annotation实现/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-基于netty的网络聊天室" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -818,85 +903,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Tomcat源码分析-启动过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">Tomcat源码分析--启动过程</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般启动Tomcat会是运行startup.bat或者startup.sh文件，这两个文件最后都会调用，org.apache.catalina.startup包下面Bootstrap类的main方法。main方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132259811" alt="这里写图片描述"></p>
-<p>main方法先实例化了一个Bootstrap实例，接着调用了init方法。init方法是生命周期方法，以后不再累述。接着看init的具体实现。<br><img src="http://img.blog.csdn.net/20160427132449928" alt="这里写图片描述"><br>init方法，先初始化了类加载器。initClassLoaders方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132555850" alt="这里写图片描述"><br>createClassLoader具体实现细节不再显示，有感兴趣的读者可以具体查看。该方法的具体签名为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private ClassLoader createClassLoader(String name, ClassLoader parent)  throws Exception</span><br></pre></td></tr></table></figure>
-<p>从方法签名中可以看出createClassLoader需要传入一个父加载器。从具体的代码中可以看出，commonLoader类加载器是catalinaLoader类加载器和sharedLoader类加载器的父加载器。初始化完类加载器后，使用反射机制调用org.apache.catalina.startup.Catalina类下的setParentClassLoader方法。具体代码是:</p>
-<p><img src="http://img.blog.csdn.net/20160427132723661" alt="这里写图片描述"></p>
-<p>因为Tomcat执行的是start操作，调用完init方法后，会执行load方法。</p>
-<p><img src="http://img.blog.csdn.net/20160427132817195" alt="这里写图片描述"><br>load方法通过反射调用Catalina类的load方法。</p>
-<p><img src="http://img.blog.csdn.net/20160427132915258" alt="这里写图片描述"><br>Catalina类的load方法：</p>
-<p><img src="http://img.blog.csdn.net/20160427133058493" alt="这里写图片描述"></p>
-<p>load方法中比较重要的方法是createStartDigester()，createStartDigester方法主要的作用就是帮我们实例化了所有的服务组件包括server,service和connect。具体的实例化方法，<br>  <img src="http://img.blog.csdn.net/20160427133517500" alt="这里写图片描述"></p>
-<p>初始化操作完成后，接下来会执行catalina实例的start方法。</p>
-<p>从上面加载的组件中，Tomcat会默认加载org.apache.catalina.core.StandardServer作为Server的实例类。</p>
-<p><img src="http://img.blog.csdn.net/20160427133728237" alt="这里写图片描述"></p>
-<p>在Server的start的方法里面会执行service的start方法。在createStartDigester()方法里面，会默认加载org.apache.catalina.core.StandardService类。会接着调用Service的start方法。<br><img src="http://img.blog.csdn.net/20160427133903254" alt="这里写图片描述"><br>service中会调用connector的start方法。至此Tomcat启动完毕</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">展开全文 >></a>
         </p>
       
 

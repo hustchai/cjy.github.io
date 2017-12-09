@@ -152,6 +152,85 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Tomcat源码分析-启动过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">Tomcat源码分析--启动过程</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般启动Tomcat会是运行startup.bat或者startup.sh文件，这两个文件最后都会调用，org.apache.catalina.startup包下面Bootstrap类的main方法。main方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132259811" alt="这里写图片描述"></p>
+<p>main方法先实例化了一个Bootstrap实例，接着调用了init方法。init方法是生命周期方法，以后不再累述。接着看init的具体实现。<br><img src="http://img.blog.csdn.net/20160427132449928" alt="这里写图片描述"><br>init方法，先初始化了类加载器。initClassLoaders方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132555850" alt="这里写图片描述"><br>createClassLoader具体实现细节不再显示，有感兴趣的读者可以具体查看。该方法的具体签名为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private ClassLoader createClassLoader(String name, ClassLoader parent)  throws Exception</span><br></pre></td></tr></table></figure>
+<p>从方法签名中可以看出createClassLoader需要传入一个父加载器。从具体的代码中可以看出，commonLoader类加载器是catalinaLoader类加载器和sharedLoader类加载器的父加载器。初始化完类加载器后，使用反射机制调用org.apache.catalina.startup.Catalina类下的setParentClassLoader方法。具体代码是:</p>
+<p><img src="http://img.blog.csdn.net/20160427132723661" alt="这里写图片描述"></p>
+<p>因为Tomcat执行的是start操作，调用完init方法后，会执行load方法。</p>
+<p><img src="http://img.blog.csdn.net/20160427132817195" alt="这里写图片描述"><br>load方法通过反射调用Catalina类的load方法。</p>
+<p><img src="http://img.blog.csdn.net/20160427132915258" alt="这里写图片描述"><br>Catalina类的load方法：</p>
+<p><img src="http://img.blog.csdn.net/20160427133058493" alt="这里写图片描述"></p>
+<p>load方法中比较重要的方法是createStartDigester()，createStartDigester方法主要的作用就是帮我们实例化了所有的服务组件包括server,service和connect。具体的实例化方法，<br>  <img src="http://img.blog.csdn.net/20160427133517500" alt="这里写图片描述"></p>
+<p>初始化操作完成后，接下来会执行catalina实例的start方法。</p>
+<p>从上面加载的组件中，Tomcat会默认加载org.apache.catalina.core.StandardServer作为Server的实例类。</p>
+<p><img src="http://img.blog.csdn.net/20160427133728237" alt="这里写图片描述"></p>
+<p>在Server的start的方法里面会执行service的start方法。在createStartDigester()方法里面，会默认加载org.apache.catalina.core.StandardService类。会接着调用Service的start方法。<br><img src="http://img.blog.csdn.net/20160427133903254" alt="这里写图片描述"><br>service中会调用connector的start方法。至此Tomcat启动完毕</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java并发之AbstractQueuedSynchronizer分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -813,85 +892,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-git连接本地服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1、前期准备"><a href="#1、前期准备" class="headerlink" title="1、前期准备"></a>1、前期准备</h2><ol>
-<li>服务器上配置好的git</li>
-<li><p>git客户端 </p>
-<p>1.1<br>在服务器上安装git （本机所使用的linux是ubuntu）<br>在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户</p>
-</li>
-</ol>
-<p>1.2<br>下载客户端 在浏览器地址栏输入：<a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a><br>回车后<br><img src="http://img.blog.csdn.net/20151113201454510" alt="这里写图片描述"><br>点击Download进行下载</p>
-<h2 id="2、具体操作"><a href="#2、具体操作" class="headerlink" title="2、具体操作"></a>2、具体操作</h2><p>2.1<br>在合适的位置创建一个目录充当git远程仓库（本机位置为/usr/testgit），然后使用init命令初始化仓库<br>在命令终端输入:<br>sudo git init –bare<br><img src="http://img.blog.csdn.net/20151113201758698" alt="这里写图片描述"></p>
-<p>2.2<br>将git init生成的目录所属者改为git<br>输入命令：sudo chown -R git:git  *<br><img src="http://img.blog.csdn.net/20151113201841611" alt="这里写图片描述"></p>
-<p>至此服务器端的操作完成。<br>在客户端合适位置使用git 客户端从服务器资源<br>2.3<br>首先打开git客户端<br><img src="http://img.blog.csdn.net/20151113202038628" alt="这里写图片描述"></p>
-<p>点击Git Bash Here 后出现<br><img src="http://img.blog.csdn.net/20151113202120515" alt="这里写图片描述"></p>
-<p>在git客户端命名终端输入:<br>git clone git@xxxxxx:/rrrrr    其中xxxxxx是远程服务器的地址 rrrrr为git仓库所在位置<br><img src="http://img.blog.csdn.net/20151113202427021" alt="这里写图片描述">          </p>
-<p>如果配置正确你选中的目录下会出现名字为testgit的文件夹 testgit文件夹下随意创建若干个文件<br><img src="http://img.blog.csdn.net/20151113202454293" alt="这里写图片描述"></p>
-<p>2.3<br>在git客户端上使用命令 git add 111.txt  222.txt  333.txt 或者使用git add .(将本文件夹下所有文件都add) 该命令的作用是告诉git把文件添加到git仓库</p>
-<p>2.4<br>然后使用git commit命令将文件提交到git仓库<br><img src="http://img.blog.csdn.net/20151113202555199" alt="这里写图片描述"><br>-m 后面的内容为本次提交文件的一些注释内容<br>此时文件还没有从本地仓库上传到远程服务器仓库</p>
-<p>2.5<br>使用push命令将本地仓库中的内容提交到远程仓库<br>在git客户端命令终端输入：git push origin master<br><img src="http://img.blog.csdn.net/20151113202629559" alt="这里写图片描述"></p>
-<p>至此本地仓库中的文件上传已经上传到远程服务器仓库。<br>在其他文件夹下再次使用 git clone 命令 从远程服务器同步仓库<br><img src="http://img.blog.csdn.net/20151113202733430" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">展开全文 >></a>
         </p>
       
 
