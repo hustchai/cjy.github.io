@@ -152,6 +152,75 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JAVA泛型擦除机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class TestF &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Class a1 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">		Class a2 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">		System.out.println(a1 == a2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果仅凭直觉来看，该程序可能会输出 false 这个结果，但在具体的环境下运行时会输出 true 。这很令人费解，这是为什么呢？</p>
+<p>Java泛型是使用类型擦除来实现的。这表示在运行过程中任何和类型有关的信息都会被擦除，所有在运行中 ArrayList<integer>和ArrayList<string>的具体信息都被擦除成它们的原生类型即ArrayList类型。</string></integer></p>
+<p>由于擦除机制，泛型不能用于显示地引用运行时类型的操作之中，例如转型、new表达式和instanceof操作。</p>
+<p>若在泛型内部必须使用类型操作时，可以在运行时采用反射的方法将正在运行的类信息添加到泛型内部，这种方法称为补偿。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class Dog &#123;</span><br><span class="line">	</span><br><span class="line">	public Dog() &#123;</span><br><span class="line">		System.out.println(&quot;Dog...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestF2&lt;T&gt; &#123;</span><br><span class="line">	Class&lt;T&gt; type;</span><br><span class="line">	public TestF2(Class&lt;T&gt; type) &#123;</span><br><span class="line">		this.type = type;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public boolean check(Object obj) &#123;</span><br><span class="line">		return type.isInstance(obj); //isInstance 和instanceof动态等价 </span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show(Class&lt;T&gt; type) &#123;   //使用反射动态实现new表达式</span><br><span class="line">		try &#123;</span><br><span class="line">			type.newInstance();</span><br><span class="line">		&#125; catch (InstantiationException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		TestF2&lt;Dog&gt; t = new TestF2&lt;Dog&gt;(Dog.class);</span><br><span class="line">		System.out.println(t.check(new Dog()));</span><br><span class="line">		t.show(Dog.class);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出为：<br>Dog…<br>true<br>Dog…</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-JAVA利用泛型返回类型不同的对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
