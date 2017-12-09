@@ -152,122 +152,35 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Android与服务器端通信时-部分中文出现乱码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Tomcat源码分析-Connector-连接器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/">Android与服务器端通信时 部分中文出现乱码</a>
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">Tomcat源码分析--Connector(连接器)</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在android与服务器端通信期间出现部分中文有乱码，如图所示：<br><img src="http://img.blog.csdn.net/20151216134447573" alt="这里写图片描述"></p>
-<p>众所周知，乱码出现在两种不同的编码格式相互转换过程中，而在项目的一开始便约定所有的编码格式都采用UTF-8<br>mysql编码<br><img src="http://img.blog.csdn.net/20151216134846959" alt="这里写图片描述"></p>
-<p>服务器端返回数据编码<br>由于项目采用的是SpringMVC 所以只需要将其如下配置即可返回UTF-8格式的编码<br><img src="http://img.blog.csdn.net/20151216135041048" alt="这里写图片描述"></p>
-<p>而在本机中使用httpClient进行http模拟时<br>数据也正常返回。所以将问题锁定在android端代码</p>
-<p>在android端的输入流中使用的是以字节形式进行读取（InputStream）<br><img src="http://img.blog.csdn.net/20151216141934310" alt="这里写图片描述"></p>
-<p>而UTF-8编码中的中文中一个汉字可能包含几个字节，猜想可能是在读取时将流截断时正好将一个完整的中文字符截断。将读取方式改为字符读取后(InputStreamReader)，问题得以解决<br><img src="http://img.blog.csdn.net/20151216135927992" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-git连接本地服务器教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1、前期准备"><a href="#1、前期准备" class="headerlink" title="1、前期准备"></a>1、前期准备</h2><ol>
-<li>服务器上配置好的git</li>
-<li><p>git客户端 </p>
-<p>1.1<br>在服务器上安装git （本机所使用的linux是ubuntu）<br>在服务器输入命令:sudo apt-get install git即可 然后创建名字为git的用户组和用户</p>
-</li>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在上一篇中分析了Tomcat的启动过程。也提到了Service会启动Connector。现在让我们来看看Connector具体做了什么。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从Connector类中有两个比较重要的属性：protocolHandler(协议)和adapter(适配器)。既然是连接器，（1）需要具备接收客户端请求的连接。（2）然后将客户端的socket请求的数据，解析和包装成为Http数据格式。（3）然后将Http数据包交给容器去处理。protocolHandler完成(1)(2)，adapter完成(3)。</p>
+<p>1.Connector构造函数<br><img src="http://img.blog.csdn.net/20160427111439328" alt="这里写图片描述"><br>在Connector构造函数中，通过反射生成protocolHandler。协议的设置在conf/server.xml中配置，通过setProtocol来赋值。</p>
+<p>2.Connector的初始化方法。<br>在Connector调用initInternal的初始化方法。主要完成了2个操作：</p>
+<ol>
+<li>初始化适配器。     </li>
+<li>初始化protocolHandler的init()方法。<br><img src="http://img.blog.csdn.net/20160427112337608" alt="这里写图片描述"><br>protocolHandler的init方法会调用父类AbstractProtocol的init方法。<br><img src="http://img.blog.csdn.net/20160427125713824" alt="这里写图片描述"><br>其父类的init()方法会调用endpoint的init方法。endpoint提供了底层的网络i/o 连接。</li>
 </ol>
-<p>1.2<br>下载客户端 在浏览器地址栏输入：<a href="https://git-for-windows.github.io/" target="_blank" rel="noopener">https://git-for-windows.github.io/</a><br>回车后<br><img src="http://img.blog.csdn.net/20151113201454510" alt="这里写图片描述"><br>点击Download进行下载</p>
-<h2 id="2、具体操作"><a href="#2、具体操作" class="headerlink" title="2、具体操作"></a>2、具体操作</h2><p>2.1<br>在合适的位置创建一个目录充当git远程仓库（本机位置为/usr/testgit），然后使用init命令初始化仓库<br>在命令终端输入:<br>sudo git init –bare<br><img src="http://img.blog.csdn.net/20151113201758698" alt="这里写图片描述"></p>
-<p>2.2<br>将git init生成的目录所属者改为git<br>输入命令：sudo chown -R git:git  *<br><img src="http://img.blog.csdn.net/20151113201841611" alt="这里写图片描述"></p>
-<p>至此服务器端的操作完成。<br>在客户端合适位置使用git 客户端从服务器资源<br>2.3<br>首先打开git客户端<br><img src="http://img.blog.csdn.net/20151113202038628" alt="这里写图片描述"></p>
-<p>点击Git Bash Here 后出现<br><img src="http://img.blog.csdn.net/20151113202120515" alt="这里写图片描述"></p>
-<p>在git客户端命名终端输入:<br>git clone git@xxxxxx:/rrrrr    其中xxxxxx是远程服务器的地址 rrrrr为git仓库所在位置<br><img src="http://img.blog.csdn.net/20151113202427021" alt="这里写图片描述">          </p>
-<p>如果配置正确你选中的目录下会出现名字为testgit的文件夹 testgit文件夹下随意创建若干个文件<br><img src="http://img.blog.csdn.net/20151113202454293" alt="这里写图片描述"></p>
-<p>2.3<br>在git客户端上使用命令 git add 111.txt  222.txt  333.txt 或者使用git add .(将本文件夹下所有文件都add) 该命令的作用是告诉git把文件添加到git仓库</p>
-<p>2.4<br>然后使用git commit命令将文件提交到git仓库<br><img src="http://img.blog.csdn.net/20151113202555199" alt="这里写图片描述"><br>-m 后面的内容为本次提交文件的一些注释内容<br>此时文件还没有从本地仓库上传到远程服务器仓库</p>
-<p>2.5<br>使用push命令将本地仓库中的内容提交到远程仓库<br>在git客户端命令终端输入：git push origin master<br><img src="http://img.blog.csdn.net/20151113202629559" alt="这里写图片描述"></p>
-<p>至此本地仓库中的文件上传已经上传到远程服务器仓库。<br>在其他文件夹下再次使用 git clone 命令 从远程服务器同步仓库<br><img src="http://img.blog.csdn.net/20151113202733430" alt="这里写图片描述"></p>
+<p>3.Connector的Start方法。<br>介绍完Connector的Init方法，我们来看看Connector的start方法。<br><img src="http://img.blog.csdn.net/20160427130415967" alt="这里写图片描述"><br>Connector方法中调用了protoHandler的start方法。protoHandler是个接口，我们以其具体的实现类Http11NioProtocol来介绍。从类名上可以看出，该类使用的是Java nio的方式进行连接的。Http11NioProtocol会最终调用其底层的Nio实现类NioEndPoint来接收请求。<br><img src="http://img.blog.csdn.net/20160427131330642" alt="这里写图片描述"><br>至此Connector启动完成。</p>
 
       
 
@@ -281,7 +194,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码解析</a>
         		</li>
       		
 		</ul>
@@ -291,7 +204,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">展开全文 >></a>
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-Connector-连接器/">展开全文 >></a>
         </p>
       
 
@@ -321,34 +234,43 @@
 
 
   
-    <article id="post-使用cookie绕过验证码进行模拟登录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Tomcat源码分析-启动过程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">使用cookie绕过验证码进行模拟登录</a>
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">Tomcat源码分析--启动过程</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.工具<br>httpClient jar包<br>任意抓包工具 推荐 firefox的 firebug（非常好用）</p>
-<p>在使用httpClient进行模拟登录时，有时候会遇到需要输入验证码的情况。而对验证码进行识别的方法既费时效果还不好。这里提供一个取巧的方法，即使用浏览器登录时产生的cookie进行登录。</p>
-<p>2.上代码<br>首先是一个模拟http请求的工具类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.UnsupportedEncodingException;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">import org.apache.http.HttpEntity;</span><br><span class="line">import org.apache.http.NameValuePair;</span><br><span class="line">import org.apache.http.ParseException;</span><br><span class="line">import org.apache.http.client.ClientProtocolException;</span><br><span class="line">import org.apache.http.client.config.CookieSpecs;</span><br><span class="line">import org.apache.http.client.config.RequestConfig;</span><br><span class="line">import org.apache.http.client.entity.UrlEncodedFormEntity;</span><br><span class="line">import org.apache.http.client.methods.CloseableHttpResponse;</span><br><span class="line">import org.apache.http.client.methods.HttpGet;</span><br><span class="line">import org.apache.http.client.methods.HttpPost;</span><br><span class="line">import org.apache.http.impl.client.CloseableHttpClient;</span><br><span class="line">import org.apache.http.impl.client.HttpClients;</span><br><span class="line">import org.apache.http.util.EntityUtils;</span><br><span class="line"></span><br><span class="line">public class Http &#123;</span><br><span class="line">	</span><br><span class="line">	static CloseableHttpClient httpclient = null;</span><br><span class="line">	static RequestConfig requestConfig = null;</span><br><span class="line">	</span><br><span class="line">	static &#123;</span><br><span class="line">		 requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">         httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static String doGet(String url) &#123;</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line">		RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">		 CloseableHttpClient   httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">		try &#123;  </span><br><span class="line">           // 创建httpget.    </span><br><span class="line">           HttpGet httpget = new HttpGet(url);</span><br><span class="line">           httpget.addHeader(&quot;Cookie&quot;, &quot;xxxxxxx&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Accept-Encoding&quot;,&quot;gzip, deflate&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Accept-Language&quot;,&quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Cache-Control&quot;,&quot;no-cache&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Connection&quot;,&quot;keep-alive&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span><br><span class="line">           httpget.addHeader(&quot;Referer&quot;,&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">           httpget.addHeader(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0&quot;);</span><br><span class="line">           System.out.println(&quot;executing request &quot; + httpget.getURI());  </span><br><span class="line">           // 执行get请求.    </span><br><span class="line">           CloseableHttpResponse response = httpclient.execute(httpget); </span><br><span class="line">           try &#123;  </span><br><span class="line">               // 获取响应实体    </span><br><span class="line">               HttpEntity entity = response.getEntity();  </span><br><span class="line">               System.out.println(&quot;--------------------------------------&quot;);  </span><br><span class="line">               // 打印响应状态    </span><br><span class="line">               System.out.println(response.getStatusLine());  </span><br><span class="line">               if (entity != null) &#123;  </span><br><span class="line">               	return EntityUtils.toString(entity);</span><br><span class="line">               &#125;  </span><br><span class="line">               System.out.println(&quot;------------------------------------&quot;);  </span><br><span class="line">           &#125; finally &#123;  </span><br><span class="line">               response.close();  </span><br><span class="line">           &#125;  </span><br><span class="line">       &#125; catch (ClientProtocolException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; catch (ParseException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; catch (IOException e) &#123;  </span><br><span class="line">           e.printStackTrace();  </span><br><span class="line">       &#125; </span><br><span class="line">		return null;</span><br><span class="line">	&#125;</span><br><span class="line">  </span><br><span class="line">   </span><br><span class="line">    /**以utf-8形式读取*/</span><br><span class="line">    public static String doPost(String url,List&lt;NameValuePair&gt; formparams) &#123;</span><br><span class="line">    	return doPost(url, formparams,&quot;UTF-8&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static String doPost(String url,List&lt;NameValuePair&gt; formparams,String charset) &#123;</span><br><span class="line">    	 RequestConfig requestConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.BEST_MATCH).build();</span><br><span class="line">         CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();</span><br><span class="line">    	// 创建默认的httpClient实例.    </span><br><span class="line">       // CloseableHttpClient httpclient = HttpClients.createDefault(); </span><br><span class="line">     // 创建httppost    </span><br><span class="line">        HttpPost httppost = new HttpPost(url); </span><br><span class="line">        httppost.addHeader(&quot;Cookie&quot;, &quot;xxxxxxx&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Accept-Encoding&quot;,&quot;gzip, deflate&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Accept-Language&quot;,&quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Cache-Control&quot;,&quot;no-cache&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Connection&quot;,&quot;keep-alive&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Content-Type&quot;,&quot;application/json; charset=UTF-8&quot;);</span><br><span class="line">        httppost.addHeader(&quot;Referer&quot;,&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">        httppost.addHeader(&quot;User-Agent&quot;,&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0&quot;);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        UrlEncodedFormEntity uefEntity;</span><br><span class="line">        try &#123;</span><br><span class="line">        	uefEntity = new UrlEncodedFormEntity(formparams, charset);</span><br><span class="line">        	httppost.setEntity(uefEntity);</span><br><span class="line">        	CloseableHttpResponse response = httpclient.execute(httppost);</span><br><span class="line">        	try &#123;</span><br><span class="line">        		// 打印响应状态    </span><br><span class="line">                System.out.println(response.getStatusLine());</span><br><span class="line">        		 HttpEntity entity = response.getEntity(); </span><br><span class="line">        		 if (entity != null) &#123;  </span><br><span class="line">        			return EntityUtils.toString(entity);</span><br><span class="line">                 &#125;  </span><br><span class="line">        	&#125; finally &#123;  </span><br><span class="line">                response.close();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; catch (ClientProtocolException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; catch (UnsupportedEncodingException e1) &#123;  </span><br><span class="line">            e1.printStackTrace();  </span><br><span class="line">        &#125; catch (IOException e) &#123;  </span><br><span class="line">            e.printStackTrace();  </span><br><span class="line">        &#125; </span><br><span class="line">    	return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> httppost.addHeader(“Cookie”, “xxxxxxx”); 这里xxxxxx的即为登录时产生的cookie 由于每个浏览器产生的cookie不尽相同，故以xxxxx代替</p>
-<p>测试类  这里模拟登录的是知乎</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String content = Http.doGet(&quot;http://www.zhihu.com/&quot;);</span><br><span class="line">		System.out.println(content);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试结果<br><img src="http://img.blog.csdn.net/20151019225725767" alt="这里写图片描述"></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一直使用Tomcat确不知道它的运行原理。看了源码后对它的启动过程有了一定的了解，特来记录一下。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先先介绍一下Tomcat的架构图：<br><img src="http://img.blog.csdn.net/20160417204227221" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomcat主要有两个核心的组件，一个是Connector(连接器)和容器。所谓连接器就是当有HTTP请求到来时，连接器负责接收这个请求，然后将该请求转发到容器。容器有Engine，Host，Context，Wrapper。Engine：表示整个Catalina servlet引擎；Host:表示包含一个或多个Context容器的虚拟主机；Context:表示一个Web应用程序。一个Context可以有多个Wrapper；Wrapper:表示一个独立的servlet。一个容器可以有0个或多个低层级的子容器。例如，一般情况下，一个Context实例会有一个或多个Wrapper实例。一个Host实例中会有0个或多个Context实例。但是，Wrapper类型处于层级结构的最底层，因此，它无法再包含子容器了。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般启动Tomcat会是运行startup.bat或者startup.sh文件，这两个文件最后都会调用，org.apache.catalina.startup包下面Bootstrap类的main方法。main方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132259811" alt="这里写图片描述"></p>
+<p>main方法先实例化了一个Bootstrap实例，接着调用了init方法。init方法是生命周期方法，以后不再累述。接着看init的具体实现。<br><img src="http://img.blog.csdn.net/20160427132449928" alt="这里写图片描述"><br>init方法，先初始化了类加载器。initClassLoaders方法具体实现如下：<br><img src="http://img.blog.csdn.net/20160427132555850" alt="这里写图片描述"><br>createClassLoader具体实现细节不再显示，有感兴趣的读者可以具体查看。该方法的具体签名为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private ClassLoader createClassLoader(String name, ClassLoader parent)  throws Exception</span><br></pre></td></tr></table></figure>
+<p>从方法签名中可以看出createClassLoader需要传入一个父加载器。从具体的代码中可以看出，commonLoader类加载器是catalinaLoader类加载器和sharedLoader类加载器的父加载器。初始化完类加载器后，使用反射机制调用org.apache.catalina.startup.Catalina类下的setParentClassLoader方法。具体代码是:</p>
+<p><img src="http://img.blog.csdn.net/20160427132723661" alt="这里写图片描述"></p>
+<p>因为Tomcat执行的是start操作，调用完init方法后，会执行load方法。</p>
+<p><img src="http://img.blog.csdn.net/20160427132817195" alt="这里写图片描述"><br>load方法通过反射调用Catalina类的load方法。</p>
+<p><img src="http://img.blog.csdn.net/20160427132915258" alt="这里写图片描述"><br>Catalina类的load方法：</p>
+<p><img src="http://img.blog.csdn.net/20160427133058493" alt="这里写图片描述"></p>
+<p>load方法中比较重要的方法是createStartDigester()，createStartDigester方法主要的作用就是帮我们实例化了所有的服务组件包括server,service和connect。具体的实例化方法，<br>  <img src="http://img.blog.csdn.net/20160427133517500" alt="这里写图片描述"></p>
+<p>初始化操作完成后，接下来会执行catalina实例的start方法。</p>
+<p>从上面加载的组件中，Tomcat会默认加载org.apache.catalina.core.StandardServer作为Server的实例类。</p>
+<p><img src="http://img.blog.csdn.net/20160427133728237" alt="这里写图片描述"></p>
+<p>在Server的start的方法里面会执行service的start方法。在createStartDigester()方法里面，会默认加载org.apache.catalina.core.StandardService类。会接着调用Service的start方法。<br><img src="http://img.blog.csdn.net/20160427133903254" alt="这里写图片描述"><br>service中会调用connector的start方法。至此Tomcat启动完毕</p>
 
       
 
@@ -362,7 +284,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码解析</a>
         		</li>
       		
 		</ul>
@@ -372,7 +294,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">展开全文 >></a>
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Tomcat源码分析-启动过程/">展开全文 >></a>
         </p>
       
 
@@ -402,113 +324,49 @@
 
 
   
-    <article id="post-JAVA泛型擦除机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Java并发之AbstractQueuedSynchronizer分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/">Java并发之AbstractQueuedSynchronizer分析</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:48:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class TestF &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Class a1 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">		Class a2 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">		System.out.println(a1 == a2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果仅凭直觉来看，该程序可能会输出 false 这个结果，但在具体的环境下运行时会输出 true 。这很令人费解，这是为什么呢？</p>
-<p>Java泛型是使用类型擦除来实现的。这表示在运行过程中任何和类型有关的信息都会被擦除，所有在运行中 ArrayList<integer>和ArrayList<string>的具体信息都被擦除成它们的原生类型即ArrayList类型。</string></integer></p>
-<p>由于擦除机制，泛型不能用于显示地引用运行时类型的操作之中，例如转型、new表达式和instanceof操作。</p>
-<p>若在泛型内部必须使用类型操作时，可以在运行时采用反射的方法将正在运行的类信息添加到泛型内部，这种方法称为补偿。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class Dog &#123;</span><br><span class="line">	</span><br><span class="line">	public Dog() &#123;</span><br><span class="line">		System.out.println(&quot;Dog...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestF2&lt;T&gt; &#123;</span><br><span class="line">	Class&lt;T&gt; type;</span><br><span class="line">	public TestF2(Class&lt;T&gt; type) &#123;</span><br><span class="line">		this.type = type;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public boolean check(Object obj) &#123;</span><br><span class="line">		return type.isInstance(obj); //isInstance 和instanceof动态等价 </span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show(Class&lt;T&gt; type) &#123;   //使用反射动态实现new表达式</span><br><span class="line">		try &#123;</span><br><span class="line">			type.newInstance();</span><br><span class="line">		&#125; catch (InstantiationException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		TestF2&lt;Dog&gt; t = new TestF2&lt;Dog&gt;(Dog.class);</span><br><span class="line">		System.out.println(t.check(new Dog()));</span><br><span class="line">		t.show(Dog.class);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出为：<br>Dog…<br>true<br>Dog…</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JAVA利用泛型返回类型不同的对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有时需要在方法末尾返回类型不同的对象，而return 语句只能返回一个或一组类型一样的对象。此时就需要用到泛型。</p>
-<p>首先先解释个概念,<br>元组: 它是将一组对象直接打包存储于其中的一个单一对象，这个容器对象允许读取其中元素，但不能修改。</p>
-<p>利用泛型创建元组</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ReturnTwo&lt;A,B&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	public final A first;</span><br><span class="line">	public final B second;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo(A a,B b) &#123;</span><br><span class="line">		first = a;</span><br><span class="line">		second = b;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	private String a = &quot;abc&quot;;</span><br><span class="line">	private int b = 123;</span><br><span class="line">	</span><br><span class="line">	public ReturnTwo&lt;String, Integer&gt; get() &#123;</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = new ReturnTwo&lt;String, Integer&gt;(this.a, this.b);</span><br><span class="line">		return rt;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Test test = new Test();</span><br><span class="line">		ReturnTwo&lt;String, Integer&gt; rt = test.get();</span><br><span class="line">		System.out.println(rt.first);</span><br><span class="line">		System.out.println(rt.second);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：<br>abc<br>123</p>
+        <p>在并发程序中一般使用锁对共享变量进行互斥访问。在java程序中一般用synchronized关键字来实现线程对共享变量的互斥访问。而从JDK1.5以后java并发大师 <strong>Doug Lea</strong> 开发了<strong>AbstractQueuedSynchronizer</strong>（下文用AQS代替）组件，使用原生java代码实现了synchronized语义。我们通过介绍AQS最常用的<strong>ReentrantLock</strong>锁来介绍AQS。</p>
+<p>AQS有两种模式:<strong>公平模式和非公平模式（抢占式）</strong>。在实现自定义锁时只要按照需求实现公平模式API、非公平模式API或两种模式都实现。ReentrantLock分别实现了公平模式和非公平模式。</p>
+<p><strong>在使用公平模式时，AQS会自动生成一个FIFO队列。严格按照线程挂起的顺序获得锁使用权。</strong></p>
+<p>猜想：既然锁有被占用和释放两种状态，那么就需要一个state字段来标识锁的状态。果不其然，<br><img src="http://img.blog.csdn.net/20160203210350302" alt="这里写图片描述"><br>以ReentrantLock公平锁为例。<br>ReentrantLock锁通常使用模式为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public int show() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			doSomething();</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>查看lock方法源码：<br><img src="http://img.blog.csdn.net/20160203194933004" alt="Lock方法"><br>可以发现它只是简单代理了sync的lock方法。</p>
+<p><img src="http://img.blog.csdn.net/20160203195146778" alt="这里写图片描述"><br>明显的可以看见有两种实现模式。让我们看看公平模式的lock方法实现。</p>
+<p><img src="http://img.blog.csdn.net/20160203195515045" alt="这里写图片描述"><br>acquire()方法在AQS中实现。</p>
+<p><img src="http://img.blog.csdn.net/20160203195702545" alt="这里写图片描述"><br>首先看tryAcquire方法。</p>
+<p><img src="http://img.blog.csdn.net/20160203195755530" alt="这里写图片描述"><br>在AQS中，Doug Lea并没有实现该方法。而需要使用者自己实现。那让我们看看ReentrantLock 公平模式是如何实现该方法的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">protected final boolean tryAcquire(int acquires) &#123;</span><br><span class="line">            final Thread current = Thread.currentThread();  //获得当前执行线程</span><br><span class="line">            int c = getState();    //获得当前线程状态</span><br><span class="line">            if (c == 0) &#123;</span><br><span class="line">                if (!hasQueuedPredecessors() &amp;&amp;</span><br><span class="line">                    compareAndSetState(0, acquires)) &#123;  //如果当前锁没有线程使用，则当前线程将独占该锁</span><br><span class="line">                    setExclusiveOwnerThread(current);   //设置当锁的拥有者改为当前线程</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (current == getExclusiveOwnerThread()) &#123;  //ReentrantLock是可重用锁，即锁的占用者可以多次重新进入锁</span><br><span class="line">                int nextc = c + acquires;</span><br><span class="line">                if (nextc &lt; 0)</span><br><span class="line">                    throw new Error(&quot;Maximum lock count exceeded&quot;);</span><br><span class="line">                setState(nextc);     //使用CAS修改锁的状态</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>当获得锁的使用权时会返回true，不能获得锁耳朵使用权时会返回false。当返回false时，<strong>addWaiter()</strong>方法将当前线程加入等待队列中。</p>
+<p>等待队列如图所示：<br><img src="http://img.blog.csdn.net/20160203202330002" alt="这里写图片描述"><br>只有head结点指向的结点才能获得锁的使用权。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private Node addWaiter(Node mode) &#123;</span><br><span class="line">        Node node = new Node(Thread.currentThread(), mode);</span><br><span class="line">        Node pred = tail;    //快速找到尾结点</span><br><span class="line">        if (pred != null) &#123;</span><br><span class="line">            node.prev = pred;</span><br><span class="line">            if (compareAndSetTail(pred, node)) &#123;    //使用CAS方式将当前结点链接到尾结点。</span><br><span class="line">                pred.next = node;</span><br><span class="line">                return node;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        enq(node);      //如果CAS操作没能将当前结点链接到尾结点说明有多个线程产生竞争。此时需要使用自旋方式将当前结点链接到尾结点。</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>将当前线程接入队列后，接着就需要将当前线程挂起。即acquireQueued方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">final boolean acquireQueued(final Node node, int arg) &#123;</span><br><span class="line">        boolean failed = true;</span><br><span class="line">        try &#123;</span><br><span class="line">            boolean interrupted = false;</span><br><span class="line">            for (;;) &#123;</span><br><span class="line">                final Node p = node.predecessor();    //获得当前结点的前驱结点</span><br><span class="line">                if (p == head &amp;&amp; tryAcquire(arg)) &#123;   //如果前驱是头结点，并成功获取锁状态</span><br><span class="line">                    setHead(node);   //则移除前驱结点，并将当前结点设置为头结点。</span><br><span class="line">                    p.next = null; // help GC</span><br><span class="line">                    failed = false;</span><br><span class="line">                    return interrupted;</span><br><span class="line">                &#125;</span><br><span class="line">                if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;//否则，检查前驱结点的状态，看当前获取锁失败的线程是否需要挂起。</span><br><span class="line">                    parkAndCheckInterrupt())  //如果需要挂起，借助LockSupport的静态方法Park挂起当前线程。直到将其唤醒。</span><br><span class="line">                    interrupted = true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (failed)       //如果抛出异常</span><br><span class="line">                cancelAcquire(node);   //就将当前结点移除等待队列，即请求停止</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>到此，线程对锁的竞争告一段落。如果获取锁，则继续运行。否则进入等待队列，线程被挂起。</p>
+<p>接下来我们看看锁的释放<br><img src="http://img.blog.csdn.net/20160203205024818" alt="这里写图片描述"></p>
+<p>同样代理了sync的unlock方法<br><img src="http://img.blog.csdn.net/20160203205251274" alt="这里写图片描述"></p>
+<p>首先看tryRelease()方法。<br><img src="http://img.blog.csdn.net/20160203205334337" alt="这里写图片描述"><br>同样Doug Lea未实现这个方法。查看ReentrantLock中的实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">protected final boolean tryRelease(int releases) &#123;</span><br><span class="line">            int c = getState() - releases;    //当前state状态 - releases值</span><br><span class="line">            if (Thread.currentThread() != getExclusiveOwnerThread())  //如果当前线程不是锁的占有者则抛出异常。</span><br><span class="line">                throw new IllegalMonitorStateException();</span><br><span class="line">            boolean free = false;</span><br><span class="line">            if (c == 0) &#123;       //如果状态为0 </span><br><span class="line">                free = true;</span><br><span class="line">                setExclusiveOwnerThread(null);  //就将锁占有者设置为空</span><br><span class="line">            &#125;</span><br><span class="line">            setState(c);  //设置状态</span><br><span class="line">            return free;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>锁释放成功后，找到AQS的头结点并将其唤醒即可。<br><img src="http://img.blog.csdn.net/20160203210031345" alt="这里写图片描述"><br>至此锁的释放操作完成。</p>
+<p>只是自己最近研究AQS源码的一点心得，若有不正确的地方请批评指正。</p>
 
       
 
@@ -532,7 +390,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">展开全文 >></a>
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之AbstractQueuedSynchronizer分析/">展开全文 >></a>
         </p>
       
 
@@ -562,30 +420,33 @@
 
 
   
-    <article id="post-JAVA中复杂对象调用构造器顺序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-java并发之CAS操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
+      <a class="article-title" href="/cjy.github.io/2017/12/09/java并发之CAS操作/">java并发之CAS操作</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/java并发之CAS操作/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:47:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近读《JAVA编程思想》有点心得，给大家分享下。<br>关于Java中复杂对象调用构造器顺序，话不多说直接上代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class A &#123;</span><br><span class="line">	</span><br><span class="line">	public A() &#123;</span><br><span class="line">		System.out.println(&quot;A被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class B &#123;</span><br><span class="line">	</span><br><span class="line">	public B() &#123;</span><br><span class="line">		System.out.println(&quot;B被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C &#123;</span><br><span class="line">	</span><br><span class="line">	public C() &#123;</span><br><span class="line">		System.out.println(&quot;C被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class D extends A &#123;</span><br><span class="line">	</span><br><span class="line">	private B b = new B();</span><br><span class="line">	private C c = new C();</span><br><span class="line">	</span><br><span class="line">	public D() &#123;</span><br><span class="line">		System.out.println(&quot;D被初始化了&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		D d = new D();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出是：<br>A被初始化了<br>B被初始化了<br>C被初始化了<br>D被初始化了</p>
-<p>根据输出结果 可以看出有以下几个规律<br>1、首先调用基类的构造方法，如果有多层继承现象，则会首先构造这个结构的根，然后向下构造直到最底层导出类。<br>2、按照方法内域的声明顺序调用成员的初始化方法。<br>3、调用导出类构造方法</p>
+        <p><strong>CAS即compare and set的缩写。常见于java.util.concurrent中，是构成concurrent包的基础。</strong></p>
+<p>CAS有三个操作数，内存值M，旧的预期(expect)值E和更新(update)值U。在CAS操作中，只有当M==E时，才会更新U。否则什么都不做。这些操作都是原子的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileTest &#123;</span><br><span class="line"></span><br><span class="line">    int a = 0;</span><br><span class="line">    int i = 0;</span><br><span class="line">    boolean flag = false;</span><br><span class="line"></span><br><span class="line">    public void write() &#123;</span><br><span class="line">        a = 1;</span><br><span class="line">        flag = true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void read() &#123;</span><br><span class="line">        if(flag) </span><br><span class="line">            i = a + 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码在单线程环境下不会发生错误而在多线程环境下就可以能由于指令重排发生错误。一种修改方式就是使用CAS操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileTest &#123;</span><br><span class="line"></span><br><span class="line">    int a = 0;</span><br><span class="line">    int i = 0;</span><br><span class="line">    private AtomicBoolean flag = new AtomicBoolean(false);  //使用原子boolean类</span><br><span class="line"></span><br><span class="line">    public void write() &#123;</span><br><span class="line">        a = 1;</span><br><span class="line">        flag.compareAndSet(false, true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void read() &#123;</span><br><span class="line">        if(flag.get()) </span><br><span class="line">            i = a + 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或将flag用关键字volatile修饰也可以有同样的效果。详情见我的博客java并发之volatile:<br><strong><a href="http://blog.csdn.net/c275046758/article/details/50482120" target="_blank" rel="noopener">http://blog.csdn.net/c275046758/article/details/50482120</a></strong></p>
+<p>CAS缺点：<br><strong>ABA问题。</strong> CAS操作更新的基础是如果值没有变化则更新，若有变化则不更新。但如若有一值刚开始是A，然后变为B，最后又变为A。那么CAS检查时发现它没有变化就更新了，但实际上却是已经发生了变化。<br><strong>CAS自旋。</strong>自旋CAS如果长时间不成功，会给CPU带来非常大的执行开销。<br><strong>只能保证一个共享变量的原子操作。</strong>当对一个共享变量执行操作时，我们可以使用循环CAS的方式来保证原子操作，但是对多个共享变量操作时，循环CAS就无法保证操作的原子性。</p>
 
       
 
@@ -609,7 +470,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">展开全文 >></a>
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之CAS操作/">展开全文 >></a>
         </p>
       
 
@@ -639,33 +500,37 @@
 
 
   
-    <article id="post-设计模式之工厂模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-设计模式之原型模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之工厂模式/">设计模式之工厂模式</a>
+      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">设计模式之原型模式</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/设计模式之工厂模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:14:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/设计模式之原型模式/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:46:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>根据单一职责原则，专门的类用来实例化对象。我们习惯把这种类叫做工厂。<br><img src="http://img.blog.csdn.net/20150809144659407" alt="这里写图片描述"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Ihelper &#123;</span><br><span class="line">	void open();	</span><br><span class="line">	void close();	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class ORACLEHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;ORACLEHelper close.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class SQLHelper implements Ihelper&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void open() &#123;</span><br><span class="line">		System.out.println(&quot;SQL open.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public void close() &#123;</span><br><span class="line">		System.out.println(&quot;SQL close....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface IFactory &#123;</span><br><span class="line">	public Ihelper create(int i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Factory implements IFactory&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public Ihelper create(int i) &#123;</span><br><span class="line">		if(i == 0)</span><br><span class="line">			return new SQLHelper();</span><br><span class="line">		else</span><br><span class="line">			return new ORACLEHelper();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">		Factory f = new Factory();</span><br><span class="line">		Ihelper i = f.create(0);</span><br><span class="line">		i.open();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">工厂类的优点是:</span><br><span class="line">利于管理</span><br><span class="line">低耦合</span><br><span class="line">缺点是:</span><br><span class="line">违反开闭原则</span><br></pre></td></tr></table></figure>
+        <p><strong>使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。</strong></p>
+<p>在说什么是原型模式前首先要解释一下两个概念，<strong>深复制和浅复制</strong>。<br><strong>浅复制：</strong>复制一个对象时，基本类型字段复制其值，引用类型复制其引用。<br><strong>深复制：</strong>复制一个对象时，不仅复制对象的基本类型的字段，而且也复制引用对象的对象。</p>
+<p>java中使用super.clone可以得到当前调用类的对象的副本。在java中需要被克隆的对象必须实现Cloneable接口，否则视为不合法，会抛出不支持克隆的异常。</p>
+<p><strong>HomeWork类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWork implements Cloneable &#123;</span><br><span class="line">	</span><br><span class="line">	private String studentNum;    //学号</span><br><span class="line">	private String name;         //姓名</span><br><span class="line">	private HomeWorkContent homeWorkContent;  //作业内容</span><br><span class="line">	</span><br><span class="line">	public HomeWork() &#123;</span><br><span class="line">		homeWorkContent = new HomeWorkContent(&quot;我是内容&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setInfo(String studentNum,String name) &#123;</span><br><span class="line">		this.studentNum = studentNum;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setHomeWorkContent(String content) &#123;</span><br><span class="line">		homeWorkContent.setContent(content);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public HomeWork clone() &#123;</span><br><span class="line">		HomeWork hw= null;</span><br><span class="line">			try &#123;</span><br><span class="line">				hw = (HomeWork)super.clone();</span><br><span class="line">			&#125; catch (CloneNotSupportedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			return hw;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;学号是: &quot; + studentNum + &quot; \n姓名是: &quot;+name + &quot;\n作业是:&quot;+homeWorkContent.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>HomeWorkContent类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class HomeWorkContent &#123;</span><br><span class="line">	</span><br><span class="line">	private String content;  </span><br><span class="line">	</span><br><span class="line">	public HomeWorkContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void setContent(String content) &#123;</span><br><span class="line">		this.content = content;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		return content;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Main测试类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		HomeWork hw = new HomeWork();</span><br><span class="line">		HomeWork h1 = hw.clone();</span><br><span class="line">		h1.setInfo(&quot;111&quot;, &quot;小白&quot;);</span><br><span class="line">		h1.setHomeWorkContent(&quot;我不是内容&quot;);</span><br><span class="line">		h1.show();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		HomeWork h2 = hw.clone();</span><br><span class="line">		h2.setInfo(&quot;222&quot;, &quot;小黑&quot;);</span><br><span class="line">		h2.show();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20160125131140420" alt="这里写图片描述"></p>
+<p>从运行结果看clone是浅复制</p>
 
       
 
@@ -689,117 +554,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之工厂模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hadoop-WordCount源码解读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/">Hadoop WordCount源码解读 </a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:04:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>MapReduce编程模型</strong></p>
-<p> MapReduce采用“分而治之”的思想。将HDFS上海量数据切分成为若干块，将每块的数据分给集群上的节点进行计算。然后通过整合各节点的中间结果，得到最终的结果。<br> HDFS上默认块的大小要比磁盘默认的大小大的多。其目的是为了最小化寻址开销。如果块设置得足够大，从磁盘传输数据的时间明显大于定位这个块开始位置所需时间。这样，传输一个由多个块组成的文件时间取决于磁盘传输速率。HDFS默认块的大小为64MB。随着磁盘驱动器的进一步发展块的默认大小可以设置的更大。</p>
-<p><strong>MapReduce的处理过程</strong><br>一个复杂的MapReduce任务可以分为若干个Job。每个Job又可以分为Mapper和Reducer两个阶段。这两个阶段对应到代码内就是继承Mapper的内部类和继承Reducer的内部类。继承Mapper的内部类需要实现map函数,继承Reducer的内部类需要实现Reduce函数。Map函数接收一个&lt;key,value&gt;的键值对同时也会输出一个 &lt;key,value&gt; 的键值对。Reduce函数接收一个&lt;key,list of values&gt;（值为所有键为key的value集合,例如: map的输出为<1,1>,<1,2>,<1,3>,<1,4>则reduce的输入为<1,[1,2,3,4]>）同时经过处理后同样会输出&lt;key,value&gt;键值对。MapReduce运行过程的数据流<br><img src="http://img.blog.csdn.net/20150726172208952" alt="这里写图片描述"></1,[1,2,3,4]></1,4></1,3></1,2></1,1></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.StringTokenizer;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.io.IntWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">import org.apache.hadoop.util.GenericOptionsParser;</span><br><span class="line"></span><br><span class="line">public class WordCount &#123;</span><br><span class="line"></span><br><span class="line">  public static class TokenizerMapper </span><br><span class="line">       extends Mapper&lt;Object, Text, Text, IntWritable&gt;&#123;</span><br><span class="line">    </span><br><span class="line">    private final static IntWritable one = new IntWritable(1);</span><br><span class="line">    private Text word = new Text();</span><br><span class="line">      </span><br><span class="line">    public void map(Object key, Text value, Context context</span><br><span class="line">                    ) throws IOException, InterruptedException &#123;</span><br><span class="line">      StringTokenizer itr = new StringTokenizer(value.toString());</span><br><span class="line">      while (itr.hasMoreTokens()) &#123;</span><br><span class="line">        word.set(itr.nextToken());</span><br><span class="line">        context.write(word, one);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  public static class IntSumReducer </span><br><span class="line">       extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; &#123;</span><br><span class="line">    private IntWritable result = new IntWritable();</span><br><span class="line"></span><br><span class="line">    public void reduce(Text key, Iterable&lt;IntWritable&gt; values, </span><br><span class="line">                       Context context</span><br><span class="line">                       ) throws IOException, InterruptedException &#123;</span><br><span class="line">      int sum = 0;</span><br><span class="line">      for (IntWritable val : values) &#123;</span><br><span class="line">        sum += val.get();</span><br><span class="line">      &#125;</span><br><span class="line">      result.set(sum);</span><br><span class="line">      context.write(key, result);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    Configuration conf = new Configuration();</span><br><span class="line">    String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</span><br><span class="line">    if (otherArgs.length != 2) &#123;</span><br><span class="line">      System.err.println(&quot;Usage: wordcount &lt;in&gt; &lt;out&gt;&quot;);</span><br><span class="line">      System.exit(2);</span><br><span class="line">    &#125;</span><br><span class="line">    Job job = new Job(conf, &quot;word count&quot;);</span><br><span class="line">    job.setJarByClass(WordCount.class);</span><br><span class="line">    job.setMapperClass(TokenizerMapper.class);</span><br><span class="line">    job.setCombinerClass(IntSumReducer.class);</span><br><span class="line">    job.setReducerClass(IntSumReducer.class);</span><br><span class="line">    job.setOutputKeyClass(Text.class);</span><br><span class="line">    job.setOutputValueClass(IntWritable.class);</span><br><span class="line">    FileInputFormat.addInputPath(job, new Path(otherArgs[0]));</span><br><span class="line">    FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));</span><br><span class="line">    System.exit(job.waitForCompletion(true) ? 0 : 1);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先分析主函数Main方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Configuration conf = new Configuration();</span><br></pre></td></tr></table></figure>
-<p>系统运行时会加载Hadoop默认的一些配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</span><br><span class="line">    if (otherArgs.length != 2) &#123;</span><br><span class="line">      System.err.println(&quot;Usage: wordcount &lt;in&gt; &lt;out&gt;&quot;);</span><br><span class="line">      System.exit(2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>程序运行时会接收从命令行传来的一些参数。默认第一个参数为程序要处理的数据文件夹路径，即in文件夹路径。默认第二个参数为程序结果要输出到的文件夹路径，即out文件夹路径。如果命令行的参数少于2个时程序会停止运行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Job job = new Job(conf, &quot;word count&quot;);</span><br></pre></td></tr></table></figure>
-<p>初始化一个Job任务，这个Job任务需要加载hadoop的一些配置，并给这个Job 命名为“word count”</p>
-<p>job.setJarByClass(WordCount.class);<br>这个方法使用了WordCount.class的类加载器来寻找包含该类的Jar包，然后设置该Jar包为作业所用的Jar包。</p>
-<pre><code>job.setMapperClass(TokenizerMapper.class);
-job.setCombinerClass(IntSumReducer.class);
-job.setReducerClass(IntSumReducer.class);
-</code></pre><p>setMapperClass 该方法设置了该Job任务所使用的Mapper类（拆分）。<br>setCombinerClass 该方法设置了该Job任务所使用的Combiner类（中间结果合并）。<br>setReducerClass该方法设置了该Job任务所使用的Reducer类（合并）。</p>
-<p>可以发现Combiner处理类和Reducer处理类使用的是同一个类即IntSumReducer类。为什么这两个风马牛不相及的处理类可以使用同一个类呢？这仅仅是巧合吗？答案是否定的。<br>Combiner本质上是一个本地的Reducer方法。在集群环境中，带宽是这个集群最稀有的资源。可以先将本地map所处理的数据进行本地Reduce，然后再将结果传给集群其他节点进行处理。这样设计的好处是，可以节省集群的带宽使用率。但是，并不是所有的Combine处理过程均能使用Reducer的处理类，这需要在逻辑上考虑是否可移植！要想进行本地reduce（combine），一个必要的条件是，reduce的输入输出格式必须一样！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">job.setOutputKeyClass(Text.class);</span><br><span class="line">job.setOutputValueClass(IntWritable.class);</span><br></pre></td></tr></table></figure>
-<p>设置Reducer的键输出的类型为Text类型，值输出的类型为IntWritable类型。例如本程序输出的单词和其出现的次数&lt;单词,次数&gt;。</p>
-<p>Text类似于Java的String类型。<br>IntWritable类型类似于Java的int类型。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, new Path(otherArgs[0]));</span><br><span class="line">FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));</span><br></pre></td></tr></table></figure>
-<p>设置程序输入和输出的路径。本示例是从命令行中接收参数。第一个参数为输入路径。第二个参数为输出路径。<br>与其他语言一样。Hadoop会有自己的一些默认配置。本示例中使用默认的输入方式即TextInputFormat。<br> Job. setInputFormat(TextInputFormat.class );<br> TextInputFormat是Hadoop的默认输入方式。在TextInputFormat方式中，系统会自动将输入文件的每行数据形成一条记录，每条记录表示成&lt;key,value&gt;的形式，这条记录会作为map的输入数据。key值是每个数据的记录在数据分片中字节偏移量,数据类型为LongWritable。LongWritable类似于Java的Long类型。Value值是每行的内容，数据类型为Text。<br>比如，输入文件为<br>Hello world<br>Hello hadoop<br>则会形成</p>
-<p><0,hello world=""></0,hello></p>
-<12,hello hadoop="">
-
-<p>Map类中map方法分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public static class TokenizerMapper </span><br><span class="line">       extends Mapper&lt;Object, Text, Text, IntWritable&gt;</span><br></pre></td></tr></table></figure>
-<p>用户自定义map类需要继承Mapper类，并实现map方法。此类是一种规范类型,它有四种形式的参数分别用来指定map的输入key值的类型、map的输入value值的类型、map的输出key值类型、map的输出value值类型。由于本示例中使用的是默认的TextInputFormat输入类型。所以map输入键的类型为LongWritable的父类型Object，map的输入值的类型为Text。因为map要输出的键值对类型为&lt;单词,次数&gt;，所以map的输出key值类型为Text，输出value值的类型为IntWritable。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void map(Object key, Text value, Context context</span><br><span class="line">                    ) throws IOException, InterruptedException &#123;</span><br><span class="line">      StringTokenizer itr = new StringTokenizer(value.toString());</span><br><span class="line">      while (itr.hasMoreTokens()) &#123;</span><br><span class="line">        word.set(itr.nextToken());</span><br><span class="line">        context.write(word, one);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>Map方法为用户想要实现的特定的功能。在本示例中，map方法对输入的记录以空格为单位进行切分，然后使用context对象进行输出。Context包含运行时的上下文信息。</p>
-<p>Reduce类中reduce方法分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static class IntSumReducer </span><br><span class="line">       extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt;</span><br><span class="line">    </span><br><span class="line">      public void reduce(Text key, Iterable&lt;IntWritable&gt; values, </span><br><span class="line">                       Context context</span><br><span class="line">                       ) throws IOException, InterruptedException &#123;</span><br><span class="line">      int sum = 0;</span><br><span class="line">      for (IntWritable val : values) &#123;</span><br><span class="line">        sum += val.get();</span><br><span class="line">      &#125;</span><br><span class="line">      result.set(sum);</span><br><span class="line">      context.write(key, result);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>当数据输入到Reduce端时，key为具体的单词，而values是对应单词的计数值所组成的列表，Map的输出就是Reduce的输入，所以reduce方法只要遍历values并求和，即可得到某个单词的总次数。</p>
-<p><strong>WordCount处理过程</strong><br>⒈MapReduce框架会自动将输入文件分片。由于测试文件较小，故将每个文件分为一个split，并将文件按行分割形成&lt;key,value&gt;对。<br><img src="http://img.blog.csdn.net/20150726173749996" alt="这里写图片描述"></p>
-<p>⒉将分割好的&lt;key,value&gt;对，交给用户定义好的map进行处理，并输出&lt;key,value&gt;对。<br><img src="http://img.blog.csdn.net/20150726173843863" alt="这里写图片描述"></p>
-<p>⒊map方法输出&lt;key，value&gt;对后，Mapper会自动将输出的&lt;key，value&gt;对排序，然后执行Combine过程即本地Reduce方法。<br><img src="http://img.blog.csdn.net/20150726173802971" alt="这里写图片描述"></p>
-<p>⒋Reducer会先将Combine结果排序，并将具有相同的key的value形成集合。最后通过用户自定义的reduce方法输出结果。<br><img src="http://img.blog.csdn.net/20150726173826605" alt="这里写图片描述"></p>
-</12,hello>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Hadoop-WordCount源码解读/">展开全文 >></a>
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之原型模式/">展开全文 >></a>
         </p>
       
 
@@ -831,7 +586,7 @@ job.setReducerClass(IntSumReducer.class);
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/cjy.github.io/page/2/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/">1</a><a class="page-number" href="/cjy.github.io/page/2/">2</a><span class="page-number current">3</span>
+      <a class="extend prev" rel="prev" href="/cjy.github.io/page/2/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/">1</a><a class="page-number" href="/cjy.github.io/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/cjy.github.io/page/4/">4</a><a class="page-number" href="/cjy.github.io/page/5/">5</a><a class="page-number" href="/cjy.github.io/page/6/">6</a><a class="extend next" rel="next" href="/cjy.github.io/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -930,11 +685,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码解析</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">

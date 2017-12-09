@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>JAVA泛型擦除机制 | </title>
+  <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="123456789public class TestF &amp;#123;		public static void main(String[] args) &amp;#123;		Class a1 = new ArrayList&amp;lt;Integer&amp;gt;().getClass();		Class a2 = new ArrayList&amp;lt;String&amp;gt;().getClass();		System.o">
-<meta name="keywords" content="java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="JAVA泛型擦除机制">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA泛型擦除机制/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/page/4/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="123456789public class TestF &amp;#123;		public static void main(String[] args) &amp;#123;		Class a1 = new ArrayList&amp;lt;Integer&amp;gt;().getClass();		Class a2 = new ArrayList&amp;lt;String&amp;gt;().getClass();		System.o">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-09T11:04:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JAVA泛型擦除机制">
-<meta name="twitter:description" content="123456789public class TestF &amp;#123;		public static void main(String[] args) &amp;#123;		Class a1 = new ArrayList&amp;lt;Integer&amp;gt;().getClass();		Class a2 = new ArrayList&amp;lt;String&amp;gt;().getClass();		System.o">
+<meta name="twitter:title">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -155,57 +150,34 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JAVA泛型擦除机制" class="article article-type-post " itemscope itemprop="blogPost">
+            
+  
+    <article id="post-Java并发之读者写者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      JAVA泛型擦除机制
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">Java并发之读者写者模型</a>
     </h1>
   
 
         
-        <a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
+        <a href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:44:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class TestF &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Class a1 = new ArrayList&lt;Integer&gt;().getClass();</span><br><span class="line">		Class a2 = new ArrayList&lt;String&gt;().getClass();</span><br><span class="line">		System.out.println(a1 == a2);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果仅凭直觉来看，该程序可能会输出 false 这个结果，但在具体的环境下运行时会输出 true 。这很令人费解，这是为什么呢？</p>
-<p>Java泛型是使用类型擦除来实现的。这表示在运行过程中任何和类型有关的信息都会被擦除，所有在运行中 ArrayList<integer>和ArrayList<string>的具体信息都被擦除成它们的原生类型即ArrayList类型。</string></integer></p>
-<p>由于擦除机制，泛型不能用于显示地引用运行时类型的操作之中，例如转型、new表达式和instanceof操作。</p>
-<p>若在泛型内部必须使用类型操作时，可以在运行时采用反射的方法将正在运行的类信息添加到泛型内部，这种方法称为补偿。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class Dog &#123;</span><br><span class="line">	</span><br><span class="line">	public Dog() &#123;</span><br><span class="line">		System.out.println(&quot;Dog...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestF2&lt;T&gt; &#123;</span><br><span class="line">	Class&lt;T&gt; type;</span><br><span class="line">	public TestF2(Class&lt;T&gt; type) &#123;</span><br><span class="line">		this.type = type;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public boolean check(Object obj) &#123;</span><br><span class="line">		return type.isInstance(obj); //isInstance 和instanceof动态等价 </span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show(Class&lt;T&gt; type) &#123;   //使用反射动态实现new表达式</span><br><span class="line">		try &#123;</span><br><span class="line">			type.newInstance();</span><br><span class="line">		&#125; catch (InstantiationException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		TestF2&lt;Dog&gt; t = new TestF2&lt;Dog&gt;(Dog.class);</span><br><span class="line">		System.out.println(t.check(new Dog()));</span><br><span class="line">		t.show(Dog.class);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出为：<br>Dog…<br>true<br>Dog…</p>
+        <p>问题描述:<strong>设想一个飞机订票系统，其中有许多竞争的进程试图读写其中的数据。多个进程同时读取是可以接受的，但如果一个进程正在更新数据库，则所有的其他进程都不能访问数据库。即便是读操作也不行。</strong></p>
+<p><strong>Semaphore（信号量）</strong>是用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.Executor;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line">import java.util.concurrent.Semaphore;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Main &#123;</span><br><span class="line">	</span><br><span class="line">	private final ReentrantLock lock ;   //定义锁</span><br><span class="line">	private static int readCount = 0;    //读者的数量</span><br><span class="line">	private Semaphore writeSemaphore ;   //写信号量</span><br><span class="line"></span><br><span class="line">	public Main() &#123;</span><br><span class="line">		lock = new ReentrantLock();</span><br><span class="line">		writeSemaphore = new Semaphore(1);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Main main = new Main();</span><br><span class="line">		Executor executors = Executors.newFixedThreadPool(4);</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		executors.execute(main.new Writer());</span><br><span class="line">		executors.execute(main.new Reader());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	class Reader implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			before();             //读操作之前的操作</span><br><span class="line">			read();               //读操作</span><br><span class="line">			after();             //读操作之后的操作</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void before() &#123;    //读操作之前的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				if(readCount == 0) &#123;   //当有读者时，写者不能进入</span><br><span class="line">					writeSemaphore.acquire(1);</span><br><span class="line">				&#125;</span><br><span class="line">				readCount += 1;</span><br><span class="line">				System.out.println(&quot;有1位读者进入&quot;);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void read() &#123;         //读操作</span><br><span class="line">			System.out.println(&quot;当前有 &quot; + readCount + &quot; 位读者&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		public void after() &#123;        //读操作之后的操作</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				readCount -= 1;</span><br><span class="line">				System.out.println(&quot;有1位读者离开&quot; );</span><br><span class="line">				if(readCount == 0)     //当读者为0时，写者才可以进入  </span><br><span class="line">					writeSemaphore.release(1);</span><br><span class="line">				</span><br><span class="line">			&#125; finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	class Writer implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			final ReentrantLock l = lock;</span><br><span class="line">			l.lock();</span><br><span class="line">			try &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					writeSemaphore.acquire(1);     //同时只有一个写者可以进入</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				System.out.println(&quot;写者正在写&quot;);</span><br><span class="line">				writeSemaphore.release(1);</span><br><span class="line">			&#125;  finally &#123;</span><br><span class="line">				l.unlock();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -216,7 +188,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
         		</li>
       		
 		</ul>
@@ -225,84 +197,16 @@
       
 
       
-
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">展开全文 >></a>
+        </p>
       
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          使用cookie绕过验证码进行模拟登录
-        
-      </div>
-    </a>
-  
-  
-    <a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">JAVA利用泛型返回类型不同的对象</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -322,14 +226,386 @@
 
 
 
-  
-  
-  
 
   
-
+    <article id="post-设计模式之生成器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">设计模式之生成器模式</a>
+    </h1>
   
 
+        
+        <a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:43:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。</strong></p>
+<p>应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。</p>
+<p><img src="http://img.blog.csdn.net/20160119102247921" alt="这里写图片描述"></p>
+<p><strong>类图</strong><br><img src="http://img.blog.csdn.net/20160119102407329" alt="这里写图片描述"></p>
+<p><strong>cup类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Cup &#123;</span><br><span class="line"></span><br><span class="line">	private String string;    //绳子</span><br><span class="line">	private String cap;       //帽子</span><br><span class="line">	private String cupBody;   //杯体</span><br><span class="line">	</span><br><span class="line">	public void setString(String string) &#123;</span><br><span class="line">		this.string = string;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCap(String cap) &#123;</span><br><span class="line">		this.cap = cap;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCupBody(String cupBody) &#123;</span><br><span class="line">		this.cupBody = cupBody;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;杯子生产完毕&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Builder类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public abstract class  Builder &#123;</span><br><span class="line"></span><br><span class="line">protected Cup cup = new Cup();</span><br><span class="line"></span><br><span class="line">public abstract void buildString();</span><br><span class="line"></span><br><span class="line">public abstract void buildCap();</span><br><span class="line"></span><br><span class="line">public abstract void buildCupBody();</span><br><span class="line"></span><br><span class="line">public  Cup getResult() &#123;</span><br><span class="line">return cup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>ClassCup类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ClassCup extends Builder &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildString() &#123;</span><br><span class="line">		cup.setString(&quot;生产绳子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产绳子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCap() &#123;</span><br><span class="line">		cup.setCap(&quot;生产帽子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产帽子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCupBody() &#123;</span><br><span class="line">		cup.setCupBody(&quot;生产杯体...&quot;);</span><br><span class="line">		System.out.println(&quot;生产杯体...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Director类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Director &#123;</span><br><span class="line">	</span><br><span class="line">	private Builder builder;</span><br><span class="line">	</span><br><span class="line">	public Director(Builder builder) &#123;</span><br><span class="line">		this.builder = builder;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void create() &#123;</span><br><span class="line">		builder.buildString();</span><br><span class="line">		builder.buildCap();</span><br><span class="line">		builder.buildCupBody();</span><br><span class="line">		builder.getResult().show();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Director d = new Director(new ClassCup());</span><br><span class="line">		d.create();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong><br><img src="http://img.blog.csdn.net/20160119102716506" alt="这里写图片描述"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-设计模式之抽象工厂" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">设计模式之抽象工厂</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个产品族中的产品对象。</strong></p>
+<p>应用场景：想必大家都玩过暴力摩托这款游戏（暴露了年龄），在游戏中赛车手可以骑行摩托和携带武器，我们假定他拿的武器是AK47（好拉风有木有）。这只是在普通的模式下，现在我们虚拟一个魔法模式。在魔法模式下赛车手骑的是扫把（对，你没有看错，是扫把）。手里拿的是魔法棒。<br><img src="http://img.blog.csdn.net/20160115115925968" alt="这里写图片描述"></p>
+<p><strong>IabstractFactory接口</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface IabstractFactory &#123;</span><br><span class="line">	</span><br><span class="line">	public IVehicle createVehicle(int i);</span><br><span class="line">	</span><br><span class="line">	public IWeapon createWeapon(int i);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>IVehicle接口</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface IVehicle &#123;</span><br><span class="line">	</span><br><span class="line">	public void run();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>IWeapon接口</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface IWeapon &#123;</span><br><span class="line">	</span><br><span class="line">	public void attack();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>普通模式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultFactory implements IabstractFactory&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IVehicle createVehicle(int i) &#123;</span><br><span class="line">		return new Moto();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IWeapon createWeapon(int i) &#123;</span><br><span class="line">		return new AK47();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>魔法模式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class MagicFactory implements IabstractFactory&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IVehicle createVehicle(int i) &#123;</span><br><span class="line">		</span><br><span class="line">		return 	new Broom();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public IWeapon createWeapon(int i) &#123;</span><br><span class="line">		return new MagicStick();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>AK47类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class AK47 implements IWeapon&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void attack() &#123;</span><br><span class="line">		System.out.println(&quot;AK47....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>魔法棒</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class MagicStick implements IWeapon&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void attack() &#123;</span><br><span class="line">		System.out.println(&quot;MagicStick .....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>摩托车类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Moto implements IVehicle&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		System.out.println(&quot;Moto.....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>扫把类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Broom implements IVehicle&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		System.out.println(&quot;Broom....&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>测试类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		IabstractFactory f = new MagicFactory();</span><br><span class="line">		f.createVehicle(1).run();</span><br><span class="line">		f.createWeapon(1).attack();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>测试结果</strong><br><img src="http://img.blog.csdn.net/20160115120709418" alt="这里写图片描述"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-java并发之生产者消费者模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:41:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>生产者和消费者模型是操作系统中经典的同步问题。该问题最早由Dijkstra提出，用以演示它提出的信号量机制。</p>
+<p><strong>经典的生产者和消费者模型的描述是：</strong>有一群生产者进程在生产产品，并将这些产品提供给消费者进程去消费。为使生产者进程与消费者进程能并发执行，在两者之间设置了一个具有n个缓冲区的缓冲池，生产者进程将它所生产的产品放入一个缓冲区中；消费者进程可从一个缓冲区中取走产品去消费。尽管所有的生产者进程和消费者进程都是以异步方式运行的，但它们之间必须保持同步，即不允许消费者进程到一个空缓冲区去取产品，也不允许生产者进程向一个已装满产品且尚未被取走的缓冲区投放产品。</p>
+<p><img src="http://img.blog.csdn.net/20160110134343236" alt="这里写图片描述"></p>
+<p>首先我们复习一下操作系统中同步机制中应遵循的准则：</p>
+<ol>
+<li><strong>空闲让进</strong>：当无进程处于临界区时，应允许一个请求进入临界区的进程进入临界区；</li>
+<li><strong>忙则等待</strong>：当已有进程进入临界区时，其他试图进入临界区的进程必须等待；</li>
+<li><strong>有限等待</strong>：对要求访问临界资源的进程，应保证在有限时间内能进入自己的临界区，以免陷入“死等”状态；</li>
+<li><p><strong>让权等待</strong>：当进程不能进入自己的临界区时，应立即释放处理机，以免进程陷入“忙等”;</p>
+<p>在生产者和消费者模型中要保证一下几点：<br><strong>1.生产者在往缓存队列中放产品时，消费者不能取产品。</strong><br><strong>2.消费者从缓存队列中取产品时，生产者不能放产品。</strong><br><strong>3.同一时刻只有一个生产者可以往缓存队列中放产品。</strong><br><strong>4.同一时刻只有一个消费者可以从缓存队列中取产品。</strong><br><strong>5.缓存队列满时生产者不能往缓存队列中放产品。</strong><br><strong>6.缓存队列为空时消费者不能从缓存队列中取产品。</strong></p>
+</li>
+</ol>
+<p>本例子中的缓存队列模仿java jdk中的ArrayBlockingQueue,这是一个阻塞队列，缓存池满时会自动将生产者线程挂起，缓存池空时会自动将消费者线程挂起。</p>
+<p>缓存池</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">public class Pool&lt;E&gt; &#123;</span><br><span class="line">	</span><br><span class="line">	/**队列最长长度*/</span><br><span class="line">	private  int MaxSize = 1000;</span><br><span class="line">	</span><br><span class="line">	/**队列默认长度*/</span><br><span class="line">	private static final int defaultSize = 100;</span><br><span class="line">	</span><br><span class="line">	/**资源池*/</span><br><span class="line">	private Object[] objs ;</span><br><span class="line">	</span><br><span class="line">	/**队头*/</span><br><span class="line">	private int front;</span><br><span class="line">	</span><br><span class="line">	/**队尾*/</span><br><span class="line">	private int rear;</span><br><span class="line">	</span><br><span class="line">	/**元素的个数*/</span><br><span class="line">	private int nItems;</span><br><span class="line">	</span><br><span class="line">	 /** Main lock guarding all access */</span><br><span class="line">    final ReentrantLock lock;</span><br><span class="line"></span><br><span class="line">    /** Condition for waiting takes */</span><br><span class="line">    private final Condition notEmpty;</span><br><span class="line"></span><br><span class="line">    /** Condition for waiting puts */</span><br><span class="line">    private final Condition notFull;</span><br><span class="line">    </span><br><span class="line">    private int useSize = 0;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public Pool() &#123;</span><br><span class="line">		this(defaultSize);</span><br><span class="line">		useSize = defaultSize;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public Pool(int size) &#123;</span><br><span class="line">		if(size &lt; 0)</span><br><span class="line">			throw new IndexOutOfBoundsException();</span><br><span class="line">		size = size &gt; MaxSize ? MaxSize : size;</span><br><span class="line">		useSize = size;</span><br><span class="line">		objs = new Object[size];</span><br><span class="line">		front = 0;</span><br><span class="line">		rear = -1;</span><br><span class="line">		nItems = 0;</span><br><span class="line">		</span><br><span class="line">		lock = new ReentrantLock(true);</span><br><span class="line">	    notEmpty = lock.newCondition();</span><br><span class="line">	    notFull =  lock.newCondition();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	/**进队*/</span><br><span class="line">	private void queue(E e) &#123;</span><br><span class="line">		if(rear == useSize - 1)</span><br><span class="line">			rear = -1;</span><br><span class="line">		objs[++rear] = e;</span><br><span class="line">		nItems++;</span><br><span class="line">		notEmpty.signal();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**出队*/</span><br><span class="line">	private E dequeue() &#123;</span><br><span class="line">		E e = (E)objs[front++];</span><br><span class="line">		if(front == useSize)</span><br><span class="line">			front = 0;</span><br><span class="line">		nItems--;</span><br><span class="line">		notFull.signal();</span><br><span class="line">		return e;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**进队 资源池满会将入队线程挂起*/ </span><br><span class="line">	public void offer(E e) throws InterruptedException &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			while(nItems == objs.length) </span><br><span class="line">				notFull.await();</span><br><span class="line">			queue(e);</span><br><span class="line">			System.out.println(&quot;学生进队，当前池中有 &quot; + nItems + &quot; 名同学&quot; );</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**出队 资源池空会将出队线程挂起*/</span><br><span class="line">	public E poll() throws InterruptedException &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			while(nItems == 0) </span><br><span class="line">				notEmpty.await();</span><br><span class="line">			E e = dequeue();</span><br><span class="line">			System.out.println(&quot;学生出队，当前池中有 &quot; + nItems + &quot; 名同学&quot; );</span><br><span class="line">			return e;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**是否满*/</span><br><span class="line">	public boolean isFull() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return nItems == MaxSize ? true : false;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**判断是否为空*/</span><br><span class="line">	public boolean isEmpty() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return nItems == 0 ? true : false;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**返回队列中元素个数*/</span><br><span class="line">	public int size() &#123;</span><br><span class="line">		final ReentrantLock lock = this.lock;</span><br><span class="line">		lock.lock();</span><br><span class="line">		try &#123;</span><br><span class="line">			return this.nItems;</span><br><span class="line">		&#125; finally &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试模型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line"></span><br><span class="line">	private String name;</span><br><span class="line">	private int age;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	public int getAge() &#123;</span><br><span class="line">		return age;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setAge(int age) &#123;</span><br><span class="line">		this.age = age;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">public class PM &#123;</span><br><span class="line">	</span><br><span class="line">	private Pool&lt;Student&gt; pools = new Pool&lt;Student&gt;(1000);</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		PM pm = new PM();</span><br><span class="line">		ExecutorService executor = Executors.newFixedThreadPool(6); </span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new consume());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">		executor.execute(pm.new produce());</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	 class produce implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			while(true) &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					pools.offer(new Student());</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	class consume implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			while(true) &#123;</span><br><span class="line">				try &#123;</span><br><span class="line">					pools.poll();</span><br><span class="line">				&#125; catch (InterruptedException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><img src="http://img.blog.csdn.net/20160110142045609" alt="这里写图片描述"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Java并发之volatile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>:2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>volatile有两个特性</p>
+<ul>
+<li>确保volatile修饰的变量对所有线程可见。</li>
+<li>禁止指令重排</li>
+</ul>
+<p>##确保volatile修饰的变量对所有线程可见</p>
+<p>为了解释第一个特性，首先我们要知道java内存模型，java内存逻辑上分为<strong>工作内存和主内存</strong>（这里内存的定义和我们平常所说的java内存分为堆、栈、方法区等并不冲突）</p>
+<p>java内存模型规定所有的变量都存在主内存中，每条线程还有自己的工作内存，<strong>工作内存中保存了该线程使用到变量的主内存的副本拷贝</strong>，线程对所有变量的修改都应该在工作内存中，而不能直接修改主内存中的变量。不同线程之间不互相操作对方工作内存中的变量，<strong>线程间变量之间的消息传递必须通过主内存。</strong></p>
+<p><img src="http://img.blog.csdn.net/20160108114707459" alt="java线程、工作内存、主内存之间的关系"><br>           图1：java线程、工作内存、主内存之间的关系</p>
+<p>现有一业务场景如下：<br>主内存中有一个共享变量i,线程A的主要任务是修改共享变量i的值，线程B的主要任务是读取共享变量i的值。如果不对程序做同步处理，某时刻线程A将共享变量i的值修改为2。上文我们说到线程修改的是工作内存中主内存的副本的值，线程A修改共享变量i的值后还未将最新值同步回主内存中。而此时线程B读取了共享变量i的值。因此在并发的时候就可能出现问题。</p>
+<p>如果将共享变量用volatitle修饰后，就可以避免这样的问题。现在我们来看看，volatile是怎么保证对所有线程的可见性的。</p>
+<p>依然还是上面的业务场景。在线程A修改了共享变量i的值后，由于此变量被volatile修饰，所有虚拟机会将线程A中共享变量i的值<strong>立即同步</strong>回主内存中。线程B在读取共享变量i的值时，不会选择线程B工作内存中的副本值，而会重新读取主内存中共享变量i的值。所以volatile保证了对所有线程的可见性。理解volatile可见性的一个好方法是把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写操作做了同步操作。</p>
+<p>##禁止指令重排。<br>指令重排是指编译器和处理器为了提高程序性能而对指令序列进行重新排序的一种手段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileTest &#123;</span><br><span class="line">	</span><br><span class="line">	int a = 0;</span><br><span class="line">	int i = 0;</span><br><span class="line">	boolean flag = false;</span><br><span class="line">	</span><br><span class="line">	public void write() &#123;</span><br><span class="line">		a = 1;</span><br><span class="line">		flag = true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void read() &#123;</span><br><span class="line">		if(flag) </span><br><span class="line">			i = a + 1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>flag是一个标记，用来标记变量a是否已经被修改。假设有线程A和线程B,A执行write操作，B执行read操作，那么B在执行i = a + 1操作时是否能看到线程A在write操作中对a的修改呢？<br><strong>不一定</strong><br>处理器和编译器可能对程序指令进行重排序，程序执行顺序可能为<br><img src="http://img.blog.csdn.net/20160108123920392" alt="这里写图片描述"><br>在这里多线程程序的语义被重排序破坏了，故在写多线程程序时不能认为写在前面的代码就一定会比写在后面的代码先执行。那程序执行的顺序应该按照什么规则进行判断呢？从JDK5开始，java使用新的JSR-133内存模型。JSR-133使用happens-before的概念来阐述操作之间的内存可见性。在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。</p>
+<ul>
+<li>程序次序规则：在一个线程内，按照程序代码顺序，书写在前面的操作先行发生于书写在后面的操作。</li>
+<li>管程锁定规则：一个unlock操作先行发生于后面对同一个锁的lock操作。这里必须强调的是同一个锁,而“后面”指时间上的先后顺序。</li>
+<li>Volatile变量规则：对一个volatile变量的写操作先行发生于后面对这个变量的读操作，这里的“后面”同样是指时间上的先后顺序。</li>
+<li>线程启动规则:Thread对象的start()方法先行发生于此线程的每一个动作。</li>
+<li>线程终止规则：线程中的所有操作都先行发生于对此线程的终止检测，可以通过Thread.join()方法结束、Thread.isAlive()的返回值等手段检测到线程已经终止执行。</li>
+<li>线程中断规则:对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生，可以通过Thread.interrupted()方法检测到是否有中断发生。</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于它的finalize()方法的开始。</li>
+<li>传递性：如果A happens-before B,且Bhappens-before C那么A happens-before C。</li>
+</ul>
+<p>当变量被volatile修饰后，虚拟机通过在volatile加入内存壁障的手法从而达到禁止指令重排序的目的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之volatile/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/cjy.github.io/page/3/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/">1</a><a class="page-number" href="/cjy.github.io/page/2/">2</a><a class="page-number" href="/cjy.github.io/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/cjy.github.io/page/5/">5</a><a class="page-number" href="/cjy.github.io/page/6/">6</a><a class="extend next" rel="next" href="/cjy.github.io/page/5/">Next &raquo;</a>
+    </nav>
   
 
 
@@ -352,8 +628,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
-		isPost: true,
+		isHome: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
