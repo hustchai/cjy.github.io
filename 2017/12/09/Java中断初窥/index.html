@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://hustchai.github.io/cjy.github.io">
-  <title>Archives: 2017 | </title>
+  <title>Java中断初窥 | </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title">
-<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/archives/2017/page/2/index.html">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在百度百科查到的解释是：指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中断初窥">
+<meta property="og:url" content="https://hustchai.github.io/cjy.github.io/2017/12/09/Java中断初窥/index.html">
 <meta property="og:site_name">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在百度百科查到的解释是：指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.blog.csdn.net/20160603194315507">
+<meta property="og:image" content="http://img.blog.csdn.net/20160603195520949">
+<meta property="og:image" content="http://img.blog.csdn.net/20160603195542090">
+<meta property="og:image" content="http://img.blog.csdn.net/20160603195607762">
+<meta property="og:image" content="http://img.blog.csdn.net/20160603195627502">
+<meta property="og:updated_time" content="2017-12-09T10:54:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title">
+<meta name="twitter:title" content="Java中断初窥">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？ &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在百度百科查到的解释是：指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160603194315507">
   
     <link rel="alternative" href="/atom.xml" title="" type="application/atom+xml">
   
@@ -150,295 +160,164 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Java中断初窥" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java中断初窥
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Java中断初窥/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:54:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在百度百科查到的解释是：<strong>指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程序和执行过程。即在程序运行过程中，系统出现了一个必须由CPU立即处理的情况，此时，CPU暂时中止程序的执行转而处理这个新的情况的过程就叫做中断。</strong> 简单点说，就是让当前任务停止啦。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中断是一种协作机制，不会要求被中断线程强制中断。而被中断线程只要在合适时机处理就可以了，但是也可以对中断请求不予理会。</p>
+<p>在Thread类中提供了几种有关中断的方法：<br><img src="http://img.blog.csdn.net/20160603194315507" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们知道Thread类中有个stop方法也可以使线程停止，那么这两个方法的区别在哪呢？中断会使程序自己去处理何时响应中断，而stop方法会在代码执行的过程中直接抛出ThreadDeath错误。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍这么多了，来看看例子吧。有run1，run2两个线程。run1线程先sleep 1秒，然后在对run2线程发出中断请求。run2线程会一直输出“111111111”直到run1线程对run2发出中断请求。</p>
+<p><strong>run1线程类</strong><br><img src="http://img.blog.csdn.net/20160603195520949" alt="这里写图片描述"></p>
+<p><strong>run2线程类</strong><br><img src="http://img.blog.csdn.net/20160603195542090" alt="这里写图片描述"></p>
+<p><strong>测试类</strong><br><img src="http://img.blog.csdn.net/20160603195607762" alt="这里写图片描述"></p>
+<p><strong>测试结果</strong><br><img src="http://img.blog.csdn.net/20160603195627502" alt="这里写图片描述"></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/cjy.github.io/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:43:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">设计模式之生成器模式</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://hustchai.github.io/cjy.github.io/2017/12/09/Java中断初窥/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/cjy.github.io/2017/12/09/Java动态代理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java动态代理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/设计模式之抽象工厂/">设计模式之抽象工厂</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:41:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/java并发之生产者消费者模型/">java并发之生产者消费者模型</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Java并发之volatile/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:40:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Java并发之volatile/">Java并发之volatile</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:37:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/Android与服务器端通信时-部分中文出现乱码/"> Android与服务器端通信时 部分中文出现乱码</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/git连接本地服务器教程/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:36:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/git连接本地服务器教程/">git连接本地服务器教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/使用cookie绕过验证码进行模拟登录/">使用cookie绕过验证码进行模拟登录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA泛型擦除机制/">JAVA泛型擦除机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:30:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA利用泛型返回类型不同的对象/">JAVA利用泛型返回类型不同的对象</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:28:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/cjy.github.io/2017/12/09/JAVA中复杂对象调用构造器顺序/">JAVA中复杂对象调用构造器顺序</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/cjy.github.io/archives/2017/">&laquo; Prev</a><a class="page-number" href="/cjy.github.io/archives/2017/">1</a><span class="page-number current">2</span><a class="page-number" href="/cjy.github.io/archives/2017/page/3/">3</a><a class="extend next" rel="next" href="/cjy.github.io/archives/2017/page/3/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -462,8 +341,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

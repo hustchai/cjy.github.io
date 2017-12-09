@@ -152,6 +152,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Java中断初窥" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/cjy.github.io/2017/12/09/Java中断初窥/">Java中断初窥</a>
+    </h1>
+  
+
+        
+        <a href="/cjy.github.io/2017/12/09/Java中断初窥/" class="archive-article-date">
+  	<time datetime="2017-12-09T10:54:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在使用Linux时我们经常可以通过在终端键入 kill quit命令，来结束指定任务。那么Java怎么让一个线程停止呢。其中的一种方法就是让线程中断，什么是中断呢？</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在百度百科查到的解释是：<strong>指当出现需要时，CPU暂时停止当前程序的执行转而执行处理新情况的程序和执行过程。即在程序运行过程中，系统出现了一个必须由CPU立即处理的情况，此时，CPU暂时中止程序的执行转而处理这个新的情况的过程就叫做中断。</strong> 简单点说，就是让当前任务停止啦。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中断是一种协作机制，不会要求被中断线程强制中断。而被中断线程只要在合适时机处理就可以了，但是也可以对中断请求不予理会。</p>
+<p>在Thread类中提供了几种有关中断的方法：<br><img src="http://img.blog.csdn.net/20160603194315507" alt="这里写图片描述"></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们知道Thread类中有个stop方法也可以使线程停止，那么这两个方法的区别在哪呢？中断会使程序自己去处理何时响应中断，而stop方法会在代码执行的过程中直接抛出ThreadDeath错误。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介绍这么多了，来看看例子吧。有run1，run2两个线程。run1线程先sleep 1秒，然后在对run2线程发出中断请求。run2线程会一直输出“111111111”直到run1线程对run2发出中断请求。</p>
+<p><strong>run1线程类</strong><br><img src="http://img.blog.csdn.net/20160603195520949" alt="这里写图片描述"></p>
+<p><strong>run2线程类</strong><br><img src="http://img.blog.csdn.net/20160603195542090" alt="这里写图片描述"></p>
+<p><strong>测试类</strong><br><img src="http://img.blog.csdn.net/20160603195607762" alt="这里写图片描述"></p>
+<p><strong>测试结果</strong><br><img src="http://img.blog.csdn.net/20160603195627502" alt="这里写图片描述"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java中断初窥/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java动态代理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -800,81 +872,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/cjy.github.io/2017/12/09/Java并发之读者写者模型/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-设计模式之生成器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">设计模式之生成器模式</a>
-    </h1>
-  
-
-        
-        <a href="/cjy.github.io/2017/12/09/设计模式之生成器模式/" class="archive-article-date">
-  	<time datetime="2017-12-09T10:43:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>将一个复杂对象的创建和它的表示分离，使得同样的创建过程可以有不同的表示。</strong></p>
-<p>应用场景：一水杯工厂要生产各式各样的水杯，无论杯子是神马造型，但都包括绳子，帽子和杯体。以此模型创建各种类型的杯子。</p>
-<p><img src="http://img.blog.csdn.net/20160119102247921" alt="这里写图片描述"></p>
-<p><strong>类图</strong><br><img src="http://img.blog.csdn.net/20160119102407329" alt="这里写图片描述"></p>
-<p><strong>cup类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Cup &#123;</span><br><span class="line"></span><br><span class="line">	private String string;    //绳子</span><br><span class="line">	private String cap;       //帽子</span><br><span class="line">	private String cupBody;   //杯体</span><br><span class="line">	</span><br><span class="line">	public void setString(String string) &#123;</span><br><span class="line">		this.string = string;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCap(String cap) &#123;</span><br><span class="line">		this.cap = cap;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCupBody(String cupBody) &#123;</span><br><span class="line">		this.cupBody = cupBody;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void show() &#123;</span><br><span class="line">		System.out.println(&quot;杯子生产完毕&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Builder类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public abstract class  Builder &#123;</span><br><span class="line"></span><br><span class="line">protected Cup cup = new Cup();</span><br><span class="line"></span><br><span class="line">public abstract void buildString();</span><br><span class="line"></span><br><span class="line">public abstract void buildCap();</span><br><span class="line"></span><br><span class="line">public abstract void buildCupBody();</span><br><span class="line"></span><br><span class="line">public  Cup getResult() &#123;</span><br><span class="line">return cup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>ClassCup类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ClassCup extends Builder &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildString() &#123;</span><br><span class="line">		cup.setString(&quot;生产绳子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产绳子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCap() &#123;</span><br><span class="line">		cup.setCap(&quot;生产帽子...&quot;);</span><br><span class="line">		System.out.println(&quot;生产帽子...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void buildCupBody() &#123;</span><br><span class="line">		cup.setCupBody(&quot;生产杯体...&quot;);</span><br><span class="line">		System.out.println(&quot;生产杯体...&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Director类</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Director &#123;</span><br><span class="line">	</span><br><span class="line">	private Builder builder;</span><br><span class="line">	</span><br><span class="line">	public Director(Builder builder) &#123;</span><br><span class="line">		this.builder = builder;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void create() &#123;</span><br><span class="line">		builder.buildString();</span><br><span class="line">		builder.buildCap();</span><br><span class="line">		builder.buildCupBody();</span><br><span class="line">		builder.getResult().show();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Director d = new Director(new ClassCup());</span><br><span class="line">		d.create();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>运行结果：</strong><br><img src="http://img.blog.csdn.net/20160119102716506" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/cjy.github.io/2017/12/09/设计模式之生成器模式/">展开全文 >></a>
         </p>
       
 
